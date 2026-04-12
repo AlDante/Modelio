@@ -7,14 +7,19 @@ Restore a working macOS build with the smallest practical change set.
 Phase 1 is now **functionally proven** on an Apple Silicon Mac using:
 - the packaged Intel macOS build (`x86_64`),
 - Rosetta,
-- an externally installed Java 11 runtime. 
-`cd /Users/david
+- an externally installed Java 11 runtime.
+
+Example launch command used during validation:
+
+```zsh
+cd /Users/david
 export HOME=/Users/david/IdeaProjects/Modelio/products/target/runtime-home-java11-x64
 mkdir -p "$HOME"
 arch -x86_64 "/Users/david/IdeaProjects/Modelio/products/target/mac-run/Modelio 5.4.1.app/Contents/MacOS/modelio" \
   -vm "/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home/bin/java" \
   -clean \
-  -consoleLog`
+  -consoleLog
+```
 
 
 Manual validation completed so far:
@@ -149,14 +154,154 @@ Do **not** include these in the minimum-change pass:
 - cleanup of legacy `vmArgsMac` unless they are proven to block launch.
 
 ## Phase 2: native Apple Silicon support
-Only start this after the Intel-mac build works.
+Phase 2 target: produce a **fully native Apple Silicon build** with **no `x86_64` code anywhere** in the shipped macOS product.
 
-Expected additional work:
-- refresh the target platform / Eclipse baseline,
-- add `org.eclipse.equinox.launcher.cocoa.macosx.aarch64`,
-- wire `cocoa.macosx.aarch64` fragments into the shipped features,
-- decide whether to bundle a macOS ARM JRE,
-- validate SWT/Chromium behavior on current macOS.
+This means more than changing the product architecture in one POM. The final `.app` must contain:
+- an `arm64` launcher,
+- `arm64` SWT fragments,
+- `arm64` browser support or an explicit browser replacement/removal,
+- `arm64` Modelio-native fragments,
+- no shipped `x86_64` macOS bundles, libraries, or helper executables.
+
+### Phase 2 workstream 1: packaging and product metadata
+Goal: create a native `macosx/cocoa/aarch64` product path.
+
+Files likely involved:
+- `products/pom.xml`
+- root `pom.xml`
+- `maven/modelio-parent/pom.xml`
+- `products/modelio-os.product`
+
+Concrete tasks:
+1. Add a native mac profile for `macosx/cocoa/aarch64` alongside the current Intel profile.
+2. Decide whether to keep both mac architectures in parallel during migration or switch the main mac profile entirely to `aarch64`.
+3. Ensure the packaged mac archive name and environments reflect `aarch64` rather than `x86_64`.
+4. Keep the mac product on an external Java runtime initially unless a bundled ARM JRE is deliberately added.
+
+Definition of done for this stream:
+- Tycho can package a `macosx/cocoa/aarch64` product archive.
+
+### Phase 2 workstream 2: Eclipse launcher and SWT
+Goal: replace the Intel mac launcher/SWT path with native Apple Silicon equivalents.
+
+Files likely involved:
+- `features/opensource/org.modelio.e4.rcp/feature.xml`
+- `features/opensource/org.modelio.rcp/feature.xml`
+- `dev-platform/rcp-target/rcp-eclipse/eclipse/*`
+- `dev-platform/rcp-target/rcp-eclipse/swt/pom.xml`
+
+Concrete tasks:
+1. Add `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` to the local target platform.
+2. Wire `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` into `org.modelio.e4.rcp` in place of the Intel mac launcher fragment.
+3. Wire `org.eclipse.swt.cocoa.macosx.aarch64` into `org.modelio.e4.rcp` in place of the Intel SWT mac fragment.
+4. Validate that the current Eclipse/RCP baseline can actually resolve and launch with these ARM fragments.
+5. If the current vendored Eclipse platform cannot supply a coherent ARM launcher/SWT stack, refresh the vendored Eclipse target platform before going further.
+
+Decision gate:
+- If `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` is unavailable or incompatible in the current target, a platform refresh becomes mandatory.
+
+Definition of done for this stream:
+- the packaged mac launcher binary reports `arm64`,
+- SWT resolves and the app reaches UI startup without Rosetta.
+
+### Phase 2 workstream 3: embedded browser strategy
+Goal: eliminate the Intel-only Chromium browser fragment from the mac build.
+
+Files likely involved:
+- `features/opensource/org.modelio.e4.rcp/feature.xml`
+- local Eclipse target platform under `dev-platform/rcp-target/rcp-eclipse/**`
+
+Current blocker in repo state:
+- `org.eclipse.swt.browser.chromium.cocoa.macosx.x86_64` is explicitly shipped today.
+
+Concrete tasks:
+1. Determine whether an `org.eclipse.swt.browser.chromium.cocoa.macosx.aarch64` artifact exists and is stable enough for this Eclipse baseline.
+2. If yes, add it to the target and wire it into the feature.
+3. If no, decide one of the following explicitly:
+   - refresh the Eclipse baseline to one that supports ARM Chromium cleanly,
+   - switch to a different browser strategy on macOS,
+   - temporarily disable browser-dependent functionality for native ARM until a supported replacement exists.
+
+Decision gate:
+- Native ARM cannot be considered complete while the shipped mac product still depends on the Intel-only Chromium fragment.
+
+Definition of done for this stream:
+- no `org.eclipse.swt.browser.chromium.cocoa.macosx.x86_64` remains in the shipped mac product.
+
+### Phase 2 workstream 4: Modelio-native fragments
+Goal: remove or replace Modelio-specific Intel-only mac binaries.
+
+Files likely involved:
+- `features/opensource/org.modelio.platform.libraries/feature.xml`
+- `dev-platform/rcp-target/modelio-integ/org.astyle/astyle/*`
+- any source/build project used to generate `org.modelio.astyle.*`
+
+Current blocker in repo state:
+- `org.modelio.astyle.macosx.cocoa.x86_64` is explicitly shipped today.
+
+Concrete tasks:
+1. Build or acquire an `arm64` variant of the AStyle fragment.
+2. Publish it into the local p2 repository under `dev-platform/rcp-target/modelio-integ/org.astyle/astyle`.
+3. Add the new ARM fragment to `org.modelio.platform.libraries`.
+4. Remove the Intel mac AStyle fragment from the native ARM product path.
+5. Audit for any additional mac-native helper binaries and apply the same rule.
+
+Definition of done for this stream:
+- no Modelio-shipped mac fragment in the final product is `x86_64`.
+
+### Phase 2 workstream 5: runtime policy
+Goal: run natively on Apple Silicon without Rosetta.
+
+Files likely involved:
+- `products/modelio-os.product`
+- `dev-platform/pack-resources/openjdk-jre11/**` if a bundled mac JRE is introduced
+
+Concrete tasks:
+1. Keep external Java as the default early in Phase 2 to reduce moving parts.
+2. Validate native launch with an `arm64` Java 11 runtime first.
+3. Only after native launch succeeds, decide whether to:
+   - keep external Java on macOS, or
+   - add a bundled macOS ARM JRE.
+4. If a bundled JRE is added, ensure it is `arm64` only for the native build and does not reintroduce Intel-only payloads.
+
+Definition of done for this stream:
+- the native Apple Silicon app launches using an `arm64` Java runtime with no Rosetta involvement.
+
+### Phase 2 workstream 6: validation and zero-`x86_64` exit criteria
+Goal: prove the native product is truly ARM-only.
+
+Required validation sequence:
+1. Validate target resolution with the native mac environment.
+2. Build affected plugins/features.
+3. Package the native mac product archive.
+4. Launch the app on Apple Silicon without Rosetta.
+5. Run the same smoke tests as Phase 1, plus:
+   - save and reopen a project,
+   - exercise at least one browser/help workflow,
+   - exercise any feature depending on `org.modelio.astyle` if applicable.
+
+Required artifact inspection:
+1. Check the launcher with `file` and confirm `arm64`.
+2. Inspect mac-native Eclipse fragments in the packaged app and confirm there is no `cocoa.macosx.x86_64` fragment shipped.
+3. Inspect Modelio-native mac fragments and confirm there is no `org.modelio.*.macosx.cocoa.x86_64` artifact shipped.
+4. If a JRE is bundled, inspect it and confirm no `x86_64` binaries are present.
+5. Search the final packaged mac product contents for `x86_64` references and treat any surviving macOS-native hit as a release blocker.
+
+Phase 2 exit criteria:
+- the packaged mac app launches natively on Apple Silicon,
+- no Rosetta is required,
+- no shipped macOS-native executable, fragment, or helper binary is `x86_64`,
+- no `cocoa.macosx.x86_64` mac fragment remains in the final product,
+- core manual workflows complete successfully on the native build.
+
+### Recommended implementation order
+1. Packaging profile for `aarch64`.
+2. ARM launcher fragment.
+3. ARM SWT fragment.
+4. Browser strategy decision.
+5. ARM AStyle / Modelio-native fragments.
+6. Native launch validation.
+7. Zero-`x86_64` artifact audit.
 
 ## Risks and likely blockers
 - Gatekeeper, signing, and notarization are not visible in the current repo and may still affect distribution usability.
