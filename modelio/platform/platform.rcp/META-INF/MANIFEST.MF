@@ -8,6 +8,7 @@ Bundle-Vendor: modelio.org
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.modelio.platform.utils,
  org.eclipse.help.base,
+ org.eclipse.swt,
  org.eclipse.ui.workbench,
  org.eclipse.jface,
  org.eclipse.e4.ui.model.workbench,

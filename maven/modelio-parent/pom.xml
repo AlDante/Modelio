@@ -389,6 +389,28 @@
 			</properties>
 		</profile>
 
+		<profile>
+			<id>platform.mac</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>${tycho-groupid}</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<version>${tycho-version}</version>
+						<configuration>
+							<environments>
+								<environment>
+									<os>macosx</os>
+									<ws>cocoa</ws>
+									<arch>x86_64</arch>
+								</environment>
+							</environments>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
 	</profiles>
 
 </project>
