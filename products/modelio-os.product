@@ -82,7 +82,6 @@
       <feature id="org.modelio.platform.feature"/>
       <feature id="org.modelio.platform.libraries"/>
       <feature id="org.modelio.documentation.modeler.nl_fr.feature"/>
-      <feature id="net.adoptium.temurin.jre.feature" version="11.0.15"/>
       <feature id="org.modelio.functions.modelviewtemplate"/>
    </features>
 
