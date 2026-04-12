@@ -3,6 +3,28 @@
 ## Goal
 Restore a working macOS build with the smallest practical change set.
 
+## Current status
+Phase 1 is now **functionally proven** on an Apple Silicon Mac using:
+- the packaged Intel macOS build (`x86_64`),
+- Rosetta,
+- an externally installed Java 11 runtime. 
+`cd /Users/david
+export HOME=/Users/david/IdeaProjects/Modelio/products/target/runtime-home-java11-x64
+mkdir -p "$HOME"
+arch -x86_64 "/Users/david/IdeaProjects/Modelio/products/target/mac-run/Modelio 5.4.1.app/Contents/MacOS/modelio" \
+  -vm "/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home/bin/java" \
+  -clean \
+  -consoleLog`
+
+
+Manual validation completed so far:
+- Modelio launched successfully,
+- a project was created,
+- a class diagram was created.
+
+This proves the minimum-change recovery path is viable on Apple Silicon through Rosetta.
+It does **not** yet prove full feature coverage, nor does it replace a separate Intel Mac validation run.
+
 ## Recommended scope
 Phase 1 should target **Intel macOS (`x86_64`) packaging**, with **Apple Silicon running the Intel build via Rosetta**.
 
@@ -78,16 +100,46 @@ Expected output of Step 4: a `.tar.gz` file in `products/target/` for `macosx.co
 
 These commands are derived from the checked POM structure; they should be verified in the local build environment.
 
-### Step 5: test launch on macOS
+### Step 5: test launch on macOS ✅ PARTIALLY VERIFIED
 Validation order:
 1. Intel Mac, if available.
 2. Apple Silicon Mac under Rosetta.
 
+Verified result so far:
+- the packaged Intel macOS build launches on Apple Silicon via Rosetta,
+- Java 11 is supplied externally on macOS,
+- basic modeling workflow works in manual testing.
+
+Manual validation record:
+- launch the packaged app,
+- create a project,
+- create a class diagram.
+
+Remaining Phase 1 confirmation still desirable:
+- validate launch on an actual Intel Mac,
+- extend smoke testing beyond the first basic modeling workflow.
+
 Success criteria for Phase 1:
 - a macOS product archive is produced,
-- the application launches on Intel macOS,
-- the same Intel build launches on Apple Silicon via Rosetta,
+- the application launches on Apple Silicon via Rosetta,
+- basic manual modeling workflow succeeds,
 - Java 11 is supplied externally on macOS.
+
+## Short macOS validation checklist
+
+Use this checklist for future macOS validation runs:
+
+1. Build and package the mac product archive.
+2. Extract and launch `Modelio 5.4.1.app`.
+3. Confirm external Java 11 is used.
+4. Verify the application opens without immediate launcher/runtime failure.
+5. Create a project.
+6. Create and save a class diagram.
+7. Close and reopen the project.
+8. Exercise one browser- or help-related feature if available.
+9. Record whether the run was on:
+   - Intel Mac, or
+   - Apple Silicon via Rosetta.
 
 ## Phase 1 non-goals
 Do **not** include these in the minimum-change pass:
@@ -112,9 +164,11 @@ Expected additional work:
 - Apple Silicon support remains incomplete until the launcher fragment and feature wiring are modernized.
 
 ## Recommended decision
-If the priority is to make Modelio usable on Macs again quickly, the best first move is:
+If the priority is to make Modelio usable on Macs again quickly, the confirmed first move is:
 1. restore `x86_64` mac packaging,
 2. rely on installed Java 11 for macOS,
-3. validate on Apple Silicon through Rosetta,
+3. run Apple Silicon through Rosetta,
 4. defer native ARM support to a second phase.
+
+That Phase 1 path is now validated for basic manual usage on Apple Silicon via Rosetta.
 
