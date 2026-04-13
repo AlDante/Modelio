@@ -52,6 +52,11 @@ This pom executes a maven target on ALL the (eclipse) features that compose the 
 					<layout>p2</layout>
 					<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/launcher-arm64</url>
 				</repository>
+				<repository>
+					<id>macos-arm64</id>
+					<layout>p2</layout>
+					<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/macos-arm64</url>
+				</repository>
 
 				<!-- Third-party Libraries re-packaged by Modeliosoft or Modeliosoft libraries -->
 				<repository>

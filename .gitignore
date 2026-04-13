@@ -8,6 +8,7 @@ modelio/*/*/runtime/bin
 features/*/*/target
 products/target
 dev-platform/rcp-target/rcp-eclipse/launcher-arm64/target
+dev-platform/rcp-target/rcp-eclipse/macos-arm64/target
 
 doc/plugins/*/*/target
 doc/plugins/*/*/html/*

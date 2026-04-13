@@ -195,15 +195,20 @@ Files likely involved:
 
 Concrete tasks:
 1. Add `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` to the local target platform. ✅ DONE via the additive local p2 site `dev-platform/rcp-target/rcp-eclipse/launcher-arm64`.
-2. Wire `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` into `org.modelio.e4.rcp` in place of the Intel mac launcher fragment.
-3. Wire `org.eclipse.swt.cocoa.macosx.aarch64` into `org.modelio.e4.rcp` in place of the Intel SWT mac fragment.
-4. Validate that the current Eclipse/RCP baseline can actually resolve and launch with these ARM fragments.
+2. Wire `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` into `org.modelio.e4.rcp` alongside the Intel mac launcher fragment. ✅ DONE.
+3. Wire `org.eclipse.swt.cocoa.macosx.aarch64` into `org.modelio.e4.rcp` alongside the Intel SWT mac fragment. ✅ DONE.
+4. Validate that the current Eclipse/RCP baseline can actually resolve and launch with these ARM fragments. ✅ PARTIALLY DONE at feature scope: `org.modelio.e4.rcp` now packages successfully under `-P platform.mac.aarch64`.
 5. If the current vendored Eclipse platform cannot supply a coherent ARM launcher/SWT stack, refresh the vendored Eclipse target platform before going further.
 
 Current gate after Phase 2 step 1:
 - `org.eclipse.swt.cocoa.macosx.aarch64` is already locally staged in `dev-platform/rcp-target/rcp-eclipse/swt/plugins`.
 - `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` is now staged through the additive local site `dev-platform/rcp-target/rcp-eclipse/launcher-arm64`.
-- The next safe move is to wire the ARM launcher and ARM SWT fragments into the shipped feature membership, then validate whether the current Eclipse/RCP baseline resolves them together.
+- `features/opensource/org.modelio.e4.rcp/feature.xml` now includes parallel macOS `aarch64` launcher and SWT fragments, and the feature packages successfully under `platform.mac.aarch64`.
+- The next safe move is to extend validation beyond the feature itself and identify the next native ARM blocker in the broader product stack.
+
+Additional blocker discovered during staged ARM validation:
+- `features/opensource/org.modelio.platform.feature/feature.xml` still depends on mac platform fragments whose vendored versions are Intel-filtered (`org.eclipse.core.filesystem.macosx 1.3.200` and `org.eclipse.equinox.security.macosx 1.101.200`).
+- Compatible macOS fragments with `aarch64` support are now staged through the additive local site `dev-platform/rcp-target/rcp-eclipse/macos-arm64`.
 
 Decision gate:
 - If `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` is unavailable or incompatible in the current target, a platform refresh becomes mandatory.

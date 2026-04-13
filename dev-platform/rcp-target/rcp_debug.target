@@ -12,6 +12,7 @@
 		<location path="${project_loc:/rcp-target}/rcp-eclipse/eclipse" type="Directory"/>
 		<location path="${project_loc:/rcp-target}/rcp-eclipse/eclipse-fr" type="Directory"/>
 		<location path="${project_loc:/rcp-target}/rcp-eclipse/launcher-arm64" type="Directory"/>
+		<location path="${project_loc:/rcp-target}/rcp-eclipse/macos-arm64" type="Directory"/>
 		<location path="${project_loc:/rcp-target}/rcp-eclipse/swt" type="Directory"/>
 
 		<!-- Third-party Libraries re-packaged by Modeliosoft or Modeliosoft libraries -->
