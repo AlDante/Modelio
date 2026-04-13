@@ -15,11 +15,14 @@ Example launch command used during validation:
 cd /Users/david
 export HOME=/Users/david/IdeaProjects/Modelio/products/target/runtime-home-java11-x64
 mkdir -p "$HOME"
-arch -x86_64 "/Users/david/IdeaProjects/Modelio/products/target/mac-run/Modelio 5.4.1.app/Contents/MacOS/modelio" \
+arch -x86_64 "/Users/david/IdeaProjects/Modelio/products/preserved-macos/Modelio 5.4.1 x86_64.app/Contents/MacOS/modelio" \
   -vm "/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home/bin/java" \
   -clean \
   -consoleLog
 ```
+
+The validated Rosetta app bundle is preserved outside build output at:
+`products/preserved-macos/Modelio 5.4.1 x86_64.app`
 
 
 Manual validation completed so far:
@@ -173,7 +176,7 @@ Files likely involved:
 - `products/modelio-os.product`
 
 Concrete tasks:
-1. Add a native mac profile for `macosx/cocoa/aarch64` alongside the current Intel profile.
+1. Add a native mac profile for `macosx/cocoa/aarch64` alongside the current Intel profile. ✅ DONE as a parallel `platform.mac.aarch64` profile so the working `platform.mac` (`x86_64`) path remains unchanged.
 2. Decide whether to keep both mac architectures in parallel during migration or switch the main mac profile entirely to `aarch64`.
 3. Ensure the packaged mac archive name and environments reflect `aarch64` rather than `x86_64`.
 4. Keep the mac product on an external Java runtime initially unless a bundled ARM JRE is deliberately added.
@@ -191,11 +194,16 @@ Files likely involved:
 - `dev-platform/rcp-target/rcp-eclipse/swt/pom.xml`
 
 Concrete tasks:
-1. Add `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` to the local target platform.
+1. Add `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` to the local target platform. ✅ DONE via the additive local p2 site `dev-platform/rcp-target/rcp-eclipse/launcher-arm64`.
 2. Wire `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` into `org.modelio.e4.rcp` in place of the Intel mac launcher fragment.
 3. Wire `org.eclipse.swt.cocoa.macosx.aarch64` into `org.modelio.e4.rcp` in place of the Intel SWT mac fragment.
 4. Validate that the current Eclipse/RCP baseline can actually resolve and launch with these ARM fragments.
 5. If the current vendored Eclipse platform cannot supply a coherent ARM launcher/SWT stack, refresh the vendored Eclipse target platform before going further.
+
+Current gate after Phase 2 step 1:
+- `org.eclipse.swt.cocoa.macosx.aarch64` is already locally staged in `dev-platform/rcp-target/rcp-eclipse/swt/plugins`.
+- `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` is now staged through the additive local site `dev-platform/rcp-target/rcp-eclipse/launcher-arm64`.
+- The next safe move is to wire the ARM launcher and ARM SWT fragments into the shipped feature membership, then validate whether the current Eclipse/RCP baseline resolves them together.
 
 Decision gate:
 - If `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` is unavailable or incompatible in the current target, a platform refresh becomes mandatory.

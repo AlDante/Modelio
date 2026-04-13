@@ -47,7 +47,12 @@ This pom executes a maven target on ALL the (eclipse) features that compose the 
 					<layout>p2</layout>
 					<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/swt</url>
 				</repository>
-		
+				<repository>
+					<id>launcher-arm64</id>
+					<layout>p2</layout>
+					<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/launcher-arm64</url>
+				</repository>
+
 				<!-- Third-party Libraries re-packaged by Modeliosoft or Modeliosoft libraries -->
 				<repository>
 					<id>jaxb</id>
@@ -290,6 +295,27 @@ This pom executes a maven target on ALL the (eclipse) features that compose the 
 									<os>macosx</os>
 									<ws>cocoa</ws>
 									<arch>x86_64</arch>
+								</environment>
+							</environments>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>platform.mac.aarch64</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>${tycho-groupid}</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<version>${tycho-version}</version>
+						<configuration>
+							<environments>
+								<environment>
+									<os>macosx</os>
+									<ws>cocoa</ws>
+									<arch>aarch64</arch>
 								</environment>
 							</environments>
 						</configuration>
