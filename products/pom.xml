@@ -137,6 +137,7 @@
 						<executions>
 							<execution>
 								<id>products</id>
+								<phase>package</phase>
 								<goals>
 									<goal>materialize-products</goal>
 									<goal>archive-products</goal>
@@ -159,6 +160,27 @@
 							<macosx>tar.gz</macosx>
 						</formats>
 					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>3.1.0</version>
+					<executions>
+						<execution>
+							<id>patch-macos-aarch64-app-wrapper</id>
+							<phase>package</phase>
+							<goals>
+								<goal>run</goal>
+							</goals>
+							<configuration>
+								<target>
+									<exec executable="zsh" failonerror="true">
+										<arg value="-c"/>
+										<arg value="if [ -d '${project.build.directory}/products/org.modelio.product/macosx/cocoa/aarch64/${modelio.rootFolder}.app' ]; then python3 '${project.basedir}/patch_macos_aarch64_app.py' --app-contents '${project.build.directory}/products/org.modelio.product/macosx/cocoa/aarch64/${modelio.rootFolder}.app/Contents' --app-name 'Modelio' --short-version '${newVersion}' &amp;&amp; rm -f '${project.build.directory}/products/org.modelio.product-macosx.cocoa.aarch64.tar.gz' &amp;&amp; rm -f '${project.build.directory}/org.modelio.product-macosx.cocoa.aarch64.tar.gz' &amp;&amp; cd '${project.build.directory}/products/org.modelio.product/macosx/cocoa/aarch64' &amp;&amp; tar -czf '../../../../org.modelio.product-macosx.cocoa.aarch64.tar.gz' '${modelio.rootFolder}.app'; fi"/>
+									</exec>
+								</target>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</build>
@@ -231,6 +253,9 @@
 		</profile>
 		<profile>
 			<id>platform.mac.aarch64</id>
+			<properties>
+				<modelio.rootFolder>Modelio</modelio.rootFolder>
+			</properties>
 			<build>
 				<plugins>
 					<plugin>

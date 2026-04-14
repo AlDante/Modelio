@@ -76,6 +76,14 @@
 		<chmod perm="755" dir="${feature.base}/macosx.cocoa.x86_64/${collectingFolder}" includes="${launcherName}" />
 		<chmod perm="755" dir="${feature.base}/macosx.cocoa.x86_64/${collectingFolder}" includes="Eclipse.app/Contents/MacOS/launcher" />
 	</target>
+	<target name="rootFilesmacosx_cocoa_aarch64">
+		<mkdir dir="${feature.base}/macosx.cocoa.aarch64/${collectingFolder}"/>
+		<copy todir="${feature.base}/macosx.cocoa.aarch64/${collectingFolder}" failonerror="true" overwrite="true">
+			<fileset dir="${basedir}/bin/cocoa/macosx/aarch64" includes="**"			/>
+		</copy>
+		<chmod perm="755" dir="${feature.base}/macosx.cocoa.aarch64/${collectingFolder}" includes="${launcherName}" />
+		<chmod perm="755" dir="${feature.base}/macosx.cocoa.aarch64/${collectingFolder}" includes="Eclipse.app/Contents/MacOS/launcher" />
+	</target>
 	<target name="rootFileslinux_gtk_ppc64le">
 		<mkdir dir="${feature.base}/linux.gtk.ppc64le/${collectingFolder}"/>
 		<copy todir="${feature.base}/linux.gtk.ppc64le/${collectingFolder}" failonerror="true" overwrite="true">
@@ -137,6 +145,7 @@
 	</target>
 	<target name="rootFilesgroup_group_group">
 		<antcall target="rootFileswin32_win32_x86_64"/>
+		<antcall target="rootFilesmacosx_cocoa_aarch64"/>
 		<antcall target="rootFilesmacosx_cocoa_x86_64"/>
 		<antcall target="rootFileslinux_gtk_ppc64le"/>
 		<antcall target="rootFileslinux_gtk_aarch64"/>

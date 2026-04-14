@@ -84,6 +84,10 @@ please refer to the
 https://github.com/ModelioOpenSource/Modelio/wiki/Build-Modelio-Index[Building
 Modelio from Source Guide].
 
+For the repo-specific native macOS Apple Silicon (`macosx/cocoa/aarch64`) build flow,
+including intermediate output directories and final product locations, see
+link:MACOS_AARCH64_BUILD_PROCESS.md[MACOS_AARCH64_BUILD_PROCESS.md].
+
 
 == Contribute
 

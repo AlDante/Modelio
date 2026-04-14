@@ -51,3 +51,9 @@
 ## Existing AI-instruction sources found
 - A glob search for common AI rule files found no repo-level agent instruction files; only third-party/vendor READMEs under CKEditor/Freemarker paths.
 
+## Prefer MacPorts to Homebrew
+- If utilities need to be installed, use MacPorts. Use Homebrew only if a required utility is unavailable via MacPorts.
+
+## Mac M1 aarch64 only build
+- The only platform that we need to support is Mac M1 aarch64, so we can target that architecture specifically in our build configuration. We do not need to worry about cross-compilation or multi-arch builds.
+- For the canonical native Apple Silicon build flow, overlay generation steps, intermediate output directories, and final app/archive locations, consult `MACOS_AARCH64_BUILD_PROCESS.md`.

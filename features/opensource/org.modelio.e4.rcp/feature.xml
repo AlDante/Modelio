@@ -667,16 +667,16 @@
 
    <plugin
          id="com.sun.jna"
-         download-size="1432"
-         install-size="3897"
-         version="4.5.1.v20190425-1842"
+         download-size="0"
+         install-size="0"
+         version="5.18.1"
          unpack="false"/>
 
    <plugin
          id="com.sun.jna.platform"
-         download-size="1167"
-         install-size="2368"
-         version="4.5.1.v20190425-1842"
+         download-size="0"
+         install-size="0"
+         version="5.18.1"
          unpack="false"/>
 
 </feature>

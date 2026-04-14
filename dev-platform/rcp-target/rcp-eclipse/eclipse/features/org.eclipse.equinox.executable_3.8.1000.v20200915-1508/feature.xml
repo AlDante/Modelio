@@ -31,6 +31,16 @@
          fragment="true"/>
 
    <plugin
+          id="org.eclipse.equinox.launcher.cocoa.macosx"
+          os="macosx"
+          ws="cocoa"
+          arch="aarch64"
+          download-size="40"
+          install-size="88"
+          version="1.2.200.v20210527-0259"
+          fragment="true"/>
+
+   <plugin
          id="org.eclipse.equinox.launcher.gtk.linux.ppc64le"
          os="linux"
          ws="gtk"
