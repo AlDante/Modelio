@@ -4,12 +4,12 @@
    
 #help-disabledTopic {
 	color: Highlight;
-	font-weight: medium;
+	font-weight: bolder;
 	margin-top: 1.0em;
 	margin-bottom: 1.0em;
 }
 
 #help-disabledTopic hr {
 	color: #C0C0C0;
-	noshade;
+	border: none;
 }
