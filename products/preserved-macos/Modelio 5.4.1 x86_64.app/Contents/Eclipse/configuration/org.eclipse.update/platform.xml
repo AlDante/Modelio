@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config date="1776027065753" transient="false">
+	<site updateable="true" url="platform:/base/" enabled="true" policy="USER-EXCLUDE">
+		<feature id="org.modelio.formalism.bpmn" version="5.4.1.202604122049" url="features/org.modelio.formalism.bpmn_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.eclipse.equinox.p2.core.feature" version="1.6.800.v20201106-1246" url="features/org.eclipse.equinox.p2.core.feature_1.6.800.v20201106-1246/">
+		</feature>
+		<feature id="org.modelio.rcp" version="4.18.0.v20201202-1800" url="features/org.modelio.rcp_4.18.0.v20201202-1800/" plugin-identifier="org.eclipse.rcp">
+		</feature>
+		<feature id="org.modelio.functions.fle" version="5.4.1.202604122049" url="features/org.modelio.functions.fle_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.platform.libraries" version="5.4.1.202604122049" url="features/org.modelio.platform.libraries_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.e4.rcp" version="4.18.0.v20201202-1103" url="features/org.modelio.e4.rcp_4.18.0.v20201202-1103/">
+		</feature>
+		<feature id="org.modelio.functions.admintool" version="5.4.1.202604122049" url="features/org.modelio.functions.admintool_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.eclipse.equinox.p2.user.ui" version="2.4.1000.v20201106-1246" url="features/org.eclipse.equinox.p2.user.ui_2.4.1000.v20201106-1246/">
+		</feature>
+		<feature id="org.modelio.application.services" version="5.4.1.202604122049" url="features/org.modelio.application.services_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.functions.xmi" version="5.4.1.202604122049" url="features/org.modelio.functions.xmi_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.eclipse.emf.ecore" version="2.23.0.v20200630-0516" url="features/org.eclipse.emf.ecore_2.23.0.v20200630-0516/">
+		</feature>
+		<feature id="org.modelio.documentation.modeler.nl_fr.feature" version="5.4.1.202604122049" url="features/org.modelio.documentation.modeler.nl_fr.feature_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.application.core" version="5.4.1.202604122049" url="features/org.modelio.application.core_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.functions.elementedition" version="5.4.1.202604122049" url="features/org.modelio.functions.elementedition_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.functions.patterns" version="5.4.1.202604122049" url="features/org.modelio.functions.patterns_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.functions.update" version="5.4.1.202604122049" url="features/org.modelio.functions.update_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.eclipse.ecf.filetransfer.ssl.feature" version="1.1.400.v20200812-2314" url="features/org.eclipse.ecf.filetransfer.ssl.feature_1.1.400.v20200812-2314/">
+		</feature>
+		<feature id="org.modelio.diagrams.auto" version="5.4.1.202604122049" url="features/org.modelio.diagrams.auto_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.functions.bundlefiles" version="5.4.1" url="features/org.modelio.functions.bundlefiles_5.4.1/">
+		</feature>
+		<feature id="org.modelio.formalism.uml" version="5.4.1.202604122049" url="features/org.modelio.formalism.uml_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.functions.script" version="5.4.1.202604122049" url="features/org.modelio.functions.script_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.functions.audit" version="5.4.1.202604122049" url="features/org.modelio.functions.audit_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.application.project" version="5.4.1.202604122049" url="features/org.modelio.application.project_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.functions.modelviewtemplate" version="5.4.1.202604122049" url="features/org.modelio.functions.modelviewtemplate_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.functions.editors" version="5.4.1.202604122049" url="features/org.modelio.functions.editors_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.application.plugdule" version="5.4.1.202604122049" url="features/org.modelio.application.plugdule_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.application.welcome" version="5.4.1.202604122049" url="features/org.modelio.application.welcome_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.application.perspective" version="5.4.1.202604122049" url="features/org.modelio.application.perspective_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.diagrams.core" version="5.4.1.202604122049" url="features/org.modelio.diagrams.core_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.eclipse.draw2d" version="3.10.100.201705231123" url="features/org.eclipse.draw2d_3.10.100.201705231123/">
+		</feature>
+		<feature id="org.eclipse.equinox.p2.rcp.feature" version="1.4.1000.v20201106-1246" url="features/org.eclipse.equinox.p2.rcp.feature_1.4.1000.v20201106-1246/">
+		</feature>
+		<feature id="org.eclipse.ecf.core.ssl.feature" version="1.1.500.v20200812-2314" url="features/org.eclipse.ecf.core.ssl.feature_1.1.500.v20200812-2314/">
+		</feature>
+		<feature id="org.modelio.functions.modelbrowser" version="5.4.1.202604122049" url="features/org.modelio.functions.modelbrowser_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.eclipse.emf.common" version="2.21.0.v20200917-1439" url="features/org.eclipse.emf.common_2.21.0.v20200917-1439/">
+		</feature>
+		<feature id="org.modelio.application.preferences" version="5.4.1.202604122049" url="features/org.modelio.application.preferences_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.eclipse.equinox.p2.extras.feature" version="1.4.1000.v20201106-1246" url="features/org.eclipse.equinox.p2.extras.feature_1.4.1000.v20201106-1246/">
+		</feature>
+		<feature id="org.eclipse.gef" version="3.11.0.201705231123" url="features/org.eclipse.gef_3.11.0.201705231123/">
+		</feature>
+		<feature id="org.modelio.functions.modules" version="5.4.1.202604122049" url="features/org.modelio.functions.modules_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.eclipse.ecf.filetransfer.feature" version="3.14.1702.v20201025-2315" url="features/org.eclipse.ecf.filetransfer.feature_3.14.1702.v20201025-2315/">
+		</feature>
+		<feature id="org.modelio.application.ui" version="5.4.1.202604122049" url="features/org.modelio.application.ui_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.functions.modelimport" version="5.4.1.202604122049" url="features/org.modelio.functions.modelimport_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.modelio.platform.feature" version="4.18.0.v20201202-1800" url="features/org.modelio.platform.feature_4.18.0.v20201202-1800/">
+		</feature>
+		<feature id="org.modelio.jaxb.feature" version="2.1.1" url="features/org.modelio.jaxb.feature_2.1.1/">
+		</feature>
+		<feature id="org.eclipse.ecf.core.feature" version="1.5.701.v20201027-0550" url="features/org.eclipse.ecf.core.feature_1.5.701.v20201027-0550/">
+		</feature>
+		<feature id="org.modelio.functions.search" version="5.4.1.202604122049" url="features/org.modelio.functions.search_5.4.1.202604122049/">
+		</feature>
+		<feature id="org.eclipse.ecf.filetransfer.httpclient45.feature" version="1.0.702.v20201025-2303" url="features/org.eclipse.ecf.filetransfer.httpclient45.feature_1.0.702.v20201025-2303/">
+		</feature>
+		<feature id="org.eclipse.help" version="2.3.400.v20201202-1800" url="features/org.eclipse.help_2.3.400.v20201202-1800/" plugin-identifier="org.eclipse.help.base">
+		</feature>
+	</site>
+</config>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature id="org.modelio.formalism.bpmn"
+         label="Formalism BPMN"
+         version="5.4.1.202604122049"
+         provider-name="modelio.org">
+
+<copyright>
+      Copyright 2021 Modeliosoft
+
+This file is part of Modelio.
+Modelio is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Modelio is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Modelio.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+</copyright>
+
+<license url="">
+GPL
+</license>
+
+<url>
+  <discovery label="modelio.org" url="https://www.modelio.org"/>
+</url>
+<requires>
+</requires>
+
+<plugin id="org.modelio.bpmn.diagram.editor"
+        download-size="1668"
+        install-size="2970"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.bpmn.metamodel.api"
+        download-size="0"
+        install-size="0"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.bpmn.metamodel.contribution"
+        download-size="0"
+        install-size="0"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.bpmn.metamodel.implementation"
+        download-size="0"
+        install-size="0"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.bpmn.ui"
+        download-size="79"
+        install-size="176"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.bpmn-xml"
+        download-size="395"
+        install-size="950"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+
+</feature>

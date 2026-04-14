@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Created-By: Maven Archiver 3.5.0
+Build-Jdk-Spec: 11
+Bundle-ManifestVersion: 2
+Bundle-Name: Ui Plug-in
+Bundle-SymbolicName: org.modelio.platform.ui;singleton:=true
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-Version: 5.4.1.202604122049
+Require-Bundle: org.eclipse.ui,org.modelio.platform.utils,org.eclipse.co
+ re.runtime,org.eclipse.gef,org.modelio.core.utils,org.modelio.platform.
+ rcp,org.eclipse.nebula.widgets.gallery
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: modelio.org
+Export-Package: org.modelio.platform.ui,org.modelio.platform.ui.desktop,
+ org.modelio.platform.ui.dialog,org.modelio.platform.ui.gef,org.modelio.
+ platform.ui.htmleditor,org.modelio.platform.ui.panel,org.modelio.platfo
+ rm.ui.plugin,org.modelio.platform.ui.progress,org.modelio.platform.ui.s
+ wt,org.modelio.platform.ui.swt.imagesselector
+Bundle-ClassPath: .,res/,rte/
+Bundle-Activator: org.modelio.platform.ui.plugin.UI
+Eclipse-BundleShape: dir
+

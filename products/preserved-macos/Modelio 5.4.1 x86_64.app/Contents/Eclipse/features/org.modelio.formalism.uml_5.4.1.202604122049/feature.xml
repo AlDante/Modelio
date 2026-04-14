@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature id="org.modelio.formalism.uml"
+         label="Formalism UML"
+         version="5.4.1.202604122049"
+         provider-name="modelio.org">
+
+<copyright>
+      Copyright 2021 Modeliosoft
+
+This file is part of Modelio.
+Modelio is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Modelio is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Modelio.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+</copyright>
+
+<license url="">
+GPL
+</license>
+
+<url>
+  <discovery label="modelio.org" url="https://www.modelio.org"/>
+</url>
+<requires>
+</requires>
+
+<plugin id="org.modelio.uml.activitydiagram.editor"
+        download-size="602"
+        install-size="1377"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.uml.communicationdiagram.editor"
+        download-size="117"
+        install-size="264"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.uml.compositediagram.editor"
+        download-size="31"
+        install-size="88"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.uml.deploymentdiagram.editor"
+        download-size="87"
+        install-size="242"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.uml.metamodel.api"
+        download-size="0"
+        install-size="0"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.uml.metamodel.contribution"
+        download-size="1"
+        install-size="0"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.uml.metamodel.implementation"
+        download-size="0"
+        install-size="0"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.uml.objectdiagram.editor"
+        download-size="52"
+        install-size="132"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.uml.sequencediagram.editor"
+        download-size="394"
+        install-size="849"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.uml.statediagram.editor"
+        download-size="272"
+        install-size="607"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.uml.statikdiagram.editor"
+        download-size="946"
+        install-size="2210"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.uml.ui"
+        download-size="1327"
+        install-size="2654"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.uml.ui.ext.org"
+        download-size="7"
+        install-size="11"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+<plugin id="org.modelio.uml.usecasediagram.editor"
+        download-size="150"
+        install-size="340"
+        version="5.4.1.202604122049"
+        fragment="false"
+        unpack="false"/>
+
+</feature>

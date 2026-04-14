@@ -180,6 +180,21 @@
 								</target>
 							</configuration>
 						</execution>
+						<execution>
+							<id>verify-macos-aarch64-app-wrapper</id>
+							<phase>package</phase>
+							<goals>
+								<goal>run</goal>
+							</goals>
+							<configuration>
+								<target>
+									<exec executable="zsh" failonerror="true">
+										<arg value="-c"/>
+										<arg value="if [ -d '${project.build.directory}/products/org.modelio.product/macosx/cocoa/aarch64/${modelio.rootFolder}.app' ]; then plutil -lint '${project.build.directory}/products/org.modelio.product/macosx/cocoa/aarch64/${modelio.rootFolder}.app/Contents/Info.plist' &gt;/dev/null &amp;&amp; codesign --verify --deep --strict --verbose=2 '${project.build.directory}/products/org.modelio.product/macosx/cocoa/aarch64/${modelio.rootFolder}.app' &gt;/dev/null &amp;&amp; if xattr -lr '${project.build.directory}/products/org.modelio.product/macosx/cocoa/aarch64/${modelio.rootFolder}.app' | grep -q 'com.apple.quarantine'; then echo 'macOS aarch64 app still has com.apple.quarantine after patching' 1&gt;&amp;2; exit 1; fi; fi"/>
+									</exec>
+								</target>
+							</configuration>
+						</execution>
 					</executions>
 				</plugin>
 			</plugins>

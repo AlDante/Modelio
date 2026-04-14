@@ -396,6 +396,28 @@ or:
 "/Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/MacOS/modelio"
 ```
 
+### 10.1.1 macOS launch-services failure that was diagnosed in this repo
+
+One important failure mode that was reproduced during this work was:
+- `RBSRequestErrorDomain Code=5 "Launch failed"`
+- with underlying `NSPOSIXErrorDomain Code=163` / `Launchd job spawn failed`
+
+In the checked build history for this repo, that failure was traced to the generated bundle being modified after wrapper files were copied in, without re-signing the final `.app`, and with a residual quarantine attribute still present on the copied launcher.
+
+The concrete symptoms that were verified were:
+- `codesign --verify --deep --strict` reported `invalid Info.plist (plist or signature have been modified)`
+- `Contents/MacOS/modelio` still had `com.apple.quarantine`
+
+The current post-processing step now clears quarantine on the generated app bundle and then performs an ad-hoc re-sign of the final `.app` after `Info.plist`, launcher, and icon patching.
+
+As a result, a plain:
+
+```zsh
+open "/Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app"
+```
+
+now returns cleanly in the validated local build instead of failing immediately in LaunchServices.
+
 ### 10.2 Where is the Eclipse payload relative to the macOS wrapper?
 
 The generated product still contains the **Eclipse/OSGi installation payload** under:
@@ -438,7 +460,7 @@ cd "/Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.produ
 ```
 
 This was verified by the smoke-launch log in:
-- `.runtime-jar-smoke.log`
+- `diagnostics/macos-aarch64/runtime-jar-smoke.log`
 
 That log shows:
 - `BootLoader constants: OS=macosx, ARCH=aarch64, WS=cocoa`
@@ -459,6 +481,11 @@ These describe:
 - the OSGi configuration area,
 - the OSGi data area.
 
+The current wrapper patch also inserts an explicit:
+- `-configuration ../Eclipse/configuration`
+
+into `Contents/Eclipse/modelio.ini` so that the native wrapper starts from the app-local Eclipse configuration rather than reusing an older stale user-cache configuration by accident.
+
 ## 11. Final Apple Silicon verification (current generated payload)
 
 ### 11.1 JNA check
@@ -475,7 +502,35 @@ Expected:
 In the generated product, confirm the ARM launcher fragment exists under:
 - `Contents/Eclipse/plugins/org.eclipse.equinox.launcher.cocoa.macosx_1.2.200.v20210527-0259/`
 
-Historical evidence files in this repo such as `launcher-filetypes.txt` and `final-aarch64-launcher-check.txt` remain useful as background verification artifacts, but the checked-in build now generates `Contents/MacOS/modelio` directly.
+Historical evidence files in this repo such as `diagnostics/macos-aarch64/launcher-filetypes.txt` and `diagnostics/macos-aarch64/final-aarch64-launcher-check.txt` remain useful as background verification artifacts, but the checked-in build now generates `Contents/MacOS/modelio` directly.
+
+### 11.3 Wrapper signing and quarantine check
+
+For the current checked macOS aarch64 build, the most useful wrapper-level verification commands are:
+
+```zsh
+plutil -lint "/Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Info.plist"
+
+codesign --verify --deep --strict --verbose=4 \
+  "/Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app"
+
+xattr -lr \
+  "/Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app"
+```
+
+What was actually verified in this repo after the wrapper/signing fix:
+- `Info.plist` is valid
+- `codesign --verify --deep --strict` succeeds on the final `.app`
+- no `com.apple.quarantine` attribute remains on the generated bundle
+
+Important nuance:
+- the current build uses an **ad-hoc** signature to keep the local generated app launchable after post-processing
+- `codesign --verify` success means the bundle is internally consistent and launchable for local development
+- this is **not** the same thing as notarization or full Gatekeeper acceptance for external distribution
+
+In other words, treat the current checked build as:
+- locally signed well enough for development launch on the build machine
+- but not automatically equivalent to a notarized release artifact
 
 ## 12. About the x86_64 `org.eclipse.equinox.executable` staging tree
 
@@ -521,6 +576,14 @@ Therefore, the current checked build process should be treated as producing:
 - a valid Eclipse payload under `Contents/Eclipse/`
 - and a complete macOS wrapper under `Contents/Info.plist`, `Contents/MacOS/`, and `Contents/Resources/` by default.
 - and a `modelio.ini` launcher configuration that points the native wrapper back to the app-local `Contents/Eclipse/configuration` directory rather than an older stale user-cache configuration
+- and a final app bundle that is de-quarantined and ad-hoc signed after wrapper patching
+
+The helper now performs these macOS-specific post-processing actions in one place:
+- copy launcher/icon resources into the generated `.app`
+- rewrite `Info.plist` with `Modelio` bundle naming and current version fields
+- inject the app-local `-configuration` entry into `modelio.ini`
+- clear `com.apple.quarantine` recursively on the generated app
+- re-sign the final `.app` with an ad-hoc signature
 
 ## 14. Practical “look here first” checklist
 
@@ -539,19 +602,25 @@ When debugging or locating outputs, use this order.
 6. `products/target/products/`
 7. `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app`
 8. `products/target/products/org.modelio.product-macosx.cocoa.aarch64.tar.gz`
+9. `products/patch_macos_aarch64_app.py`
 
 ### Manual launch/debug of the current generated payload
-9. `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Eclipse/modelio.ini`
-10. `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Eclipse/configuration/config.ini`
-11. `.runtime-jar-smoke.log`
-12. `~/.modelio/5.4/opensource-cache/conf`
-13. `~/.modelio/5.4/opensource-cache/data/.metadata/.log`
+10. `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Eclipse/modelio.ini`
+11. `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Eclipse/configuration/config.ini`
+12. `diagnostics/macos-aarch64/runtime-jar-smoke.log`
+13. `~/.modelio/5.4/opensource-cache/conf`
+14. `~/.modelio/5.4/opensource-cache/data/.metadata/.log`
+
+### Wrapper/signature verification
+15. `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Info.plist`
+16. `codesign --verify --deep --strict --verbose=4 .../Modelio.app`
+17. `xattr -lr .../Modelio.app`
 
 ### Only after that, inspect intermediates
-14. `products/target/org.eclipse.equinox.executable-*`
-15. `products/target/repository/`
-16. `products/target/targetPlatformRepository/`
-17. `products/target/p2agent/`
+18. `products/target/org.eclipse.equinox.executable-*`
+19. `products/target/repository/`
+20. `products/target/targetPlatformRepository/`
+21. `products/target/p2agent/`
 
 ## 15. Recommended future workflow
 
@@ -594,7 +663,8 @@ The most important path to remember is:
 Current important distinction:
 - the generated `.app` contains the Eclipse payload under `Contents/Eclipse/`
 - and now also contains the standard macOS wrapper files under `Contents/Info.plist`, `Contents/MacOS/`, and `Contents/Resources/`
-- therefore the default checked build is now Finder-launchable in the normal macOS way
+- and the wrapper patch now clears quarantine and ad-hoc signs the final bundle after patching
+- therefore the default checked build is now Finder/`open` launchable in the normal macOS way for local development on the validated machine
 
 If you are trying to answer “where is the final Modelio app?”, the answer is:
 - `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app`
