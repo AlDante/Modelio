@@ -72,6 +72,11 @@
       <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/org.slf4j/slf4j" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="macos-arm64" />
+      <option name="name" value="macos-arm64" />
+      <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/rcp-eclipse/macos-arm64" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="rcp-Eclipse-fr" />
       <option name="name" value="rcp-Eclipse-fr" />
       <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/rcp-eclipse/eclipse-fr" />
@@ -140,6 +145,16 @@
       <option name="id" value="openjdk-jre11" />
       <option name="name" value="openjdk-jre11" />
       <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/pack-resources/openjdk-jre11" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="launcher-arm64" />
+      <option name="name" value="launcher-arm64" />
+      <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/rcp-eclipse/launcher-arm64" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jna" />
+      <option name="name" value="jna" />
+      <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/rcp-eclipse/jna/target/repository" />
     </remote-repository>
   </component>
 </project>
