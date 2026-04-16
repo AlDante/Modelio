@@ -31,7 +31,7 @@
          fragment="true"/>
 
    <plugin
-          id="org.eclipse.equinox.launcher.cocoa.macosx"
+           id="org.eclipse.equinox.launcher.cocoa.macosx.aarch64"
           os="macosx"
           ws="cocoa"
           arch="aarch64"

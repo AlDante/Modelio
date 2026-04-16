@@ -2811,11 +2811,11 @@
     </artifact>
     <artifact classifier='org.eclipse.update.feature' id='org.eclipse.equinox.executable' version='3.8.1000.v20200915-1508'>
       <properties size='6'>
-        <property name='artifact.size' value='297174'/>
-        <property name='download.size' value='297174'/>
-        <property name='download.md5' value='2f0a3900bc219721e9c9064f2209c575'/>
-        <property name='download.checksum.md5' value='2f0a3900bc219721e9c9064f2209c575'/>
-        <property name='download.checksum.sha-256' value='ae340875ab782f10a241e71f99b325966913ec901c4ee9a442ae290c9ad95b5a'/>
+        <property name='artifact.size' value='305995'/>
+        <property name='download.size' value='305995'/>
+        <property name='download.md5' value='bc2a7337618d4af18bfc691cf8ab7735'/>
+        <property name='download.checksum.md5' value='bc2a7337618d4af18bfc691cf8ab7735'/>
+        <property name='download.checksum.sha-256' value='a9bfef697372f9c2c44123e072a98d080f97063c3d9df6e18d056c02b5319318'/>
         <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>

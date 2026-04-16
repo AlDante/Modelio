@@ -9,6 +9,7 @@ features/*/*/target
 products/target
 dev-platform/rcp-target/rcp-eclipse/launcher-arm64/target
 dev-platform/rcp-target/rcp-eclipse/macos-arm64/target
+/tmp/tycho-cleanup/
 
 doc/plugins/*/*/target
 doc/plugins/*/*/html/*

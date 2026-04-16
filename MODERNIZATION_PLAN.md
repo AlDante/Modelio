@@ -456,6 +456,51 @@ It is to decide later, in a separate bounded spike, whether the `2.7.5` blocker 
 - converting the problematic raw directories to cleaner p2 repositories,
 - or explicitly deferring the Tycho uplift until the larger Eclipse target re-vendoring phase.
 
+##### Updated Phase 3 probe status after target sidecar cleanup - 2026-04-16
+- The directory-style target blocker was reduced by moving **11 target-visible non-bundle sidecars** (`-sources.jar` / `-javadoc.jar`) out of active `rcp.target` repository roots and into `dev-platform/rcp-target/_sidecars/`:
+  - `apache/commons-compress` (2)
+  - `apache/commons-lang` (2)
+  - `org.slf4j/slf4j` (3)
+  - `modelio-integ/apache/jena` (4)
+- Recorded cleanup report:
+  - `tmp/tycho-cleanup/tycho-sidecar-cleanup-report.txt`
+- Resulting `Tycho 2.7.5` ladder status on `Java 11`:
+  - `AGGREGATOR/prebuild/pom.xml verify` = **green**
+  - `doc/aggregator/pom.xml package` = **green**
+  - `AGGREGATOR/plugins/pom.xml package` = **green**
+  - `AGGREGATOR/features/opensource/pom.xml package` = **green**
+  - `products/pom.xml -Pproduct.org,platform.mac.aarch64 package` = **still failing**
+
+Remaining product-only blocker under `Tycho 2.7.5`:
+- The failure is now isolated to `tycho-p2-director:materialize-products` for `macosx/cocoa/aarch64`.
+- Exact unresolved IU chain:
+  - `toolingorg.eclipse.equinox.launcher.cocoa.macosx.aarch64 1.2.200.v20210527-0259`
+  - missing required bundle `org.eclipse.equinox.launcher.cocoa.macosx.aarch64 1.2.200.v20210527-0259`
+- This is **not** the old target-validation crash anymore; it is a later product-publication/materialization issue.
+
+What has already been tried against this product blocker:
+- `features/opensource/org.modelio.e4.rcp/feature.xml` was aligned from the generic Apple Silicon launcher fragment id to the explicit `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` id.
+- The vendored executable feature content under `dev-platform/rcp-target/rcp-eclipse/eclipse/features/org.eclipse.equinox.executable_3.8.1000.v20200915-1508/` was resynced into the shipped feature jar, including:
+  - the Apple Silicon launcher root in `build.properties`
+  - the explicit Apple Silicon launcher fragment id in `feature.xml`
+- `products/modelio-os.product` was also tried with an explicit `org.eclipse.equinox.executable` feature inclusion.
+- Despite that, `products/pom.xml` packaging still fails with the same missing launcher-bundle requirement.
+
+Current interpretation after the updated probe:
+- `Tycho 2.7.5` is now **mostly green for this repo** on the unchanged runtime target: prebuild, docs, plugins, and features all pass.
+- The remaining blocker is specifically the **product materialization path for the Apple Silicon launcher**, not general target resolution.
+- Strong hint from the current logs:
+  - `products/pom.xml` on `Tycho 2.7.5` warns that `separateEnvironments` is an unknown parameter for `target-platform-configuration` in this module.
+  - The staged `org.eclipse.equinox.executable` feature now contains the `aarch64` mac root and explicit launcher fragment id, yet the product-side director inputs still do not expose the required launcher bundle IU/artifact during materialization.
+  - The `launcher-arm64` overlay repository itself does publish both launcher IUs (`org.eclipse.equinox.launcher.cocoa.macosx` and `org.eclipse.equinox.launcher.cocoa.macosx.aarch64`), so the remaining failure is no longer about missing vendored source content; it is about how the product materialization path on `Tycho 2.7.5` surfaces that launcher into the director input repositories.
+
+Recommended next bounded Phase 3 task:
+- Keep `2.7.5` as the active bridge target for now.
+- Investigate **only** the product-publication side:
+  - how `products/pom.xml` should express environment separation on `Tycho 2.7.5`, and
+  - how the Apple Silicon launcher bundle/artifact is supposed to be surfaced to `materialize-products`.
+- Do **not** treat this as evidence for a broader rollback of the now-green prebuild/plugins/features steps.
+
 Interpretation rule from this point:
 - if `2.7.5` can later be made green **without** broad runtime-side churn, re-run the full ladder and only then consider **Step 3.2 - Trial `Tycho 5.0.2`**,
 - if fixing `2.7.5` requires widespread target cleanup, feature repinning, or re-vendoring, treat that as evidence to postpone the Tycho uplift rather than smuggling a platform migration into Phase 3.

@@ -38,6 +38,7 @@
    </plugins>
 
    <features>
+      <feature id="org.eclipse.equinox.executable"/>
       <feature id="org.modelio.rcp"/>
       <feature id="org.modelio.e4.rcp"/>
       <feature id="org.eclipse.emf.common"/>
