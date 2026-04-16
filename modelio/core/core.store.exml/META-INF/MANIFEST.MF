@@ -15,7 +15,7 @@ Export-Package: org.modelio.vstore.exml.common,
  org.modelio.vstore.exml.resource,
  org.modelio.vstore.exml.resource.migration,
  org.modelio.vstore.exml.versioned
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: res/,
  .
 Bundle-Vendor: modelio.org

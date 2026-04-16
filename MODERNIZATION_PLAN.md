@@ -11,8 +11,13 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
 - Current verified Tycho state in the workspace:
   - `pom.xml` = `2.2.0`
   - `maven/modelio-parent/pom.xml` = `2.2.0`
-  - `doc/parent/pom.xml` = `2.7.5`
+  - `doc/parent/pom.xml` = `2.2.0`
   - `dev-platform/rcp-target/jakarta/jaxb/pom.xml` = `2.7.5`
+
+## Build-orchestration note from 2026-04-16
+- The temporary mixed-Tycho reactor blocker has been resolved by aligning `doc/parent/pom.xml` back to `Tycho 2.2.0`.
+- This is a correctness-first rollback, not a repo-wide Tycho upgrade.
+- The isolated `dev-platform/rcp-target/jakarta/jaxb/pom.xml` module remains on `2.7.5`, but it is outside the main `AGGREGATOR` reactor and no longer blocks the staged build.
 
 ## Current baseline verified from the repo
 - Build/tooling is still centered on `Tycho 2.2.0` and `Java 11` in `pom.xml` and `maven/modelio-parent/pom.xml`.
@@ -20,7 +25,8 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
 - `features/opensource/org.modelio.e4.rcp/feature.xml` and `features/opensource/org.modelio.rcp/feature.xml` hard-pin many 2020-era bundle versions.
 - The repo is currently in a hybrid state: older platform/equinox bundles, but newer SWT overlays (`3.120.0`) and ARM-specific mac fragments staged separately.
 - macOS is still mid-modernization, but the known Intel-only feature-composition exceptions have now been intentionally removed rather than shipped; mac Chromium and mac AStyle are both disabled pending native `aarch64` replacements.
-- Java baselines are inconsistent: most bundles declare `JavaSE-11`, but several core/BPMN bundles still declare `JavaSE-1.8`.
+- Bundle execution-environment baselines in source manifests are now normalized to `JavaSE-11` for the previously lagging core/BPMN bundles; the repo no longer has source `JavaSE-1.8` BREE declarations under `modelio/**/META-INF/MANIFEST.MF`.
+- Remaining Java-8-era assumptions still exist in build metadata: several runtime bundles still have `javacSource/javacTarget = 1.8` in `build.properties`, while `doc/parent/pom.xml` remains on Java 8 as a doc/tooling-only branch.
 
 ## Recommended destination
 - **Primary platform target:** a coherent vendored Eclipse/RCP `2026-03` stack, not a launcher-only uplift.
@@ -32,7 +38,7 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
 Because this repo is constrained by four compatibility layers at once: Tycho, Eclipse RCP, vendored p2 content, and OSGi bundle execution environments. Jumping straight from the current `Java 11` / `RCP 4.18` baseline to `Java 25` would blur together toolchain failures, API breakage, reflective-access issues, and product packaging regressions.
 
 ## Tycho upgrade evaluation
-- The main build is on `Tycho 2.2.0` in `pom.xml` and `maven/modelio-parent/pom.xml`, but `doc/parent/pom.xml` is already on `2.7.5`.
+- The main build, including the docs branch parent, is now back on `Tycho 2.2.0` in `pom.xml`, `maven/modelio-parent/pom.xml`, and `doc/parent/pom.xml`.
 - There is already one in-repo proof point that newer Tycho has been used locally: `dev-platform/rcp-target/jakarta/jaxb/pom.xml` sets `tycho-version` to `2.7.5`.
 - Given that the current public Tycho line is newer still (`5.0.2`, per your note), I would **not** jump from `2.2.0` straight to `5.0.2` as the first modernization move.
 
@@ -253,6 +259,68 @@ Practical implication:
 - The no-`x86_64` packaged-artifact check is already green for the currently built `Modelio.app`.
 - The remaining cleanup work is therefore mostly about keeping source composition intentional and preparing for modernization, not about fixing a currently shipped Intel binary in the final app bundle.
 
+#### Revalidation after source changes - rebuilt product audit completed on 2026-04-16
+- A direct full rebuild from `AGGREGATOR/pom.xml` had been blocked by mixed Tycho versions in one reactor:
+  - the main build was on `Tycho 2.2.0`,
+  - the doc branch had temporarily been on `Tycho 2.7.5`.
+- That blocker was build-tooling related, not a product-native-payload failure.
+- It has now been removed by aligning `doc/parent/pom.xml` back to `2.2.0`.
+- To revalidate the latest source state anyway, the product was rebuilt with a scoped staged sequence:
+  1. install plugins: `AGGREGATOR/plugins/pom.xml -Pplatform.mac.aarch64 install`
+  2. install opensource features: `AGGREGATOR/features/opensource/pom.xml -Pplatform.mac.aarch64 install`
+  3. install docs separately: `doc/aggregator/pom.xml install`
+  4. package product: `products/pom.xml -Pproduct.org,platform.mac.aarch64 package`
+- Recorded diagnostics:
+  - `diagnostics/macos-aarch64/plugins-install.log`
+  - `diagnostics/macos-aarch64/features-opensource-install.log`
+  - `diagnostics/macos-aarch64/doc-aggregator-install.log`
+  - `diagnostics/macos-aarch64/products-package-final.log`
+- The final product package step succeeded after that scoped install path.
+
+Post-rebuild packaged-app audit:
+- Audited artifact:
+  - `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app`
+- Recorded result:
+  - `diagnostics/macos-aarch64/final-app-x86_64-audit-after-rebuild.txt`
+- Audit result:
+  - `HITS 0`
+
+Interpretation after rebuild:
+- The latest rebuilt Apple Silicon `Modelio.app` still contains **no shipped `x86_64` files** after disabling the mac Chromium and mac AStyle fragments.
+- So the product-level native-payload goal is preserved by the current source changes.
+
+#### Tycho issue resolution progress - 2026-04-16
+- `doc/parent/pom.xml` has been reverted from `Tycho 2.7.5` to `Tycho 2.2.0` to match the main reactor.
+- Validation completed:
+  - `doc/aggregator/pom.xml install` succeeded (`diagnostics/macos-aarch64/doc-aggregator-install-after-tycho-align.exit` = `0`)
+  - `AGGREGATOR/pom.xml validate` succeeded (`diagnostics/macos-aarch64/aggregator-validate-after-tycho-align.exit` = `0`)
+- Practical interpretation:
+  - the specific **"Several versions of tycho plugins are configured"** blocker is now resolved.
+  - This restores a single-Tycho main staged reactor without committing to a broader Tycho uplift.
+
+#### Full staged build status after Tycho alignment - 2026-04-16
+- `AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org package` now succeeds again on `Java 11`.
+- Recorded build artifacts:
+  - `diagnostics/macos-aarch64/aggregator-package-after-tycho-fix.log`
+  - `diagnostics/macos-aarch64/aggregator-package-after-tycho-fix.exit`
+- Summary tail captured in:
+  - `diagnostics/macos-aarch64/aggregator-package-after-tycho-fix.tail.txt`
+- Key outcome:
+  - `BUILD SUCCESS`
+  - total staged build time recorded: `01:49 min`
+
+Post-AGGREGATOR packaged-app audit:
+- Audited artifact:
+  - `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app`
+- Recorded result:
+  - `diagnostics/macos-aarch64/final-app-x86_64-audit-after-aggregator-success.txt`
+- Audit result:
+  - `HITS 0`
+
+Interpretation:
+- The full staged reactor is operational again.
+- The final Apple Silicon app remains free of shipped `x86_64` payload after the Tycho-alignment fix.
+
 ### Phase 2 - Complete mac parity at the current functional level
 Scope:
 - Replace or remove Intel-only mac fragments in:
@@ -285,6 +353,7 @@ Scope:
 Status today:
 - **Not started as a committed migration phase.**
 - One exploratory `Tycho 2.7.5` probe was performed to measure risk, but it should be treated as a diagnostic side investigation, not as the project having moved into Phase 3.
+- The main staged reactor is green again on `Tycho 2.2.0` after aligning `doc/parent/pom.xml` back to the main reactor version.
 
 Tycho-specific recommendation for this phase:
 - First try `2.7.5` because the repo already contains one local use of it in `dev-platform/rcp-target/jakarta/jaxb/pom.xml`.
@@ -321,7 +390,7 @@ Edit exactly these files for a clean future trial of the main build:
 - `maven/modelio-parent/pom.xml`: change `<tycho-version>2.2.0</tycho-version>` to `<tycho-version>2.7.5</tycho-version>`
 
 Leave these files unchanged at this step:
-- `doc/parent/pom.xml` already uses `2.7.5`
+- `doc/parent/pom.xml` should stay aligned with the main reactor during any future whole-reactor Tycho trial
 - `dev-platform/rcp-target/jakarta/jaxb/pom.xml` already uses `2.7.5`
 
 Validation order for the `2.7.5` trial:
@@ -377,7 +446,7 @@ Fallback rule:
 
 ##### Current interpretation after the first `2.7.5` probe
 Current state to remember:
-- the workspace is **not** uniformly on `2.7.5`; the main build remains on `2.2.0` in `pom.xml` and `maven/modelio-parent/pom.xml`, while `doc/parent/pom.xml` and `dev-platform/rcp-target/jakarta/jaxb/pom.xml` are on `2.7.5`;
+- the workspace is **not** uniformly on `2.7.5`; the main build remains on `2.2.0`, `doc/parent/pom.xml` has been realigned to `2.2.0`, and `dev-platform/rcp-target/jakarta/jaxb/pom.xml` is the remaining isolated `2.7.5` exception;
 - the first gate (`AGGREGATOR/prebuild/pom.xml`) is **not green** for the `2.7.5` probe against the current directory-based target layout;
 - always export `JAVA_HOME=/opt/local/Library/Java/JavaVirtualMachines/openjdk11-temurin/Contents/Home` before evaluating Tycho in this phase; a shell-default `Java 21` run produces a misleading failure.
 
@@ -396,6 +465,77 @@ Scope:
 - First eliminate remaining `JavaSE-1.8` manifests and normalize everything to `JavaSE-11` or the selected intermediate baseline.
 - Then move the codebase to `Java 17` or `Java 21` together with manifest, compiler, and packaging updates.
 - Audit reflective access, JAXB/Jakarta usage, and any removed JDK behavior during this hop.
+
+Status today:
+- **First manifest-normalization wave completed.**
+- Updated from `JavaSE-1.8` to `JavaSE-11` in these source bundles:
+  - `modelio/core/core.utils/META-INF/MANIFEST.MF`
+  - `modelio/core/core.kernel/META-INF/MANIFEST.MF`
+  - `modelio/core/core.session/META-INF/MANIFEST.MF`
+  - `modelio/core/core.metamodel.api/META-INF/MANIFEST.MF`
+  - `modelio/core/core.metamodel.impl/META-INF/MANIFEST.MF`
+  - `modelio/core/core.store.exml/META-INF/MANIFEST.MF`
+  - `modelio/core/core.project.data/META-INF/MANIFEST.MF`
+  - `modelio/core/core.project/META-INF/MANIFEST.MF`
+  - `modelio/core/version/META-INF/MANIFEST.MF`
+  - `modelio/bpmn/bpmn.metamodel.api/META-INF/MANIFEST.MF`
+  - `modelio/bpmn/bpmn.metamodel.implementation/META-INF/MANIFEST.MF`
+- Validation completed:
+  - `AGGREGATOR/plugins/core/pom.xml -Pplatform.mac.aarch64 verify` succeeded (`diagnostics/macos-aarch64/plugins-core-bree-java11.exit` = `0`)
+  - `AGGREGATOR/plugins/bpmn/pom.xml -Pplatform.mac.aarch64 verify` succeeded (`diagnostics/macos-aarch64/plugins-bpmn-bree-java11.exit` = `0`)
+- Current repo signal:
+  - a source-manifest search for `Bundle-RequiredExecutionEnvironment: JavaSE-1.8` under `modelio/**/META-INF/MANIFEST.MF` now returns no results.
+
+#### Java 8 assumption scan after BREE normalization - 2026-04-16
+Runtime-significant findings:
+- Remaining `build.properties` still pinned to Java 8 (`javacSource = 1.8`, `javacTarget = 1.8`) were found in these source bundles:
+  - `modelio/core/core.kernel/build.properties`
+  - `modelio/core/core.session/build.properties`
+  - `modelio/core/core.metamodel.api/build.properties`
+  - `modelio/core/core.metamodel.impl/build.properties`
+  - `modelio/core/core.store.exml/build.properties`
+  - `modelio/core/core.project.data/build.properties`
+  - `modelio/core/core.project/build.properties`
+  - `modelio/core/version/build.properties`
+  - `modelio/bpmn/bpmn.metamodel.api/build.properties`
+  - `modelio/bpmn/bpmn.metamodel.implementation/build.properties`
+- These now lag behind the normalized `JavaSE-11` manifest declarations and are the main remaining Java-baseline inconsistency inside owned runtime/source bundles.
+
+Tooling-only / lower-priority findings:
+- `doc/parent/pom.xml` still uses `<maven.compiler.source>1.8</maven.compiler.source>` and `<maven.compiler.target>1.8</maven.compiler.target>`; this currently affects the doc branch, not the main runtime.
+- `modelio/core/core.utils/lib/build_deps/pom.xml` still contains commented `1.8` compiler settings inside a disabled block; this is stale local helper-build history, not an active main-reactor input.
+
+Interpretation:
+- The manifest normalization is complete, but Java-baseline normalization is not fully finished until the remaining runtime `build.properties` values are aligned with Java 11.
+- Those `build.properties` pins are a better next Java-cleanup target than changing the doc branch compiler level, because they affect owned runtime bundles.
+
+#### Bounded Tycho 2.7.5 retry preparation - ready state as of 2026-04-16
+Why the retry is now cleaner than before:
+- the main staged reactor is green again on `Tycho 2.2.0`;
+- Apple Silicon packaging is green;
+- final packaged `Modelio.app` audits clean (`HITS 0` for shipped `x86_64` payload);
+- source BREE declarations are normalized to `JavaSE-11`.
+
+What still makes the retry noisy if left unchanged:
+- the ten runtime `build.properties` files listed above still advertise Java 8 compilation assumptions.
+
+Recommendation before any future retry:
+- either normalize those ten runtime `build.properties` files to `11` first,
+- or, if running the Tycho retry sooner, record them as known background noise so they are not confused with a true Tycho/target-layout failure.
+
+Exact future retry ladder for `Tycho 2.7.5`:
+1. change `pom.xml` and `maven/modelio-parent/pom.xml` from `2.2.0` to `2.7.5`
+2. keep runtime-side inputs fixed (`rcp.target`, `feature.xml`, vendored p2 content, `products/modelio-os.product`)
+3. run on Java 11 only:
+   - `AGGREGATOR/prebuild/pom.xml verify`
+   - `doc/aggregator/pom.xml package`
+   - `AGGREGATOR/plugins/pom.xml package`
+   - `AGGREGATOR/features/opensource/pom.xml package`
+   - `products/pom.xml package -Pproduct.org,platform.mac.aarch64`
+4. stop at the first failure and classify it:
+   - `prebuild`/target validation failure = build-layer or target-layout problem
+   - plugin compile/package failure = module/build problem
+   - feature/product resolution failure after green plugins = packaging-layer problem
 
 Recommended target for this phase:
 - `Java 21`, unless an upstream compatibility check proves `Java 25` is already safe in the chosen Tycho/RCP combination.
