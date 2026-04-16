@@ -6200,9 +6200,9 @@
       </provides>
       <requires size='7'>
         <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.equinox.launcher' range='[1.6.0.v20200915-1508,1.6.0.v20200915-1508]'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.equinox.launcher.cocoa.macosx.x86_64' range='[1.2.0.v20200915-1442,1.2.0.v20200915-1442]'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.equinox.launcher.cocoa.macosx.aarch64' range='[1.2.200.v20210527-0259,1.2.200.v20210527-0259]'>
           <filter>
-            (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
+            (&amp;(osgi.arch=aarch64)(osgi.os=macosx)(osgi.ws=cocoa))
           </filter>
         </required>
         <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.equinox.launcher.gtk.linux.ppc64le' range='[1.2.0.v20200915-1442,1.2.0.v20200915-1442]'>
@@ -6813,9 +6813,9 @@
         <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.osgi.compatibility.state' range='[1.2.200.v20200915-2015,1.2.200.v20200915-2015]'/>
         <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.osgi.services' range='[3.9.0.v20200511-1725,3.9.0.v20200511-1725]'/>
         <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.osgi.util' range='[3.5.300.v20190708-1141,3.5.300.v20190708-1141]'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.equinox.launcher.cocoa.macosx.x86_64' range='[1.2.0.v20200915-1442,1.2.0.v20200915-1442]'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.equinox.launcher.cocoa.macosx.aarch64' range='[1.2.200.v20210527-0259,1.2.200.v20210527-0259]'>
           <filter>
-            (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
+            (&amp;(osgi.arch=aarch64)(osgi.os=macosx)(osgi.ws=cocoa))
           </filter>
         </required>
         <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.equinox.launcher.gtk.linux.ppc64le' range='[1.2.0.v20200915-1442,1.2.0.v20200915-1442]'>
