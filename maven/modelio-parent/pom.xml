@@ -46,6 +46,21 @@
 			<layout>p2</layout>
 			<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/swt</url>
 		</repository>
+		<repository>
+			<id>launcher-arm64</id>
+			<layout>p2</layout>
+			<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/launcher-arm64</url>
+		</repository>
+		<repository>
+			<id>macos-arm64</id>
+			<layout>p2</layout>
+			<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/macos-arm64</url>
+		</repository>
+		<repository>
+			<id>jna</id>
+			<layout>p2</layout>
+			<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/jna/repository</url>
+		</repository>
 
 		<!-- Third-party Libraries re-packaged by Modeliosoft or Modeliosoft libraries -->
 		<repository>
@@ -420,6 +435,15 @@
 						<artifactId>target-platform-configuration</artifactId>
 						<version>${tycho-version}</version>
 						<configuration>
+							<dependency-resolution>
+								<extraRequirements>
+									<requirement>
+										<type>eclipse-plugin</type>
+										<id>org.eclipse.swt.cocoa.macosx.aarch64</id>
+										<versionRange>[3.120.0.v20220530-1036,3.120.0.v20220530-1036]</versionRange>
+									</requirement>
+								</extraRequirements>
+							</dependency-resolution>
 							<environments>
 								<environment>
 									<os>macosx</os>

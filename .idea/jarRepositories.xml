@@ -154,7 +154,7 @@
     <remote-repository>
       <option name="id" value="jna" />
       <option name="name" value="jna" />
-      <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/rcp-eclipse/jna/target/repository" />
+      <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/rcp-eclipse/jna/repository" />
     </remote-repository>
   </component>
 </project>

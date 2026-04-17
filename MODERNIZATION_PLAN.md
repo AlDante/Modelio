@@ -43,8 +43,9 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
 - The stale missing `test-resources/files` target entry was removed from both target definitions.
 - Revalidation of `AGGREGATOR/prebuild/pom.xml` on `platform.mac.aarch64` is green, and the previous `${project_loc:/rcp-target}`, `${project_loc:/pack-resources}`, `${project_loc:/test-resources}`, and `target resoloution might be incomplete` warnings are no longer present in the new log `diagnostics/macos-aarch64/prebuild-verify-after-target-path-cleanup.log`.
 - The Apple Silicon JNA overlay can now be generated headlessly from Maven alone against a fresh local repository; the old external JNA source checkout is no longer required to create the overlay.
-- The build now uses a stable repo-owned JNA p2 path at `dev-platform/rcp-target/rcp-eclipse/jna/repository/` instead of depending on the transient `jna/target/repository` path at project-resolution time.
+- The build now uses a stable repo-owned JNA p2 path at `dev-platform/rcp-target/rcp-eclipse/jna/repository/`, and the JNA generator now refreshes that stable path while deleting the transient staged `target/repository` output before the build completes.
 - `AGGREGATOR/prebuild/pom.xml` now includes the JNA overlay generator module so the overlay can be refreshed inside the staged build flow, while the stable checked-in repository remains available before reactor resolution starts.
+- The target-platform contract is now normalized across `dev-platform/rcp-target/rcp.target`, `dev-platform/rcp-target/rcp_debug.target`, `pom.xml`, `maven/modelio-parent/pom.xml`, and IntelliJ repository metadata so the same Apple Silicon overlay set is described consistently in every build entrypoint.
 - This means the original immediate target-platform hardening goal is substantially complete: the headless path warnings are gone and the external/manual JNA prerequisite has been removed from the validated staged workflow.
 
 ### Remaining follow-up after target-platform hardening

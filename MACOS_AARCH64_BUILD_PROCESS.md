@@ -62,10 +62,7 @@ mvn generate-resources
 This refreshes the stable repo-owned overlay at:
 - `dev-platform/rcp-target/rcp-eclipse/jna/repository/`
 
-and also leaves the transient generator output under:
-- `dev-platform/rcp-target/rcp-eclipse/jna/target/repository/`
-
-The build consumes the stable checked-in repository path, not the transient `target/` path.
+The generator refreshes that stable repository path and removes its transient staging directories before the build finishes, so `target/repository/` is no longer retained as a meaningful output.
 
 ### 2.3 Validate the target definition
 
@@ -203,6 +200,12 @@ Key macOS aarch64-relevant inputs are:
 Relevant files:
 - `dev-platform/rcp-target/rcp.target`
 - `dev-platform/rcp-target/rcp_debug.target`
+- `pom.xml`
+- `maven/modelio-parent/pom.xml`
+
+The current normalized contract is:
+- the target-definition files and both shared parent POMs point at the same Apple Silicon overlay set;
+- IntelliJ repository metadata now points JNA at `dev-platform/rcp-target/rcp-eclipse/jna/repository/`, matching Maven.
 
 ### 3.3 Additive p2 overlays
 
