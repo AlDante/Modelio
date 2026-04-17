@@ -19,6 +19,35 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
 - This is a correctness-first rollback, not a repo-wide Tycho upgrade.
 - The isolated `dev-platform/rcp-target/jakarta/jaxb/pom.xml` module remains on `2.7.5`, but it is outside the main `AGGREGATOR` reactor and no longer blocks the staged build.
 
+## Status update as of 2026-04-17
+- The documented macOS `aarch64` scratch-build workflow is now verified through `products`, not just through `plugins` and `features`.
+- A clean staged run using a dedicated scratch local repository now succeeds in this order: `prebuild -> plugins -> features -> doc -> products`.
+- The `products` stage required an explicit fix in `products/pom.xml` so the `platform.mac.aarch64` profile requests the Equinox mac launcher bundles during product materialization.
+- `MACOS_AARCH64_BUILD_PROCESS.md` now records:
+  - the validated IntelliJ/Maven scratch-build targets,
+  - the required stage order,
+  - the shared scratch local repository flow,
+  - and the final launchable output path `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app`.
+- This means the current `Tycho 2.2.0` / `Java 11` build contract is again reproducible from scratch for the Apple Silicon product path.
+
+### Immediate next modernization step
+- **Do not broaden the work yet.**
+- The best next step is to make the target platform self-contained and headless-clean before any broader Tycho or Java uplift.
+- That means prioritizing these two items:
+  1. remove the external/manual JNA prerequisite from the Apple Silicon build flow,
+  2. eliminate the `${project_loc:/...}` warnings emitted from `dev-platform/rcp-target/rcp.target` during headless Maven/Tycho validation.
+
+### Why this is the next step
+- The major build-breaker work is now done: scratch `products` packaging can complete and materialize the final `.app`.
+- The highest remaining reproducibility risks are now in the target-platform contract itself, not in plugin/feature/product reactor wiring.
+- Until the target platform is self-contained and warning-clean, further Tycho uplift or broader platform modernization will keep producing noisy and harder-to-localize failures.
+
+### Deferred until after target-platform cleanup
+- central encoding cleanup,
+- missing `.settings/org.eclipse.jdt.core.prefs` cleanup,
+- further Tycho bridge work beyond the already-proved bounded experiments,
+- broader Java baseline movement.
+
 ## Current baseline verified from the repo
 - Build/tooling is still centered on `Tycho 2.2.0` and `Java 11` in `pom.xml` and `maven/modelio-parent/pom.xml`.
 - The vendored Eclipse platform in `dev-platform/rcp-target/rcp-eclipse/eclipse` is still the `2020-12` line (`org.eclipse.platform_4.18.0.v20201202-1800`).
