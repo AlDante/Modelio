@@ -37,6 +37,25 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
   1. remove the external/manual JNA prerequisite from the Apple Silicon build flow,
   2. eliminate the `${project_loc:/...}` warnings emitted from `dev-platform/rcp-target/rcp.target` during headless Maven/Tycho validation.
 
+### Progress update on 2026-04-17
+- The headless target-definition cleanup has now started and its first pass is complete.
+- `dev-platform/rcp-target/rcp.target` and `dev-platform/rcp-target/rcp_debug.target` were changed from `${project_loc:/...}` paths to workspace-relative paths.
+- The stale missing `test-resources/files` target entry was removed from both target definitions.
+- Revalidation of `AGGREGATOR/prebuild/pom.xml` on `platform.mac.aarch64` is green, and the previous `${project_loc:/rcp-target}`, `${project_loc:/pack-resources}`, `${project_loc:/test-resources}`, and `target resoloution might be incomplete` warnings are no longer present in the new log `diagnostics/macos-aarch64/prebuild-verify-after-target-path-cleanup.log`.
+- The Apple Silicon JNA overlay can now be generated headlessly from Maven alone against a fresh local repository; the old external JNA source checkout is no longer required to create the overlay.
+- The build now uses a stable repo-owned JNA p2 path at `dev-platform/rcp-target/rcp-eclipse/jna/repository/` instead of depending on the transient `jna/target/repository` path at project-resolution time.
+- `AGGREGATOR/prebuild/pom.xml` now includes the JNA overlay generator module so the overlay can be refreshed inside the staged build flow, while the stable checked-in repository remains available before reactor resolution starts.
+- This means the original immediate target-platform hardening goal is substantially complete: the headless path warnings are gone and the external/manual JNA prerequisite has been removed from the validated staged workflow.
+
+### Remaining follow-up after target-platform hardening
+- The one-shot `AGGREGATOR/pom.xml` scratch path has now also been revalidated after the SWT-resolution investigation.
+- Root cause of the transient `org.modelio.platform.rcp` compile failure: fresh scratch resolution was mirroring the `org.eclipse.swt` base bundle without also mirroring the Apple Silicon SWT fragment, and the base SWT jar is only a stub for compilation purposes.
+- The fix was to explicitly require `org.eclipse.swt.cocoa.macosx.aarch64` in the root `platform.mac.aarch64` profile.
+- This means both documented workflows are now green again:
+  1. the correctness-first staged `prebuild -> plugins -> features -> doc -> products` path,
+  2. the one-shot `AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org clean package` path from a fresh local Maven repository.
+- Only after this should the plan broaden again toward lower-priority build-hygiene cleanup or renewed Tycho bridge work.
+
 ### Why this is the next step
 - The major build-breaker work is now done: scratch `products` packaging can complete and materialize the final `.app`.
 - The highest remaining reproducibility risks are now in the target-platform contract itself, not in plugin/feature/product reactor wiring.
@@ -172,7 +191,7 @@ Exit gate:
    - Exit condition: the existing product packages cleanly from the coherent vendored target, satisfying the Phase 1 gate.
 
 #### Phase 1 Step 1 findings - mixed-train inventory completed on 2026-04-15
-- `dev-platform/rcp-target/rcp.target` currently resolves the RCP layer from **six** separate inputs at once: `eclipse/`, `eclipse-fr/`, `launcher-arm64/`, `macos-arm64/`, `jna/target/repository`, and `swt/`.
+- `dev-platform/rcp-target/rcp.target` currently resolves the RCP layer from **six** separate inputs at once: `eclipse/`, `eclipse-fr/`, `launcher-arm64/`, `macos-arm64/`, `jna/repository`, and `swt/`.
 - The dominant baseline is still the vendored Eclipse `4.18 / 2020-12` repository under `dev-platform/rcp-target/rcp-eclipse/eclipse`.
 - Apple Silicon support was recovered by layering newer repos on top of that baseline rather than by re-vendoring one coherent platform train.
 - The most important unresolved skew is the browser stack: SWT itself is newer, but the mac Chromium browser fragment is still only present as `x86_64` baseline content.
@@ -185,7 +204,7 @@ Exit gate:
 | SWT base bundle | `org.eclipse.swt` `3.120.0.v20220530-1036` | `rcp-eclipse/swt` | overlay | Baseline `eclipse/` repo still contains only `3.115.100.v20201202-1103`. |
 | SWT mac fragments | `org.eclipse.swt.cocoa.macosx.x86_64` and `org.eclipse.swt.cocoa.macosx.aarch64` `3.120.0.v20220530-1036` | `rcp-eclipse/swt` | overlay | Apple Silicon runtime depends on the newer SWT family, not the `4.18` baseline SWT. |
 | Chromium browser | `org.eclipse.swt.browser.chromium.cocoa.macosx.x86_64` `3.115.100.v20201202-1103` | `rcp-eclipse/eclipse` | unresolved | No matching vendored arm64 Chromium fragment was found; browser support is still Intel-only on macOS. |
-| JNA | `com.sun.jna` and `com.sun.jna.platform` `5.18.1` | `rcp-eclipse/jna/target/repository` | overlay | Baseline `eclipse/` repo still ships `4.5.1.v20190425-1842`. |
+| JNA | `com.sun.jna` and `com.sun.jna.platform` `5.18.1` | `rcp-eclipse/jna/repository` | overlay | Baseline `eclipse/` repo still ships `4.5.1.v20190425-1842`. |
 | mac filesystem fragment | `org.eclipse.core.filesystem.macosx` `1.3.400.v20220812-1420` | `rcp-eclipse/macos-arm64` | overlay | `org.modelio.platform.feature` uses a newer mac fragment than the baseline `1.3.200.v20190903-0945`. |
 | mac security fragment | `org.eclipse.equinox.security.macosx` `1.101.400.v20210427-1958` | `rcp-eclipse/macos-arm64` | overlay | `org.modelio.platform.feature` uses a newer mac fragment than the baseline `1.101.200.v20190903-0934`. |
 
@@ -205,7 +224,7 @@ Implication for Phase 1 Step 2:
 | `rcp-eclipse/eclipse-fr` | **Keep as baseline-adjacent** | It is aligned to the same `4.18` line and is still justified by feature usage such as `org.eclipse.jface.nl_fr` in `features/opensource/org.modelio.platform.libraries/feature.xml`. |
 | `rcp-eclipse/launcher-arm64` | **Keep as temporary Apple Silicon overlay** | Required for `org.eclipse.equinox.launcher.cocoa.macosx` `1.2.200.v20210527-0259`, which has no equivalent arm64 fragment in the baseline repo. |
 | `rcp-eclipse/macos-arm64` | **Keep as temporary Apple Silicon overlay** | Required for newer mac-native fragments such as `org.eclipse.core.filesystem.macosx` `1.3.400.v20220812-1420` and `org.eclipse.equinox.security.macosx` `1.101.400.v20210427-1958`. |
-| `rcp-eclipse/jna/target/repository` | **Keep as temporary overlay** | Required because `org.modelio.e4.rcp` pins `com.sun.jna` and `com.sun.jna.platform` `5.18.1`, newer than the baseline `4.5.1` payload in `eclipse/`. |
+| `rcp-eclipse/jna/repository` | **Keep as temporary overlay** | Required because `org.modelio.e4.rcp` pins `com.sun.jna` and `com.sun.jna.platform` `5.18.1`, newer than the baseline `4.5.1` payload in `eclipse/`. |
 | `rcp-eclipse/swt` | **Keep as temporary overlay, but treat as the least minimal one** | Required because the current runtime depends on the newer `org.eclipse.swt` family `3.120.0.v20220530-1036`; however, this overlay replaces a broad cross-platform SWT family rather than a narrow mac-only fragment. |
 
 Explicit unresolved exception carried forward from Step 2:
@@ -222,7 +241,7 @@ Immediate consequence for Phase 1 Step 3:
 - After checking those pins against the approved repo set from Step 2, `org.modelio.e4.rcp` is already very close to the intended deliberate hybrid.
 - In practice, the feature currently resolves from:
   - canonical baseline `rcp-eclipse/eclipse`,
-  - temporary overlays `rcp-eclipse/swt`, `rcp-eclipse/launcher-arm64`, and `rcp-eclipse/jna/target/repository`,
+  - temporary overlays `rcp-eclipse/swt`, `rcp-eclipse/launcher-arm64`, and `rcp-eclipse/jna/repository`,
   - plus the explicit unresolved exception `org.eclipse.swt.browser.chromium.cocoa.macosx.x86_64`.
 - No direct `macos-arm64` usage was found in `org.modelio.e4.rcp`; those newer mac-native fragments belong to `org.modelio.platform.feature`, not this e4 feature.
 - No direct `eclipse-fr` usage was found in `org.modelio.e4.rcp`; foreign-language content is therefore **not** a blocker for this Step 3 audit.
@@ -234,7 +253,7 @@ Decision table for Step 3:
 | Baseline `4.18 / 2020-12` pins | **Keep** | The large majority of the feature remains correctly pinned to the canonical `eclipse/` repo. |
 | `org.eclipse.equinox.launcher.cocoa.macosx` `1.2.200.v20210527-0259` | **Keep as justified overlay** | This is the approved arm64 launcher overlay from `launcher-arm64/`. |
 | `org.eclipse.swt*` `3.120.0.v20220530-1036` | **Keep as justified overlay** | This is the approved SWT overlay family from `swt/`. |
-| `com.sun.jna` and `com.sun.jna.platform` `5.18.1` | **Keep as justified overlay** | This is the approved JNA overlay from `jna/target/repository`. |
+| `com.sun.jna` and `com.sun.jna.platform` `5.18.1` | **Keep as justified overlay** | This is the approved JNA overlay from `jna/repository`. |
 | `org.eclipse.swt.browser.chromium.cocoa.macosx.x86_64` `3.115.100.v20201202-1103` | **Carry forward as explicit unresolved exception** | This stays in scope for Phase 1 Step 4 and Phase 2, not as silent skew. |
 
 Net result of Step 3:

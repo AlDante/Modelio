@@ -35,44 +35,37 @@ Relevant files:
 
 ## 2. Canonical macOS aarch64 command sequence
 
-### 2.1 JNA prerequisite
+### 2.1 JNA overlay status
 
-The macOS aarch64 flow currently depends on a locally built JNA source checkout that is published into a local p2 overlay.
+The Apple Silicon build no longer requires an external JNA source checkout as a manual prerequisite.
 
-The external checkout used during validation was:
-- `/Users/david/IdeaProjects/_external/jna`
+The repo now consumes a stable repo-owned JNA p2 overlay from:
+- `dev-platform/rcp-target/rcp-eclipse/jna/repository/`
 
-The toolchain used was:
-- Java 11 from MacPorts/OpenJDK Temurin
-- `apache-ant` from MacPorts
+That repository is the path used by:
+- `pom.xml`
+- `dev-platform/rcp-target/rcp.target`
+- `dev-platform/rcp-target/rcp_debug.target`
 
-Build JNA from the cloned source:
-
-```zsh
-cd /Users/david/IdeaProjects/_external/jna
-/opt/local/bin/ant -Drelease=true install
-```
-
-This installs JNA into the local Maven repository at:
-- `/Users/david/.m2/repository/net/java/dev/jna/jna/5.18.1/`
-- `/Users/david/.m2/repository/net/java/dev/jna/jna-platform/5.18.1/`
-
-### 2.2 Generate the local JNA p2 overlay
+### 2.2 Regenerate the JNA p2 overlay (maintenance only)
 
 The overlay project is:
 - `dev-platform/rcp-target/rcp-eclipse/jna/pom.xml`
 
-Generate its p2 repository:
+Regenerate its p2 repository with Maven only:
 
 ```zsh
 cd /Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/jna
 mvn generate-resources
 ```
 
-This produces the repository at:
+This refreshes the stable repo-owned overlay at:
+- `dev-platform/rcp-target/rcp-eclipse/jna/repository/`
+
+and also leaves the transient generator output under:
 - `dev-platform/rcp-target/rcp-eclipse/jna/target/repository/`
 
-Important: the build consumes **`target/repository`**, not the parent `jna/` directory.
+The build consumes the stable checked-in repository path, not the transient `target/` path.
 
 ### 2.3 Validate the target definition
 
@@ -115,12 +108,16 @@ cd /Users/david/IdeaProjects/Modelio
 mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org clean package
 ```
 
-This is the best single command when the goal is:
+This remains the simplest one-line command when the goal is:
 - resolve the target,
 - build plugins,
 - build features,
 - build documentation features,
 - materialize the final product.
+
+However, the split staged workflow in section `2.7` remains the currently validated correctness-first path for scratch rebuilds.
+
+After the SWT-resolution fix on `2026-04-17`, this one-shot `AGGREGATOR/pom.xml` path was also revalidated from a fresh local Maven repository.
 
 ### 2.7 Split scratch build from IntelliJ Maven targets
 
@@ -169,7 +166,8 @@ Notes:
 - `AGGREGATOR/doc` is required before `products` because `products/modelio-os.product` includes `org.modelio.documentation.modeler.nl_fr.feature`.
 - `product.org` is required for product materialization; without it, the `products` build may still create repository outputs under `products/target/`, but it will not produce the launchable `.app` bundle.
 - In IntelliJ, either keep the full Maven invocation in one command-line field or split it cleanly across the IDE fields without duplicating `-P`, `-f`, or `-Dmaven.repo.local`.
-- The current native flow still depends on the external JNA checkout and local overlay generation from sections `2.1` and `2.2`.
+- The current native flow no longer depends on an external JNA checkout.
+- If the JNA overlay ever needs to be refreshed, run the local Maven regeneration step from section `2.2`.
 
 ## 3. How the target platform is assembled
 
@@ -198,7 +196,7 @@ Key macOS aarch64-relevant inputs are:
 - `dev-platform/rcp-target/rcp-eclipse/eclipse-fr`
 - `dev-platform/rcp-target/rcp-eclipse/launcher-arm64`
 - `dev-platform/rcp-target/rcp-eclipse/macos-arm64`
-- `dev-platform/rcp-target/rcp-eclipse/jna/target/repository`
+- `dev-platform/rcp-target/rcp-eclipse/jna/repository`
 - `dev-platform/rcp-target/rcp-eclipse/swt`
 - `dev-platform/pack-resources/openjdk-jre11`
 
@@ -241,7 +239,19 @@ Publishes:
 - `com.sun.jna.platform`
 
 Generated repository location:
-- `dev-platform/rcp-target/rcp-eclipse/jna/target/repository/`
+- `dev-platform/rcp-target/rcp-eclipse/jna/repository/`
+
+### 3.4 macOS aarch64 SWT guardrail
+
+The root `pom.xml` `platform.mac.aarch64` profile now explicitly requires:
+- `org.eclipse.swt.cocoa.macosx.aarch64` `3.120.0.v20220530-1036`
+
+Reason:
+- the resolved `org.eclipse.swt` base bundle is only a stub jar for compilation purposes;
+- the actual widget classes (`Control`, `Shell`, `Browser`, etc.) come from the platform fragment;
+- without an explicit Apple Silicon SWT fragment requirement, fresh scratch builds could resolve `org.eclipse.swt` without also mirroring the macOS `aarch64` SWT fragment, which broke compilation in `org.modelio.platform.rcp`.
+
+The current checked build therefore treats the SWT fragment as a deterministic part of the Apple Silicon target contract, not as an optional side effect of p2 resolution.
 
 ## 4. Why the JNA overlay exists
 
@@ -344,7 +354,7 @@ This is the directory map to check first.
 ### 8.1 Overlay build outputs
 
 #### JNA overlay repository
-- `dev-platform/rcp-target/rcp-eclipse/jna/target/repository/`
+- `dev-platform/rcp-target/rcp-eclipse/jna/repository/`
 - files:
   - `artifacts.jar`
   - `content.jar`
@@ -654,7 +664,7 @@ When debugging or locating outputs, use this order.
 
 ### Target and overlays
 1. `dev-platform/rcp-target/rcp.target`
-2. `dev-platform/rcp-target/rcp-eclipse/jna/target/repository/`
+2. `dev-platform/rcp-target/rcp-eclipse/jna/repository/`
 3. `dev-platform/rcp-target/rcp-eclipse/launcher-arm64/`
 4. `dev-platform/rcp-target/rcp-eclipse/macos-arm64/`
 
@@ -690,12 +700,6 @@ When debugging or locating outputs, use this order.
 If you need the full native macOS aarch64 product again, use this order:
 
 ```zsh
-cd /Users/david/IdeaProjects/_external/jna
-/opt/local/bin/ant -Drelease=true install
-
-cd /Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/jna
-mvn generate-resources
-
 rm -rf /Users/david/IdeaProjects/Modelio/tmp/m2-scratch
 
 cd /Users/david/IdeaProjects/Modelio
@@ -720,6 +724,13 @@ Then inspect:
 If you need to **run** the generated output normally, launch the `.app` bundle or execute `Contents/MacOS/modelio` directly.
 
 If you need lower-level startup debugging, use the manual Java launch path from section `10.3`.
+
+If you intentionally need to refresh the repo-owned JNA overlay before one of those flows, run:
+
+```zsh
+cd /Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/jna
+mvn generate-resources
+```
 
 ## 16. Summary
 

@@ -12,6 +12,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>../../dev-platform/rcp-target/rcp-eclipse/jna</module>
 		<module>../..</module>
 		<module>../../dev-platform/rcp-target</module>
 	</modules>
