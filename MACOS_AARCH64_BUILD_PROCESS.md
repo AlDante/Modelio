@@ -81,12 +81,20 @@ cd /Users/david/IdeaProjects/Modelio
 mvn -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/prebuild/pom.xml -Pplatform.mac.aarch64 verify
 ```
 
+This standalone `verify` form is enough when you only want to validate the target definition.
+If you are driving the build as separate IntelliJ Maven targets with a fresh scratch local repository,
+use the split scratch sequence in section `2.7` instead so the generated target artifact is installed for later stages.
+
 ### 2.4 Build plugins
 
 ```zsh
 cd /Users/david/IdeaProjects/Modelio
 mvn -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/plugins/pom.xml -Pplatform.mac.aarch64 verify
 ```
+
+This standalone `verify` form is enough when you only want to validate plugin compilation.
+If later reactors (`features`, `doc`, `products`) will run separately against a scratch local repository,
+the plugins stage must use `install` as shown in section `2.7`.
 
 ### 2.5 Build features
 
@@ -95,20 +103,73 @@ cd /Users/david/IdeaProjects/Modelio
 mvn -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/features/opensource/pom.xml -Pplatform.mac.aarch64 verify
 ```
 
-### 2.6 Build the full staged product
+As with plugins, this standalone `verify` form is fine for isolated validation.
+For split IntelliJ scratch builds, use `install` so the produced features are visible to the later `products` stage.
 
-The full staged native macOS aarch64 build validated during this session was:
+### 2.6 Build the full staged product in one reactor
+
+The simplest complete rebuild from zero is a single full reactor run with a dedicated scratch local repository:
 
 ```zsh
 cd /Users/david/IdeaProjects/Modelio
-mvn -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org package
+mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org clean package
 ```
 
 This is the best single command when the goal is:
 - resolve the target,
 - build plugins,
 - build features,
+- build documentation features,
 - materialize the final product.
+
+### 2.7 Split scratch build from IntelliJ Maven targets
+
+When the build is driven as separate IntelliJ Maven targets, use a shared scratch local repository for every stage in the same build cycle:
+- `/Users/david/IdeaProjects/Modelio/tmp/m2-scratch`
+
+Delete that directory before starting a fresh cycle:
+
+```zsh
+rm -rf /Users/david/IdeaProjects/Modelio/tmp/m2-scratch
+```
+
+Important validated rule for split reactors:
+- producer stages must use `install`
+- the final `products` stage uses `package`
+
+This is required because later reactors resolve earlier outputs through Maven coordinates:
+- `AGGREGATOR/prebuild` produces `org.modelio:rcp:target:5.4.1-SNAPSHOT`
+- `AGGREGATOR/plugins` produces plugin IUs needed by `features`
+- `AGGREGATOR/features/opensource` and `AGGREGATOR/doc` produce feature IUs needed by `products`
+
+Validated IntelliJ Maven target order:
+
+1. `Modelio - Prebuild From Scratch`
+   ```text
+   -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch -Pplatform.mac.aarch64 -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/prebuild/pom.xml clean install
+   ```
+2. `Modelio - Plugins From Scratch`
+   ```text
+   -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch -Pplatform.mac.aarch64 -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/plugins/pom.xml clean install
+   ```
+3. `Modelio - Features From Scratch`
+   ```text
+   -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch -Pplatform.mac.aarch64 -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/features/opensource/pom.xml clean install
+   ```
+4. `Modelio - Docs From Scratch`
+   ```text
+   -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch -Pplatform.mac.aarch64 -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/doc/pom.xml clean install
+   ```
+5. `Modelio - Products From Scratch`
+   ```text
+   -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch -Pplatform.mac.aarch64,product.org -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/products/pom.xml clean package
+   ```
+
+Notes:
+- `AGGREGATOR/doc` is required before `products` because `products/modelio-os.product` includes `org.modelio.documentation.modeler.nl_fr.feature`.
+- `product.org` is required for product materialization; without it, the `products` build may still create repository outputs under `products/target/`, but it will not produce the launchable `.app` bundle.
+- In IntelliJ, either keep the full Maven invocation in one command-line field or split it cleanly across the IDE fields without duplicating `-P`, `-f`, or `-Dmaven.repo.local`.
+- The current native flow still depends on the external JNA checkout and local overlay generation from sections `2.1` and `2.2`.
 
 ## 3. How the target platform is assembled
 
@@ -339,6 +400,8 @@ The final archived product is:
 - `products/target/products/org.modelio.product-macosx.cocoa.aarch64.tar.gz`
 
 These are the directories/files to inspect first when you need the actual end product.
+
+If `products/target/` only contains repository-style outputs such as `repository/`, `p2content.xml`, `p2artifacts.xml`, `targetPlatformRepository/`, and `products-5.4.1-SNAPSHOT.zip`, then the last `products` run did not materialize the macOS product bundle. In the validated native flow, that usually means the `product.org` profile was not active.
 
 ## 9. Final generated bundle layout (current actual state)
 
@@ -633,11 +696,21 @@ cd /Users/david/IdeaProjects/_external/jna
 cd /Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/jna
 mvn generate-resources
 
+rm -rf /Users/david/IdeaProjects/Modelio/tmp/m2-scratch
+
 cd /Users/david/IdeaProjects/Modelio
-mvn -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/prebuild/pom.xml -Pplatform.mac.aarch64 verify
-mvn -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/plugins/pom.xml -Pplatform.mac.aarch64 verify
-mvn -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/features/opensource/pom.xml -Pplatform.mac.aarch64 verify
-mvn -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org package
+mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/prebuild/pom.xml -Pplatform.mac.aarch64 clean install
+mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/plugins/pom.xml -Pplatform.mac.aarch64 clean install
+mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/features/opensource/pom.xml -Pplatform.mac.aarch64 clean install
+mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/doc/pom.xml -Pplatform.mac.aarch64 clean install
+mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/products/pom.xml -Pplatform.mac.aarch64,product.org clean package
+```
+
+If you do not need split IntelliJ stages, the simpler one-shot alternative is still:
+
+```zsh
+cd /Users/david/IdeaProjects/Modelio
+mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org clean package
 ```
 
 Then inspect:

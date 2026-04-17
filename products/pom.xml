@@ -292,6 +292,20 @@
 						<artifactId>target-platform-configuration</artifactId>
 						<version>${tycho-version}</version>
 						<configuration>
+							<dependency-resolution>
+								<extraRequirements>
+									<requirement>
+										<type>eclipse-plugin</type>
+										<id>org.eclipse.equinox.launcher.cocoa.macosx</id>
+										<versionRange>[1.2.200.v20210527-0259,1.2.200.v20210527-0259]</versionRange>
+									</requirement>
+									<requirement>
+										<type>eclipse-plugin</type>
+										<id>org.eclipse.equinox.launcher.cocoa.macosx.aarch64</id>
+										<versionRange>[1.2.200.v20210527-0259,1.2.200.v20210527-0259]</versionRange>
+									</requirement>
+								</extraRequirements>
+							</dependency-resolution>
 							<separateEnvironments>true</separateEnvironments>
 							<environments>
 								<environment>
