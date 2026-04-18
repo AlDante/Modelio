@@ -75,7 +75,7 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
 - The repo is currently in a hybrid state: older platform/equinox bundles, but newer SWT overlays (`3.120.0`) and ARM-specific mac fragments staged separately.
 - macOS is still mid-modernization, but the known Intel-only feature-composition exceptions have now been intentionally removed rather than shipped; mac Chromium and mac AStyle are both disabled pending native `aarch64` replacements.
 - Bundle execution-environment baselines in source manifests are now normalized to `JavaSE-11` for the previously lagging core/BPMN bundles; the repo no longer has source `JavaSE-1.8` BREE declarations under `modelio/**/META-INF/MANIFEST.MF`.
-- Remaining Java-8-era assumptions still exist in build metadata, but they are now mostly tooling-facing: the stale runtime `.classpath` Java 8 containers have been aligned to `JavaSE-11`, while `doc/parent/pom.xml` still remains on Java 8 as a doc/tooling-only branch even though Tycho now runs on Java 21.
+- Remaining Java-era assumptions still exist in build metadata, but they are now mostly tooling-facing: the repo-owned runtime `.classpath` JRE containers are aligned to explicit `JavaSE-11`, while `doc/parent/pom.xml` still remains on Java 8 as a doc/tooling-only branch even though Tycho now runs on Java 21.
 
 ## Recommended destination
 - **Primary platform target:** a coherent vendored Eclipse/RCP `2026-03` stack, not a launcher-only uplift.
@@ -616,24 +616,20 @@ Status today:
 - Current repo signal:
   - a source-manifest search for `Bundle-RequiredExecutionEnvironment: JavaSE-1.8` under `modelio/**/META-INF/MANIFEST.MF` now returns no results.
 
-#### Java 8 assumption scan after BREE normalization - 2026-04-16
+#### Java 8 assumption scan after BREE normalization - 2026-04-18
 Runtime-significant findings:
 - A follow-up rescan on `2026-04-18` found **no remaining** runtime `build.properties` files pinned to Java 8 under `modelio/**/build.properties`.
-- The next real owned-runtime cleanup target turned out to be stale Eclipse project metadata instead: these `.classpath` files still pointed at `JavaSE-1.8` and have now been aligned to `JavaSE-11`:
-  - `modelio/core/core.kernel/.classpath`
-  - `modelio/core/core.session/.classpath`
-  - `modelio/core/core.metamodel.api/.classpath`
-  - `modelio/core/core.metamodel.impl/.classpath`
-  - `modelio/core/core.store.exml/.classpath`
-  - `modelio/core/core.project.data/.classpath`
-  - `modelio/core/core.project/.classpath`
-  - `modelio/core/core.utils/.classpath`
-  - `modelio/core/version/.classpath`
-  - `modelio/bpmn/bpmn.metamodel.api/.classpath`
-  - `modelio/bpmn/bpmn.metamodel.implementation/.classpath`
-- Validation completed on the current `Tycho 5.0.2` / `Java 21` baseline:
-  - `AGGREGATOR/plugins/core/pom.xml -Pplatform.mac.aarch64 clean verify` succeeded
-  - `AGGREGATOR/plugins/bpmn/pom.xml -Pplatform.mac.aarch64 clean verify` succeeded
+- The real owned-runtime cleanup target turned out to be stale Eclipse project metadata instead: repo-owned `modelio/**/.classpath` files that still pointed at `JavaSE-1.8` or a generic `org.eclipse.jdt.launching.JRE_CONTAINER` have now been normalised to the explicit `JavaSE-11` container.
+- A full rescan on `2026-04-18` found **no remaining** generic `org.eclipse.jdt.launching.JRE_CONTAINER` entries under `modelio/**/.classpath`.
+- Validation completed on the current `Tycho 5.0.2` / `Java 21` baseline using a fresh scratch Maven repository:
+  - `AGGREGATOR/prebuild/pom.xml -Pplatform.mac.aarch64 clean install` succeeded
+  - `AGGREGATOR/plugins/core/pom.xml -Pplatform.mac.aarch64 clean install` succeeded
+  - `AGGREGATOR/plugins/plugdules/pom.xml -Pplatform.mac.aarch64 clean install` succeeded
+  - `AGGREGATOR/plugins/platform/pom.xml -Pplatform.mac.aarch64 clean install` succeeded
+  - `AGGREGATOR/plugins/app/pom.xml -Pplatform.mac.aarch64 clean install` succeeded
+  - `AGGREGATOR/plugins/bpmn/pom.xml -Pplatform.mac.aarch64 clean install` succeeded
+  - `AGGREGATOR/plugins/uml/pom.xml -Pplatform.mac.aarch64 clean install` succeeded
+  - `AGGREGATOR/plugins/pom.xml -Pplatform.mac.aarch64 clean verify` succeeded
 
 Tooling-only / lower-priority findings:
 - `doc/parent/pom.xml` still uses `<maven.compiler.source>1.8</maven.compiler.source>` and `<maven.compiler.target>1.8</maven.compiler.target>`; this currently affects the doc branch, not the main runtime.
@@ -641,7 +637,7 @@ Tooling-only / lower-priority findings:
 
 Interpretation:
 - The manifest normalization is complete, and the originally suspected runtime `build.properties` drift was a false lead.
-- The owned-runtime Eclipse metadata is now aligned to the Java 11 baseline, so the remaining Java-baseline skew is concentrated in doc/tooling-only metadata and in the eventual runtime-JDK uplift decision.
+- The owned-runtime Eclipse metadata is now aligned to the Java 11 baseline, including explicit `.classpath` JRE containers, so the remaining Java-baseline skew is concentrated in doc/tooling-only metadata and in the eventual runtime-JDK uplift decision.
 
 #### Bounded Tycho 2.7.5 retry preparation - ready state as of 2026-04-16
 Why the retry is now cleaner than before:
@@ -650,11 +646,11 @@ Why the retry is now cleaner than before:
 - final packaged `Modelio.app` audits clean (`HITS 0` for shipped `x86_64` payload);
 - source BREE declarations are normalized to `JavaSE-11`.
 
-What still makes the retry noisy if left unchanged:
-- stale Eclipse project metadata such as `.classpath` Java 8 containers can obscure whether a problem is a build-tool issue or just outdated IDE configuration.
+What still makes the next modernization slice noisy if left unchanged:
+- the doc/tooling branch still carries Java 8 compiler metadata in `doc/parent/pom.xml`, which is separate from the now-green runtime/plugin baseline.
 
 Recommendation before any future retry:
-- normalize any stale Eclipse project Java 8 metadata first,
+- treat runtime plugin metadata cleanup as complete and focus the next slice on real runtime-baseline constraints rather than Eclipse project metadata.
 - or, if running the retry sooner, record those IDE-only remnants as known background noise so they are not confused with a true Tycho/target-layout failure.
 
 Exact future retry ladder for `Tycho 2.7.5`:

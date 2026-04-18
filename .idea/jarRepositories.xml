@@ -12,6 +12,16 @@
       <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/rcp-eclipse/swt" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="svnkit" />
+      <option name="name" value="svnkit" />
+      <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/tmatesoft/svnkit-1.10.9" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jna" />
+      <option name="name" value="jna" />
+      <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/rcp-eclipse/jna/repository" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="commons-lang" />
       <option name="name" value="commons-lang" />
       <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/apache/commons-lang" />
@@ -62,6 +72,11 @@
       <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/org.eclipse/nebula" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="macos-arm64" />
+      <option name="name" value="macos-arm64" />
+      <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/rcp-eclipse/macos-arm64" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="emf" />
       <option name="name" value="emf" />
       <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/org.eclipse/emf" />
@@ -70,11 +85,6 @@
       <option name="id" value="slf4j" />
       <option name="name" value="slf4j" />
       <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/org.slf4j/slf4j" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="macos-arm64" />
-      <option name="name" value="macos-arm64" />
-      <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/rcp-eclipse/macos-arm64" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="rcp-Eclipse-fr" />
@@ -150,11 +160,6 @@
       <option name="id" value="launcher-arm64" />
       <option name="name" value="launcher-arm64" />
       <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/rcp-eclipse/launcher-arm64" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="jna" />
-      <option name="name" value="jna" />
-      <option name="url" value="file://$PROJECT_DIR$/${project.parent.relativePath}/dev-platform/rcp-target/rcp-eclipse/jna/repository" />
     </remote-repository>
   </component>
 </project>
