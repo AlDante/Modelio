@@ -34,8 +34,10 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
 
 ### Immediate next modernization step
 - **Do not broaden the work into RCP re-vendoring yet.**
-- The best next step is to keep the new `Tycho 5.0.2` / `Java 21` build baseline stable while finishing the remaining Java-baseline cleanup inside owned bundles.
-- After the stale Eclipse project metadata is aligned, the next bounded decision is whether to normalise the doc/tooling-only Java 8 metadata or begin a controlled Java 21 runtime uplift.
+- The repo-owned runtime metadata cleanup and the first runtime-baseline audit are now complete enough to name the real packaged Java 11 blockers explicitly.
+- The next bounded step is now a decision between:
+  1. normalising the remaining doc/tooling-only Java 8 metadata, or
+  2. beginning a tightly scoped packaged-runtime uplift spike once the Java 11 runtime blockers are explicitly named.
 
 ### Progress update on 2026-04-17
 - The headless target-definition cleanup has now started and its first pass is complete.
@@ -638,6 +640,48 @@ Tooling-only / lower-priority findings:
 Interpretation:
 - The manifest normalization is complete, and the originally suspected runtime `build.properties` drift was a false lead.
 - The owned-runtime Eclipse metadata is now aligned to the Java 11 baseline, including explicit `.classpath` JRE containers, so the remaining Java-baseline skew is concentrated in doc/tooling-only metadata and in the eventual runtime-JDK uplift decision.
+
+#### Runtime baseline audit before any packaged-Java uplift - 2026-04-18
+Scope of this audit:
+- distinguish true packaged-runtime constraints from build-only or IDE-only leftovers,
+- keep the current `Tycho 5.0.2` / `Java 21` build contract fixed,
+- inspect only the Java baseline actually required by the shipped product path on macOS `aarch64`.
+
+Runtime-significant findings from inspected control points:
+
+| Evidence | Files inspected | Classification | Practical meaning |
+| --- | --- | --- | --- |
+| The packaged runtime is still a vendored Java 11 p2 repository. | `pom.xml`, `maven/modelio-parent/pom.xml`, `dev-platform/rcp-target/rcp.target`, `dev-platform/pack-resources/openjdk-jre11/` | runtime-significant | The current product path still resolves and packages a repo-owned Java 11 runtime; a runtime uplift is not just a compiler change. |
+| The product itself still hard-codes Java 11 as the required runtime baseline. | `products/modelio-os.product` | runtime-significant | `-Dosgi.requiredJavaVersion=11` is still injected into the macOS launcher configuration, and the product VM entries still point at `JavaSE-11`. |
+| Owned OSGi runtime bundles still declare Java 11 as their required execution environment. | `modelio/**/META-INF/MANIFEST.MF` | runtime-significant | A full rescan on `2026-04-18` found **99** `Bundle-RequiredExecutionEnvironment` declarations, all set to `JavaSE-11`; there are no higher runtime BREEs yet. |
+| JAXB is no longer expected from the JDK itself; it is shipped as vendored runtime content. | `dev-platform/rcp-target/jakarta/jaxb/pom.xml`, `products/modelio-os.product`, `modelio/bpmn/bpmn.xml/**/*.java` | runtime-significant | Runtime code now imports `jakarta.xml.bind`, and the product includes `org.modelio.jaxb.feature`, so any future runtime uplift must preserve the vendored JAXB/Jakarta feature path rather than assuming JDK-provided JAXB. |
+| SWT browser usage is still part of the runtime surface, but not through Chromium-specific code. | `features/opensource/org.modelio.e4.rcp/feature.xml`, `features/opensource/org.modelio.platform.feature/feature.xml`, `modelio/**/*.java` searches for `Browser` and `SWT.CHROMIUM` | runtime-significant | SWT `Browser` widgets are still used in owned UI code, but no `SWT.CHROMIUM` usage was found; browser behaviour remains a runtime compatibility concern, just not a Chromium-specific API blocker. |
+| Native loading remains in the runtime surface, but the known macOS AStyle path is already optional. | `modelio/platform/platform.api/src/org/modelio/api/astyle/AStyleInterface.java`, `features/opensource/org.modelio.platform.libraries/feature.xml` | runtime-significant | Native AStyle loading still exists in code, but failure is handled and the Intel-only mac fragment is already removed, so it is not the primary blocker for a later Java uplift. |
+
+Tooling-only / lower-priority findings from the same audit:
+- `doc/parent/pom.xml` still compiles docs with `<maven.compiler.source>1.8</maven.compiler.source>` and `<maven.compiler.target>1.8</maven.compiler.target>`; this is separate from the main runtime path.
+- `maven/toolchains.macos.macports.xml` still carries a `JavaSE-1.8` template entry; this is local tooling scaffolding, not a packaged-runtime declaration.
+- `modelio/core/core.utils/lib/build_deps/pom.xml` still contains commented Java 8 compiler settings inside a disabled helper-build block.
+- The repo-owned `modelio/**/.classpath` JRE containers are now aligned to `JavaSE-11`, so they are no longer the main source of ambiguity for this phase.
+
+Audit interpretation:
+- The next runtime uplift is now clearly blocked by **explicit product and manifest Java 11 declarations**, not by stale IDE metadata.
+- The build-layer split is now well defined:
+  - build JDK = `Java 21` for Maven/Tycho,
+  - packaged runtime baseline = vendored `Java 11` content plus `JavaSE-11` bundle declarations.
+- The repo has already removed the old JDK-provided JAXB assumption by moving runtime JAXB usage to vendored Jakarta/JAXB p2 content, which reduces one common Java 11+ migration risk.
+
+Go / no-go rule before any packaged-runtime uplift:
+- **No-go** for a Java runtime uplift while all three of the following remain true:
+  1. `products/modelio-os.product` still injects `-Dosgi.requiredJavaVersion=11`,
+  2. the packaged runtime still resolves from `dev-platform/pack-resources/openjdk-jre11`,
+  3. owned runtime bundles still declare `Bundle-RequiredExecutionEnvironment: JavaSE-11`.
+- **Go** only after a bounded follow-up slice explicitly updates those three layers together and revalidates the full Apple Silicon product path.
+
+Recommended next bounded step after this audit:
+- keep the packaged runtime on Java 11 for now,
+- optionally normalise the remaining doc/tooling-only Java 8 metadata as a low-risk cleanup,
+- then run a separate, explicitly scoped packaged-runtime uplift spike rather than mixing that decision into broader RCP re-vendoring.
 
 #### Bounded Tycho 2.7.5 retry preparation - ready state as of 2026-04-16
 Why the retry is now cleaner than before:
