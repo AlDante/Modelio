@@ -6,7 +6,7 @@ Bundle-Version: 5.4.1.qualifier
 Bundle-Activator: org.modelio.audit.plugin.AuditOrg
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-Vendor: Modelio
 Bundle-ClassPath: res/,
  .

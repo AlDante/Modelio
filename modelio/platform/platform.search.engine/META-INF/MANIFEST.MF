@@ -4,7 +4,7 @@ Bundle-Name: Model Search Engine
 Bundle-SymbolicName: org.modelio.platform.search.engine;singleton:=true
 Bundle-Version: 5.4.1.qualifier 
 Bundle-Vendor: modelio.org
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.eclipse.core.runtime,
  org.modelio.core.session,
  org.modelio.platform.utils,

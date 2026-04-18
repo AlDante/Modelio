@@ -21,7 +21,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.modelio.core.metamodel.api,
  org.modelio.platform.ui,
  org.modelio.app.diagram.persistence
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Export-Package: org.modelio.diagram.api.dg,
  org.modelio.diagram.api.dg.common,

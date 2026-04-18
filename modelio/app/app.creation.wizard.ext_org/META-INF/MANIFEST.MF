@@ -4,7 +4,7 @@ Bundle-Name: Creation Wizard
 Bundle-SymbolicName: org.modelio.app.creation.wizard.ext_org;singleton:=true
 Bundle-Version: 5.4.1.qualifier 
 Bundle-Activator: org.modelio.creation.wizard.ext.plugin.CreationWizardOrg
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Modeliosoft
 Bundle-Localization: plugin

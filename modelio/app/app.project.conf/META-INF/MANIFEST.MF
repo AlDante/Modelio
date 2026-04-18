@@ -28,7 +28,7 @@ Require-Bundle: org.modelio.platform.ui,
  org.modelio.core.project.data,
  org.modelio.platform.rcp,
  org.modelio.core.kernel
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: res/,
  .

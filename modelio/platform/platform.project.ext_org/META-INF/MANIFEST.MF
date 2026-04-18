@@ -4,7 +4,7 @@ Bundle-Name: Core
 Bundle-SymbolicName: org.modelio.platform.project.ext_org;singleton:=true
 Bundle-Version: 5.4.1.qualifier 
 Bundle-Activator: org.modelio.platform.project.ext_org.plugin.AppProjectCoreOrg
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.modelio.platform.core,
  org.modelio.core.project,
  org.modelio.core.utils,

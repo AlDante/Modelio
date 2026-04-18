@@ -4,7 +4,7 @@ Bundle-Name: Rich notes edition
 Bundle-SymbolicName: org.modelio.app.editors.richnote;singleton:=true
 Bundle-Version: 5.4.1.qualifier 
 Bundle-Vendor: modelio.org
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.e4.core.contexts,

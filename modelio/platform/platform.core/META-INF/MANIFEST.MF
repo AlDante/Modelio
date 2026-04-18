@@ -4,7 +4,7 @@ Bundle-Name: Modelio platform core services
 Bundle-SymbolicName: org.modelio.platform.core;singleton:=true
 Bundle-Version: 5.4.1.qualifier 
 Bundle-Activator: org.modelio.platform.core.plugin.AppCore
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jface,
  org.eclipse.e4.core.di,

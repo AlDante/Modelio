@@ -4,7 +4,7 @@ Bundle-Name: Microsoft Office rich notes editor
 Bundle-SymbolicName: org.modelio.app.editors.richnote.microsoft;singleton:=true
 Bundle-Version: 5.4.1.qualifier 
 Bundle-Vendor: modelio.org
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.modelio.core.metamodel.api,
  org.modelio.core.kernel,
  org.modelio.core.session,

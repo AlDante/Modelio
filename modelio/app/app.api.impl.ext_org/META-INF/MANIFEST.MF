@@ -4,7 +4,7 @@ Bundle-Name: ApiImpl
 Bundle-SymbolicName: org.modelio.app.api.impl.ext_org;singleton:=true
 Bundle-Version: 5.4.1.qualifier 
 Bundle-Vendor: modelio.org
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: res/,
  .

@@ -29,7 +29,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.modelio.platform.rcp,
  org.modelio.app.ui,
  org.modelio.platform.preferences
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ClassPath: res/,
  .,
  lib/flying-saucer-core-9.0.7.jar,

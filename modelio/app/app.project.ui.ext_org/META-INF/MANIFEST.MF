@@ -4,7 +4,7 @@ Bundle-Name: Project Ui extensions
 Bundle-SymbolicName: org.modelio.app.project.ui.ext_org;singleton:=true
 Bundle-Version: 5.4.1.qualifier 
 Bundle-Vendor: modelio.org
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.e4.core.contexts,
  org.eclipse.e4.core.di,

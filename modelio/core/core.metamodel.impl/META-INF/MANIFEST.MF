@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Standard metamodel implementation
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-SymbolicName: org.modelio.core.metamodel.impl;singleton:=true
 Bundle-Version: 5.4.1.qualifier 
 Require-Bundle: org.modelio.core.kernel,

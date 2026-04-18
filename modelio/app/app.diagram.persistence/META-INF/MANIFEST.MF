@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.draw2d,
  org.modelio.core.kernel,
  org.modelio.core.utils
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ClassPath: res/,
  .
 Bundle-ActivationPolicy: lazy

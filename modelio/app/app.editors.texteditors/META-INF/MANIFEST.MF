@@ -4,7 +4,7 @@ Bundle-Name: Text Editors
 Bundle-SymbolicName: org.modelio.app.editors.texteditors;singleton:=true
 Bundle-Version: 5.4.1.qualifier 
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ClassPath: res/,
  .
 Bundle-ActivationPolicy: lazy

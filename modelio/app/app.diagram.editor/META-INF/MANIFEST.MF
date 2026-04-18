@@ -35,7 +35,7 @@ Require-Bundle: org.eclipse.core.expressions,
  org.modelio.platform.ui,
  org.modelio.platform.utils,
  org.modelio.platform.preferences
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ClassPath: res/,
  .
 Bundle-Activator: org.modelio.diagram.editor.plugin.DiagramEditor

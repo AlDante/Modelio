@@ -32,7 +32,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.modelio.app.ui,
  org.modelio.platform.preferences
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: org.modelio.audit.engine.core,
  org.modelio.audit.extension,
  org.modelio.audit.preferences,

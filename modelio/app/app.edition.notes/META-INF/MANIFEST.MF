@@ -32,7 +32,7 @@ Require-Bundle: org.eclipse.jface,
  org.modelio.app.editors.richnote
 Bundle-ClassPath: .,
  res/
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Export-Package: org.modelio.edition.notes.panelprovider,
  org.modelio.edition.notes.panelprovider.tree,

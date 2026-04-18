@@ -5,7 +5,7 @@ Bundle-Localization: plugin
 Bundle-SymbolicName: org.modelio.app.diagram.outline;singleton:=true
 Bundle-Version: 5.4.1.qualifier 
 Bundle-Vendor: modelio.org
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.core.runtime,
  org.modelio.platform.utils,

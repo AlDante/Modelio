@@ -16,5 +16,5 @@ Export-Package: org.modelio.gproject.data.module,
  org.modelio.gproject.data.ramc
 Bundle-ClassPath: res/,
  .
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-Vendor: modelio.org

@@ -23,7 +23,7 @@ Require-Bundle: org.modelio.platform.utils,
  org.modelio.app.diagram.browser,
  org.modelio.app.model.browser.view
 Automatic-Module-Name: app.model.merge
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.modelio.app.model.merge.plugin.AppModelMerge
 Bundle-ClassPath: .,

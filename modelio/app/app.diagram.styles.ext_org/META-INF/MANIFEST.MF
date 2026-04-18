@@ -4,7 +4,7 @@ Bundle-Name: Diagram Styles
 Bundle-SymbolicName: org.modelio.app.diagram.styles.ext_org;singleton:=true
 Bundle-Version: 5.4.1.qualifier 
 Fragment-Host: org.modelio.app.diagram.styles
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ClassPath: res/,
  .
 Bundle-ActivationPolicy: lazy
