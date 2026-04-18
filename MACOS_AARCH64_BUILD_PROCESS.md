@@ -35,6 +35,16 @@ Relevant files:
 
 ## 2. Canonical macOS aarch64 command sequence
 
+Before running any Maven command in this document, export the current build JDK:
+
+```zsh
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
+```
+
+Current validated toolchain split:
+- build JDK: `Java 21` (required by `Tycho 5.0.2`)
+- packaged runtime: `dev-platform/pack-resources/openjdk-jre11`
+
 ### 2.1 JNA overlay status
 
 The Apple Silicon build no longer requires an external JNA source checkout as a manual prerequisite.

@@ -3,18 +3,19 @@
 ## Repository summary
 - Modelio is an Eclipse RCP / Tycho monorepo for the **Modelio 5.4.1** UML modelling tool.
 - This repo is being modernized while preserving a working native macOS Apple Silicon product path. 
-- The goal is eventually to move to Tycho 5.0.2, Eclipse RCP 2026-03, and Java 21 or Java 25 if possible.
-- Main technologies: currently: **Java 11**, Maven, Tycho **2.7.5**, OSGi bundles, Eclipse features, `.product` packaging, XML descriptors.
+- The current bridge baseline is Tycho 5.0.2; the longer-term goal is Eclipse RCP 2026-03 and Java 21 or Java 25 if possible.
+- Main technologies: currently: **Java 21** for the build toolchain, packaged **Java 11** runtime content, Maven, Tycho **5.0.2**, OSGi bundles, Eclipse features, `.product` packaging, XML descriptors.
 - Main source is under `modelio/`; feature composition is under `features/opensource/`; product packaging is under `products/`; target-platform inputs are under `dev-platform/rcp-target/`; staged build entrypoints are under `AGGREGATOR/`.
 - The currently validated native path is **macOS Apple Silicon** via `platform.mac.aarch64`. Prefer that profile unless the task explicitly targets another platform.
 
 ## Bootstrap and environment rules
 ```zsh
-export JAVA_HOME=/opt/local/Library/Java/JavaVirtualMachines/openjdk11-temurin/Contents/Home
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
 mvn -version
 ```
-- Validated runtime/tooling in this workspace: Maven **3.9.14**, Java **11.0.30**.
-- If Maven runs on Java 21+, Tycho may fail with `Unknown OSGi execution environment`; always set `JAVA_HOME` first.
+- Validated runtime/tooling in this workspace: Maven **3.9.14**, Java **21.0.5**.
+- `Tycho 5.0.2` itself now requires Maven to run on Java 21; running it on Java 11 fails before project resolution with `P2ArtifactRepositoryLayout has been compiled by a more recent version of the Java Runtime`.
+- The packaged product path still targets the repo-owned Java 11 runtime under `dev-platform/pack-resources/openjdk-jre11`; do not confuse the build JDK with the packaged runtime baseline.
 - Prefer **MacPorts** tooling. Toolchain templates exist in `maven/toolchains.macos.macports.xml` and `AGGREGATOR/toolchains.xml`, but the most reliable build bootstrap is still `JAVA_HOME`.
 - The shell is flaky. Prefer one command per invocation or a temporary script. **Do not use `&` command chaining.**
 - For scratch validation, use a fresh local Maven repo instead of `~/.m2` to avoid stale Tycho/p2 mirror state.
@@ -22,9 +23,9 @@ mvn -version
 
 ## Commands to trust first
 ### Fastest full validation
-Validated in this workspace (~**3 min 51 s**):
+Validated in this workspace (~**4 min 54 s**):
 ```zsh
-export JAVA_HOME=/opt/local/Library/Java/JavaVirtualMachines/openjdk11-temurin/Contents/Home
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
 mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch \
   -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/pom.xml \
   -Pplatform.mac.aarch64,product.org clean package
@@ -32,9 +33,9 @@ mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch \
 Postcondition: `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app` exists.
 
 ### Smallest-scope target validation
-Validated in this workspace (~**36 s**):
+Validated in this workspace (~**38 s**):
 ```zsh
-export JAVA_HOME=/opt/local/Library/Java/JavaVirtualMachines/openjdk11-temurin/Contents/Home
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
 mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-prebuild \
   -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/prebuild/pom.xml \
   -Pplatform.mac.aarch64 verify

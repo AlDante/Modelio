@@ -23,7 +23,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jaxb.version>4.0.2</jaxb.version>
-		<tycho-version>2.7.5</tycho-version>
+		<tycho-version>5.0.2</tycho-version>
 	</properties>
 
 	<dependencies>
