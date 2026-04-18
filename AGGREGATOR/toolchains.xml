@@ -47,12 +47,12 @@ under the License.
     <toolchain>
         <type>jdk</type>
         <provides>
-            <version>1.8</version>
+            <version>21</version>
             <vendor>adoptOpenJDK</vendor>
-            <id>JavaSE-1.8</id>
+            <id>JavaSE-21</id>
         </provides>
         <configuration>
-            <jdkHome>/usr/lib/jvm/java-8-openjdk-amd64/</jdkHome>
+            <jdkHome>/usr/lib/jvm/java-21-openjdk-amd64/</jdkHome>
         </configuration>
     </toolchain>
 

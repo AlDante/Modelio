@@ -35,9 +35,8 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
 ### Immediate next modernization step
 - **Do not broaden the work into RCP re-vendoring yet.**
 - The repo-owned runtime metadata cleanup and the first runtime-baseline audit are now complete enough to name the real packaged Java 11 blockers explicitly.
-- The next bounded step is now a decision between:
-  1. normalising the remaining doc/tooling-only Java 8 metadata, or
-  2. beginning a tightly scoped packaged-runtime uplift spike once the Java 11 runtime blockers are explicitly named.
+- The remaining doc/tooling-only Java 8 metadata cleanup is now complete.
+- The next bounded step is therefore a tightly scoped packaged-runtime uplift spike, but only if it updates the product, vendored runtime, and runtime bundle declarations together.
 
 ### Progress update on 2026-04-17
 - The headless target-definition cleanup has now started and its first pass is complete.
@@ -77,7 +76,7 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
 - The repo is currently in a hybrid state: older platform/equinox bundles, but newer SWT overlays (`3.120.0`) and ARM-specific mac fragments staged separately.
 - macOS is still mid-modernization, but the known Intel-only feature-composition exceptions have now been intentionally removed rather than shipped; mac Chromium and mac AStyle are both disabled pending native `aarch64` replacements.
 - Bundle execution-environment baselines in source manifests are now normalized to `JavaSE-11` for the previously lagging core/BPMN bundles; the repo no longer has source `JavaSE-1.8` BREE declarations under `modelio/**/META-INF/MANIFEST.MF`.
-- Remaining Java-era assumptions still exist in build metadata, but they are now mostly tooling-facing: the repo-owned runtime `.classpath` JRE containers are aligned to explicit `JavaSE-11`, while `doc/parent/pom.xml` still remains on Java 8 as a doc/tooling-only branch even though Tycho now runs on Java 21.
+- Remaining Java-era assumptions still exist in build metadata, but they are now narrower: the repo-owned runtime `.classpath` JRE containers and the docs parent compiler metadata are aligned to `JavaSE-11`, while the main remaining Java-baseline decision is the packaged Java 11 runtime itself.
 
 ## Recommended destination
 - **Primary platform target:** a coherent vendored Eclipse/RCP `2026-03` stack, not a launcher-only uplift.
@@ -659,8 +658,8 @@ Runtime-significant findings from inspected control points:
 | Native loading remains in the runtime surface, but the known macOS AStyle path is already optional. | `modelio/platform/platform.api/src/org/modelio/api/astyle/AStyleInterface.java`, `features/opensource/org.modelio.platform.libraries/feature.xml` | runtime-significant | Native AStyle loading still exists in code, but failure is handled and the Intel-only mac fragment is already removed, so it is not the primary blocker for a later Java uplift. |
 
 Tooling-only / lower-priority findings from the same audit:
-- `doc/parent/pom.xml` still compiles docs with `<maven.compiler.source>1.8</maven.compiler.source>` and `<maven.compiler.target>1.8</maven.compiler.target>`; this is separate from the main runtime path.
-- `maven/toolchains.macos.macports.xml` still carries a `JavaSE-1.8` template entry; this is local tooling scaffolding, not a packaged-runtime declaration.
+- `doc/parent/pom.xml` had remained on Java 8 compiler metadata and was the main owned doc/tooling drift still left after the runtime audit.
+- `maven/toolchains.macos.macports.xml` and `AGGREGATOR/toolchains.xml` had still carried `JavaSE-1.8` template entries; these were tooling templates, not packaged-runtime declarations.
 - `modelio/core/core.utils/lib/build_deps/pom.xml` still contains commented Java 8 compiler settings inside a disabled helper-build block.
 - The repo-owned `modelio/**/.classpath` JRE containers are now aligned to `JavaSE-11`, so they are no longer the main source of ambiguity for this phase.
 
@@ -680,8 +679,22 @@ Go / no-go rule before any packaged-runtime uplift:
 
 Recommended next bounded step after this audit:
 - keep the packaged runtime on Java 11 for now,
-- optionally normalise the remaining doc/tooling-only Java 8 metadata as a low-risk cleanup,
+- first normalise the remaining doc/tooling-only Java 8 metadata as a low-risk cleanup,
 - then run a separate, explicitly scoped packaged-runtime uplift spike rather than mixing that decision into broader RCP re-vendoring.
+
+#### Doc/tooling Java metadata cleanup completed - 2026-04-18
+Changes completed in this bounded slice:
+- `doc/parent/pom.xml` now uses `<maven.compiler.source>11</maven.compiler.source>` and `<maven.compiler.target>11</maven.compiler.target>`.
+- `maven/toolchains.macos.macports.xml` now carries `JavaSE-21` and `JavaSE-11` toolchain templates instead of a stale `JavaSE-1.8` template.
+- `AGGREGATOR/toolchains.xml` now carries `JavaSE-21` and `JavaSE-11` toolchain templates instead of a stale `JavaSE-1.8` template.
+
+Validation completed:
+- a direct rescan of those three files on `2026-04-18` found **no remaining** `1.8` or `JavaSE-1.8` markers,
+- `AGGREGATOR/doc/pom.xml clean install` succeeded on the current `Tycho 5.0.2` / `Java 21` baseline.
+
+Interpretation after this cleanup:
+- the owned doc/tooling Java 8 drift is now reduced to the commented helper-build history in `modelio/core/core.utils/lib/build_deps/pom.xml`,
+- the next real Java-baseline decision is no longer doc/tooling metadata; it is the packaged-runtime uplift question described in the runtime audit.
 
 #### Bounded Tycho 2.7.5 retry preparation - ready state as of 2026-04-16
 Why the retry is now cleaner than before:
@@ -691,11 +704,11 @@ Why the retry is now cleaner than before:
 - source BREE declarations are normalized to `JavaSE-11`.
 
 What still makes the next modernization slice noisy if left unchanged:
-- the doc/tooling branch still carries Java 8 compiler metadata in `doc/parent/pom.xml`, which is separate from the now-green runtime/plugin baseline.
+- the main remaining Java-baseline noise is now confined to helper or template history rather than active doc/runtime metadata.
 
 Recommendation before any future retry:
 - treat runtime plugin metadata cleanup as complete and focus the next slice on real runtime-baseline constraints rather than Eclipse project metadata.
-- or, if running the retry sooner, record those IDE-only remnants as known background noise so they are not confused with a true Tycho/target-layout failure.
+- or, if running the retry sooner, record any remaining helper-build/template remnants as known background noise so they are not confused with a true Tycho/target-layout failure.
 
 Exact future retry ladder for `Tycho 2.7.5`:
 1. change `pom.xml` and `maven/modelio-parent/pom.xml` from `2.2.0` to `2.7.5`
