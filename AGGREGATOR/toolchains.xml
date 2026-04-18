@@ -42,7 +42,7 @@ under the License.
  | getting the most out of your Maven installation.
  |-->
 <toolchains xmlns="http://maven.apache.org/TOOLCHAINS/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/TOOLCHAINS/1.1.0 http://maven.apache.org/xsd/toolchains-1.1.0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/TOOLCHAINS/1.1.0 file:toolchains-1.1.0.xsd">
 
     <toolchain>
         <type>jdk</type>
