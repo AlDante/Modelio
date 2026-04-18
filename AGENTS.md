@@ -1,7 +1,7 @@
 # AGENTS.md
 
 ## Scope and intent
-- This repo is an Eclipse RCP/Tycho monorepo for Modelio 5.4.1 (`Java 21` build toolchain, packaged `JRE 11`, Tycho `5.0.2`) centered on OSGi plugins, features, and packaged products.
+- This repo is an Eclipse RCP/Tycho monorepo for Modelio 5.4.1 (`Java 21` build toolchain, macOS `aarch64` product metadata on `Java 21`, Tycho `5.0.2`) centered on OSGi plugins, features, and packaged products.
 - Build orchestration is Maven-first; most deployable artifacts are `eclipse-plugin`, `eclipse-feature`, or `eclipse-repository` modules.
 - Default operating mode is correctness-first: preserve module wiring, verify each impacted layer, and prefer fail-fast scoped builds before broad packaging.
 
@@ -10,12 +10,12 @@
 - Aggregators under `AGGREGATOR/` define build order and stitch modules from `modelio/`, `features/`, and `products/`.
 - Feature composition is in `features/opensource/*` (for example `features/opensource/org.modelio.application.ui/feature.xml`).
 - Final product definition is `products/modelio-os.product`; packaging profiles are in `products/pom.xml`.
-- Target platform is local-file based from `dev-platform/rcp-target/rcp.target` and `dev-platform/pack-resources/openjdk-jre11`.
+- Target platform is local-file based from `dev-platform/rcp-target/rcp.target`; the previously shared `openjdk-jre11` target wiring is no longer active for the supported macOS `aarch64` path.
 
 ## Canonical build entrypoints
 - Full staged build (prebuild + plugins + features + products): run from `AGGREGATOR/pom.xml`.
 - Prebuild validates target-definition modules first (`AGGREGATOR/prebuild/pom.xml` now refreshes the Apple Silicon overlay repos `launcher-arm64`, `macos-arm64`, and `jna` before building root + `dev-platform/rcp-target`).
-- Run Maven on `Java 21` for the current Tycho baseline; the packaged product still targets the repo-owned `dev-platform/pack-resources/openjdk-jre11` runtime.
+- Run Maven on `Java 21` for the current Tycho baseline; the supported macOS `aarch64` product path now validates with Java 21 launcher metadata and no active `openjdk-jre11` target wiring.
 - Product packaging variants are profile-driven in `products/pom.xml`:
   - `product.org` for the OpenSource product archive.
   - `repositoryP2` for p2 repository output.

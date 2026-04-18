@@ -4,7 +4,7 @@
 - Modelio is an Eclipse RCP / Tycho monorepo for the **Modelio 5.4.1** UML modelling tool.
 - This repo is being modernized while preserving a working native macOS Apple Silicon product path. 
 - The current bridge baseline is Tycho 5.0.2; the longer-term goal is Eclipse RCP 2026-03 and Java 21 or Java 25 if possible.
-- Main technologies: currently: **Java 21** for the build toolchain, packaged **Java 11** runtime content, Maven, Tycho **5.0.2**, OSGi bundles, Eclipse features, `.product` packaging, XML descriptors.
+- Main technologies: currently: **Java 21** for the build toolchain and the validated macOS Apple Silicon product metadata, Maven, Tycho **5.0.2**, OSGi bundles, Eclipse features, `.product` packaging, XML descriptors.
 - Main source is under `modelio/`; feature composition is under `features/opensource/`; product packaging is under `products/`; target-platform inputs are under `dev-platform/rcp-target/`; staged build entrypoints are under `AGGREGATOR/`.
 - The currently validated native path is **macOS Apple Silicon** via `platform.mac.aarch64`. Prefer that profile unless the task explicitly targets another platform.
 
@@ -15,7 +15,7 @@ mvn -version
 ```
 - Validated runtime/tooling in this workspace: Maven **3.9.14**, Java **21.0.5**.
 - `Tycho 5.0.2` itself now requires Maven to run on Java 21; running it on Java 11 fails before project resolution with `P2ArtifactRepositoryLayout has been compiled by a more recent version of the Java Runtime`.
-- The packaged product path still targets the repo-owned Java 11 runtime under `dev-platform/pack-resources/openjdk-jre11`; do not confuse the build JDK with the packaged runtime baseline.
+- The supported macOS Apple Silicon product path now validates with Java 21 launcher metadata, and the previously shared `openjdk-jre11` target wiring has been removed from the active macOS build inputs; do not confuse that with the separate build JDK requirement for Tycho.
 - Prefer **MacPorts** tooling. Toolchain templates exist in `maven/toolchains.macos.macports.xml` and `AGGREGATOR/toolchains.xml`, but the most reliable build bootstrap is still `JAVA_HOME`.
 - The shell is flaky. Prefer one command per invocation or a temporary script. **Do not use `&` command chaining.**
 - For scratch validation, use a fresh local Maven repo instead of `~/.m2` to avoid stale Tycho/p2 mirror state.

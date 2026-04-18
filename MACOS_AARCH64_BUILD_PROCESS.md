@@ -43,7 +43,8 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
 
 Current validated toolchain split:
 - build JDK: `Java 21` (required by `Tycho 5.0.2`)
-- packaged runtime: `dev-platform/pack-resources/openjdk-jre11`
+- product launcher metadata: `Java 21`
+- bundled runtime note: the currently validated macOS `aarch64` app does **not** materialise a repo-owned JRE directory, and active `openjdk-jre11` target wiring has been removed from this supported path
 
 ### 2.1 JNA overlay status
 
@@ -205,7 +206,6 @@ Key macOS aarch64-relevant inputs are:
 - `dev-platform/rcp-target/rcp-eclipse/macos-arm64`
 - `dev-platform/rcp-target/rcp-eclipse/jna/repository`
 - `dev-platform/rcp-target/rcp-eclipse/swt`
-- `dev-platform/pack-resources/openjdk-jre11`
 
 Relevant files:
 - `dev-platform/rcp-target/rcp.target`
@@ -215,6 +215,8 @@ Relevant files:
 
 The current normalized contract is:
 - the target-definition files and both shared parent POMs point at the same Apple Silicon overlay set;
+- the supported macOS `aarch64` path no longer carries active `openjdk-jre11` target wiring;
+- the packaged app now validates with Java 21 launcher metadata in `products/modelio-os.product` / `modelio.ini`.
 - IntelliJ repository metadata now points JNA at `dev-platform/rcp-target/rcp-eclipse/jna/repository/`, matching Maven.
 
 ### 3.3 Additive p2 overlays

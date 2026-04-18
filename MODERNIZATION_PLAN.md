@@ -19,7 +19,7 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
 - `AGGREGATOR/prebuild/pom.xml` now refreshes the stable Apple Silicon overlay repositories (`launcher-arm64`, `macos-arm64`, `jna`) before validating `dev-platform/rcp-target/rcp.target`.
 - The product-side `separateEnvironments` warning was removed from `products/pom.xml`, and the packaged macOS app no longer needs an explicit `org.eclipse.equinox.executable` feature entry to materialize successfully.
 - `Tycho 5.0.2` must be run on `Java 21`; attempting to run Maven on `Java 11` now fails before project resolution with `P2ArtifactRepositoryLayout has been compiled by a more recent version of the Java Runtime`.
-- This is a build-tool runtime requirement only; the packaged product path still consumes the repo-owned Java 11 runtime under `dev-platform/pack-resources/openjdk-jre11`.
+- This is a build-tool runtime requirement first, and the supported macOS `aarch64` product path now also validates with Java 21 launcher metadata and no active `openjdk-jre11` target wiring.
 
 ## Status update as of 2026-04-17
 - The documented macOS `aarch64` scratch-build workflow is now verified through `products`, not just through `plugins` and `features`.
@@ -30,12 +30,12 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
   - the required stage order,
   - the shared scratch local repository flow,
   - and the final launchable output path `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app`.
-- This means the current `Tycho 5.0.2` / `Java 21` build contract is reproducible from scratch for the Apple Silicon product path, while still packaging the existing Java 11 runtime.
+- This means the current `Tycho 5.0.2` / `Java 21` build contract is reproducible from scratch for the Apple Silicon product path, now without active `openjdk-jre11` target wiring.
 
 ### Immediate next modernization step
 - **Do not broaden the work into RCP re-vendoring yet.**
-- The repo-owned runtime metadata cleanup, runtime-baseline audit, and first Java 21 runtime spike are now complete enough to name the remaining Java-baseline ambiguity precisely.
-- The next bounded step is therefore to reconcile the still-present `openjdk-jre11` target wiring with the now-green macOS Java 21 product path before broadening into RCP re-vendoring.
+- The repo-owned runtime metadata cleanup, runtime-baseline audit, Java 21 runtime spike, and `openjdk-jre11` wiring cleanup are now complete for the supported macOS `aarch64` path.
+- The next bounded step can now broaden back out to platform modernisation work rather than more Java-baseline housekeeping.
 
 ### Progress update on 2026-04-17
 - The headless target-definition cleanup has now started and its first pass is complete.
@@ -74,8 +74,8 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
 - `features/opensource/org.modelio.e4.rcp/feature.xml` and `features/opensource/org.modelio.rcp/feature.xml` hard-pin many 2020-era bundle versions.
 - The repo is currently in a hybrid state: older platform/equinox bundles, but newer SWT overlays (`3.120.0`) and ARM-specific mac fragments staged separately.
 - macOS is still mid-modernization, but the known Intel-only feature-composition exceptions have now been intentionally removed rather than shipped; mac Chromium and mac AStyle are both disabled pending native `aarch64` replacements.
-- Bundle execution-environment baselines in source manifests are now normalized to `JavaSE-11` for the previously lagging core/BPMN bundles; the repo no longer has source `JavaSE-1.8` BREE declarations under `modelio/**/META-INF/MANIFEST.MF`.
-- Remaining Java-era assumptions still exist in build metadata, but they are now narrower: the repo-owned runtime `.classpath` JRE containers and the docs parent compiler metadata are aligned to `JavaSE-11`, while the main remaining Java-baseline decision is the packaged Java 11 runtime itself.
+- Bundle execution-environment baselines in owned source manifests are now normalized to `JavaSE-21` for the supported macOS `aarch64` path; the repo no longer has owned source `JavaSE-1.8` BREE declarations under `modelio/**/META-INF/MANIFEST.MF`.
+- Remaining Java-era assumptions still exist mostly as historical or unsupported-path metadata: the repo-owned runtime `.classpath` JRE containers and docs parent compiler metadata are aligned, the macOS launcher metadata is now on Java 21, and active `openjdk-jre11` target wiring has been removed from the supported macOS path.
 
 ## Recommended destination
 - **Primary platform target:** a coherent vendored Eclipse/RCP `2026-03` stack, not a launcher-only uplift.
@@ -649,9 +649,9 @@ Runtime-significant findings from inspected control points:
 
 | Evidence | Files inspected | Classification | Practical meaning |
 | --- | --- | --- | --- |
-| The packaged runtime is still a vendored Java 11 p2 repository. | `pom.xml`, `maven/modelio-parent/pom.xml`, `dev-platform/rcp-target/rcp.target`, `dev-platform/pack-resources/openjdk-jre11/` | runtime-significant | The current product path still resolves and packages a repo-owned Java 11 runtime; a runtime uplift is not just a compiler change. |
-| The product itself still hard-codes Java 11 as the required runtime baseline. | `products/modelio-os.product` | runtime-significant | `-Dosgi.requiredJavaVersion=11` is still injected into the macOS launcher configuration, and the product VM entries still point at `JavaSE-11`. |
-| Owned OSGi runtime bundles still declare Java 11 as their required execution environment. | `modelio/**/META-INF/MANIFEST.MF` | runtime-significant | A full rescan on `2026-04-18` found **99** `Bundle-RequiredExecutionEnvironment` declarations, all set to `JavaSE-11`; there are no higher runtime BREEs yet. |
+| The shared build and target wiring originally still referenced a vendored Java 11 p2 repository. | `pom.xml`, `maven/modelio-parent/pom.xml`, `dev-platform/rcp-target/rcp.target`, `dev-platform/pack-resources/openjdk-jre11/` | runtime-significant at audit time | This was the remaining shared Java 11 runtime signal that needed to be tested and then either removed or retargeted for the supported path. |
+| The product originally still hard-coded Java 11 as the required runtime baseline. | `products/modelio-os.product` | runtime-significant at audit time | `-Dosgi.requiredJavaVersion=11` and `JavaSE-11` VM entries were the main owned product metadata blockers before the Java 21 runtime spike. |
+| Owned OSGi runtime bundles originally still declared Java 11 as their required execution environment. | `modelio/**/META-INF/MANIFEST.MF` | runtime-significant at audit time | A full rescan on `2026-04-18` found **99** `Bundle-RequiredExecutionEnvironment` declarations, all set to `JavaSE-11` before the later Java 21 runtime spike. |
 | JAXB is no longer expected from the JDK itself; it is shipped as vendored runtime content. | `dev-platform/rcp-target/jakarta/jaxb/pom.xml`, `products/modelio-os.product`, `modelio/bpmn/bpmn.xml/**/*.java` | runtime-significant | Runtime code now imports `jakarta.xml.bind`, and the product includes `org.modelio.jaxb.feature`, so any future runtime uplift must preserve the vendored JAXB/Jakarta feature path rather than assuming JDK-provided JAXB. |
 | SWT browser usage is still part of the runtime surface, but not through Chromium-specific code. | `features/opensource/org.modelio.e4.rcp/feature.xml`, `features/opensource/org.modelio.platform.feature/feature.xml`, `modelio/**/*.java` searches for `Browser` and `SWT.CHROMIUM` | runtime-significant | SWT `Browser` widgets are still used in owned UI code, but no `SWT.CHROMIUM` usage was found; browser behaviour remains a runtime compatibility concern, just not a Chromium-specific API blocker. |
 | Native loading remains in the runtime surface, but the known macOS AStyle path is already optional. | `modelio/platform/platform.api/src/org/modelio/api/astyle/AStyleInterface.java`, `features/opensource/org.modelio.platform.libraries/feature.xml` | runtime-significant | Native AStyle loading still exists in code, but failure is handled and the Intel-only mac fragment is already removed, so it is not the primary blocker for a later Java uplift. |
@@ -663,10 +663,10 @@ Tooling-only / lower-priority findings from the same audit:
 - The repo-owned `modelio/**/.classpath` JRE containers are now aligned to `JavaSE-11`, so they are no longer the main source of ambiguity for this phase.
 
 Audit interpretation:
-- The next runtime uplift is now clearly blocked by **explicit product and manifest Java 11 declarations**, not by stale IDE metadata.
+- The next runtime uplift was clearly blocked by **explicit product and manifest Java 11 declarations**, not by stale IDE metadata.
 - The build-layer split is now well defined:
   - build JDK = `Java 21` for Maven/Tycho,
-  - packaged runtime baseline = vendored `Java 11` content plus `JavaSE-11` bundle declarations.
+  - packaged runtime baseline at audit time = vendored `Java 11` content plus `JavaSE-11` bundle declarations.
 - The repo has already removed the old JDK-provided JAXB assumption by moving runtime JAXB usage to vendored Jakarta/JAXB p2 content, which reduces one common Java 11+ migration risk.
 
 Go / no-go rule before any packaged-runtime uplift:
@@ -727,6 +727,22 @@ Important interpretation from this spike:
 Practical consequence:
 - for the currently supported macOS Apple Silicon path, the first successful Java 21 runtime signal came from product metadata plus owned bundle BREE changes,
 - the next bounded cleanup should clarify whether `openjdk-jre11` is still a real macOS runtime dependency or just stale cross-platform target metadata for paths we no longer actively support.
+
+#### Remaining openjdk-jre11 wiring cleanup - completed on 2026-04-18
+Changes completed in this bounded slice:
+- removed the `openjdk-jre11` repository declaration from `pom.xml`,
+- removed the matching `openjdk-jre11` repository declaration from `maven/modelio-parent/pom.xml`,
+- removed the `dev-platform/pack-resources/openjdk-jre11` location from `dev-platform/rcp-target/rcp.target`,
+- removed the matching `dev-platform/pack-resources/openjdk-jre11` location from `dev-platform/rcp-target/rcp_debug.target`.
+
+Validation completed:
+- `AGGREGATOR/prebuild/pom.xml -Pplatform.mac.aarch64 clean install` succeeded with a fresh scratch Maven repository,
+- `AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org clean package` also succeeded as a one-shot full reactor after the wiring removal.
+
+Interpretation after this cleanup:
+- the supported macOS `aarch64` path no longer carries active `openjdk-jre11` target or shared repository wiring,
+- the still-present `dev-platform/pack-resources/openjdk-jre11/` directory now appears to be historical or for unsupported non-macOS paths rather than an active input for the validated Apple Silicon build,
+- the next meaningful step is no longer Java-baseline wiring cleanup; it is broader platform modernisation work on top of the now-green Java 21 macOS baseline.
 
 #### Bounded Tycho 2.7.5 retry preparation - ready state as of 2026-04-16
 Why the retry is now cleaner than before:

@@ -172,11 +172,6 @@ This pom executes a maven target on ALL the (eclipse) features that compose the 
 					<layout>p2</layout>
 					<url>file://${modelio.ws.path}/dev-platform/rcp-target/org.slf4j/slf4j</url>
 				</repository>
-		<repository>
-			<id>openjdk-jre11</id>
-			<layout>p2</layout>
-			<url>file://${modelio.ws.path}/dev-platform/pack-resources/openjdk-jre11</url>
-		</repository>
 	</repositories>
 
 <build>

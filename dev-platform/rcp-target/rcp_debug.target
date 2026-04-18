@@ -37,8 +37,6 @@
 		<location path="dev-platform/rcp-target/org.slf4j/slf4j" type="Directory"/>
 		<location path="dev-platform/rcp-target/ch.qos/logback" type="Directory"/>
 
-		<!-- JRE  -->
-		<location path="dev-platform/pack-resources/openjdk-jre11" type="Directory"/>
 
 		<!-- For debugging -->
 		<location path="dev-platform/rcp-target/org.eclipse/e4spies" type="Directory"/>
