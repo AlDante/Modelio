@@ -10,7 +10,6 @@
 		<relativePath>../../../../maven/modelio-parent</relativePath>
 	</parent>
 
-	<groupId>org.modelio</groupId>
 	<artifactId>org.modelio.rcp.jaxb-4.0</artifactId>
 	<packaging>pom</packaging>
 	<description>
