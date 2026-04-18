@@ -3,21 +3,21 @@
 ## Purpose
 Modernize Modelio in a correctness-first sequence without breaking the now-working Apple Silicon packaging flow.
 
-## Status snapshot as of 2026-04-15
+## Status snapshot as of 2026-04-17
 - The immediate recovery goal is already achieved: the project builds and a signed Apple Silicon `Modelio.app` can be produced and launched.
 - The modernization plan is still correctness-first. The intended order remains: stabilize the current platform composition first, then clean up remaining mac-native skew, then revisit Tycho, then move Java, then re-vendor Eclipse/RCP.
-- A **Tycho 2.7.5 compatibility probe was tried early as an experiment**, not because the plan changed to “upgrade Tycho first”. That probe was useful because it showed the current directory-style target layout is not yet clean enough for a painless Tycho uplift.
-- Therefore the current recommendation is still: **do not make Tycho the main next step**. First finish the platform-consistency work that Phase 1 was meant to address.
+- The bounded `Tycho 2.7.5` bridge uplift is now complete on the current vendored `4.18` runtime target.
+- That does **not** change the broader sequencing: the next modernization hop after this bridge remains a bounded `Tycho 5.0.2` probe, then Java-baseline cleanup, then the larger RCP re-vendoring.
 - Current verified Tycho state in the workspace:
-  - `pom.xml` = `2.2.0`
-  - `maven/modelio-parent/pom.xml` = `2.2.0`
-  - `doc/parent/pom.xml` = `2.2.0`
+  - `pom.xml` = `2.7.5`
+  - `maven/modelio-parent/pom.xml` = `2.7.5`
+  - `doc/parent/pom.xml` = `2.7.5`
   - `dev-platform/rcp-target/jakarta/jaxb/pom.xml` = `2.7.5`
 
-## Build-orchestration note from 2026-04-16
-- The temporary mixed-Tycho reactor blocker has been resolved by aligning `doc/parent/pom.xml` back to `Tycho 2.2.0`.
-- This is a correctness-first rollback, not a repo-wide Tycho upgrade.
-- The isolated `dev-platform/rcp-target/jakarta/jaxb/pom.xml` module remains on `2.7.5`, but it is outside the main `AGGREGATOR` reactor and no longer blocks the staged build.
+## Build-orchestration note from 2026-04-17
+- The temporary mixed-Tycho reactor blocker is gone because the main build, the shared modelio parent, and the docs parent are now all aligned on `Tycho 2.7.5`.
+- `AGGREGATOR/prebuild/pom.xml` now refreshes the stable Apple Silicon overlay repositories (`launcher-arm64`, `macos-arm64`, `jna`) before validating `dev-platform/rcp-target/rcp.target`.
+- The product-side `separateEnvironments` warning was removed from `products/pom.xml`, and the packaged macOS app no longer needs an explicit `org.eclipse.equinox.executable` feature entry to materialize successfully.
 
 ## Status update as of 2026-04-17
 - The documented macOS `aarch64` scratch-build workflow is now verified through `products`, not just through `plugins` and `features`.
@@ -28,7 +28,7 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
   - the required stage order,
   - the shared scratch local repository flow,
   - and the final launchable output path `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app`.
-- This means the current `Tycho 2.2.0` / `Java 11` build contract is again reproducible from scratch for the Apple Silicon product path.
+- This means the current `Tycho 2.7.5` / `Java 11` build contract is reproducible from scratch for the Apple Silicon product path.
 
 ### Immediate next modernization step
 - **Do not broaden the work yet.**
@@ -69,7 +69,7 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
 - broader Java baseline movement.
 
 ## Current baseline verified from the repo
-- Build/tooling is still centered on `Tycho 2.2.0` and `Java 11` in `pom.xml` and `maven/modelio-parent/pom.xml`.
+- Build/tooling is now centered on `Tycho 2.7.5` and `Java 11` in `pom.xml`, `maven/modelio-parent/pom.xml`, and `doc/parent/pom.xml`.
 - The vendored Eclipse platform in `dev-platform/rcp-target/rcp-eclipse/eclipse` is still the `2020-12` line (`org.eclipse.platform_4.18.0.v20201202-1800`).
 - `features/opensource/org.modelio.e4.rcp/feature.xml` and `features/opensource/org.modelio.rcp/feature.xml` hard-pin many 2020-era bundle versions.
 - The repo is currently in a hybrid state: older platform/equinox bundles, but newer SWT overlays (`3.120.0`) and ARM-specific mac fragments staged separately.
@@ -87,18 +87,17 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
 Because this repo is constrained by four compatibility layers at once: Tycho, Eclipse RCP, vendored p2 content, and OSGi bundle execution environments. Jumping straight from the current `Java 11` / `RCP 4.18` baseline to `Java 25` would blur together toolchain failures, API breakage, reflective-access issues, and product packaging regressions.
 
 ## Tycho upgrade evaluation
-- The main build, including the docs branch parent, is now back on `Tycho 2.2.0` in `pom.xml`, `maven/modelio-parent/pom.xml`, and `doc/parent/pom.xml`.
-- There is already one in-repo proof point that newer Tycho has been used locally: `dev-platform/rcp-target/jakarta/jaxb/pom.xml` sets `tycho-version` to `2.7.5`.
-- Given that the current public Tycho line is newer still (`5.0.2`, per your note), I would **not** jump from `2.2.0` straight to `5.0.2` as the first modernization move.
+- The main build, including the docs branch parent, is now green on `Tycho 2.7.5` in `pom.xml`, `maven/modelio-parent/pom.xml`, and `doc/parent/pom.xml`.
+- The bridge objective for this phase is therefore met: the same source tree now builds cleanly on the newer Tycho line while still targeting the unchanged vendored `4.18` runtime.
+- Given that the current public Tycho line is newer still (`5.0.2`, per your note), the next bounded tooling experiment is now `2.7.5 -> 5.0.2`, not `2.2.0 -> 5.0.2`.
 
 ### Recommendation
-- **Do not upgrade Tycho first.**
-- **Do revisit Tycho before the full `RCP 2026-03` re-vendoring, but only after the current platform skew is reduced.**
+- **Do not combine the next Tycho step with runtime-side modernization.**
+- **Do revisit Tycho again before the full `RCP 2026-03` re-vendoring, but from the new `2.7.5` baseline rather than from `2.2.0`.**
 - Use a staged path:
-  1. keep `2.2.0` while freezing the current build contract and removing obvious mac/platform skew,
-  2. do a bridge uplift to `2.7.5` against the existing vendored `4.18` target,
-  3. only then test `5.0.2`, still against the unchanged vendored target,
-  4. move to `RCP 2026-03` only after Tycho is already boring.
+  1. keep `2.7.5` while freezing the current build contract and removing obvious remaining Java-baseline skew,
+  2. do a bounded uplift to `5.0.2` against the existing vendored `4.18` target,
+  3. only then move to `RCP 2026-03`, after Tycho is already boring.
 
 ### Why we ran a Tycho probe anyway
 - The early `2.7.5` trial was a bounded compatibility probe to answer one question: “is the build-tool uplift likely to be a cheap isolated step?”
@@ -400,9 +399,9 @@ Scope:
 - Revalidate `AGGREGATOR/prebuild`, plugin aggregators, feature aggregators, and `products/pom.xml` packaging profiles.
 
 Status today:
-- **Not started as a committed migration phase.**
-- One exploratory `Tycho 2.7.5` probe was performed to measure risk, but it should be treated as a diagnostic side investigation, not as the project having moved into Phase 3.
-- The main staged reactor is green again on `Tycho 2.2.0` after aligning `doc/parent/pom.xml` back to the main reactor version.
+- **Bridge uplift completed.**
+- The main staged reactor is green on `Tycho 2.7.5` across `pom.xml`, `maven/modelio-parent/pom.xml`, and `doc/parent/pom.xml`.
+- The remaining work in this phase is no longer “make `2.7.5` work”; it is the next bounded tooling hop to `5.0.2`.
 
 Tycho-specific recommendation for this phase:
 - First try `2.7.5` because the repo already contains one local use of it in `dev-platform/rcp-target/jakarta/jaxb/pom.xml`.
@@ -421,6 +420,25 @@ Primary files:
 
 Exit gate:
 - The same source tree builds cleanly with the upgraded build stack while still targeting the pre-uplift runtime.
+
+#### Phase 3 completion update - 2026-04-17
+- The full `Tycho 2.7.5` validation ladder is now green on `Java 11`:
+  - `AGGREGATOR/prebuild/pom.xml -Pplatform.mac.aarch64 clean install`
+  - `AGGREGATOR/plugins/pom.xml -Pplatform.mac.aarch64 clean install`
+  - `AGGREGATOR/features/opensource/pom.xml -Pplatform.mac.aarch64 clean install`
+  - `AGGREGATOR/doc/pom.xml clean install`
+  - `products/pom.xml -Pplatform.mac.aarch64,product.org clean package`
+- The one-shot fresh-scratch path is also green:
+  - `AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org clean package`
+- The product-only blocker was resolved without broad runtime-side repinning by:
+  - making `AGGREGATOR/prebuild/pom.xml` regenerate the stable `launcher-arm64` and `macos-arm64` overlay repositories alongside `jna`,
+  - keeping the launcher bundle requirements explicit in `products/pom.xml`,
+  - removing the unsupported `separateEnvironments` configuration from the product module,
+  - and dropping the explicit `org.eclipse.equinox.executable` feature entry from `products/modelio-os.product` so the packaged Apple Silicon app stays free of shipped `x86_64` launcher payload.
+- Verified postconditions:
+  - `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app` exists,
+  - packaging-time `plutil` and `codesign --verify --deep --strict --verbose=2` checks pass,
+  - `diagnostics/macos-aarch64/final-app-x86_64-audit-after-tycho-275.txt` reports `HITS 0`.
 
 #### Exploratory Phase 3 notes from the early Tycho probe
 

@@ -16,7 +16,7 @@
 
 		<!-- Compilation settings -->
 		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
-		<tycho-version>2.2.0</tycho-version>
+		<tycho-version>2.7.5</tycho-version>
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.compiler.source>11</maven.compiler.source>
 		<javadesigner.annotation.version>2.2.0</javadesigner.annotation.version>

@@ -1,9 +1,10 @@
 # Copilot instructions for Modelio
 
 ## Repository summary
-- Modelio is an Eclipse RCP / Tycho monorepo for the **Modelio 5.4.1** desktop modeling tool.
-- This repo is being modernized while preserving a working native macOS Apple Silicon product path.
-- Main technologies: **Java 11**, Maven, Tycho **2.2.0**, OSGi bundles, Eclipse features, `.product` packaging, XML descriptors.
+- Modelio is an Eclipse RCP / Tycho monorepo for the **Modelio 5.4.1** UML modelling tool.
+- This repo is being modernized while preserving a working native macOS Apple Silicon product path. 
+- The goal is eventually to move to Tycho 5.0.2, Eclipse RCP 2026-03, and Java 21 or Java 25 if possible.
+- Main technologies: currently: **Java 11**, Maven, Tycho **2.7.5**, OSGi bundles, Eclipse features, `.product` packaging, XML descriptors.
 - Main source is under `modelio/`; feature composition is under `features/opensource/`; product packaging is under `products/`; target-platform inputs are under `dev-platform/rcp-target/`; staged build entrypoints are under `AGGREGATOR/`.
 - The currently validated native path is **macOS Apple Silicon** via `platform.mac.aarch64`. Prefer that profile unless the task explicitly targets another platform.
 
@@ -13,14 +14,15 @@ export JAVA_HOME=/opt/local/Library/Java/JavaVirtualMachines/openjdk11-temurin/C
 mvn -version
 ```
 - Validated runtime/tooling in this workspace: Maven **3.9.14**, Java **11.0.30**.
-- If Maven runs on Java 21+, Tycho 2.2.0 may fail with `Unknown OSGi execution environment`; always set `JAVA_HOME` first.
+- If Maven runs on Java 21+, Tycho may fail with `Unknown OSGi execution environment`; always set `JAVA_HOME` first.
 - Prefer **MacPorts** tooling. Toolchain templates exist in `maven/toolchains.macos.macports.xml` and `AGGREGATOR/toolchains.xml`, but the most reliable build bootstrap is still `JAVA_HOME`.
 - The shell is flaky. Prefer one command per invocation or a temporary script. **Do not use `&` command chaining.**
 - For scratch validation, use a fresh local Maven repo instead of `~/.m2` to avoid stale Tycho/p2 mirror state.
+- British spelling is to be used when creating any new documentation.
 
 ## Commands to trust first
 ### Fastest full validation
-Validated in this workspace (~**3 min 23 s**):
+Validated in this workspace (~**3 min 51 s**):
 ```zsh
 export JAVA_HOME=/opt/local/Library/Java/JavaVirtualMachines/openjdk11-temurin/Contents/Home
 mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch \
@@ -30,14 +32,14 @@ mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch \
 Postcondition: `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app` exists.
 
 ### Smallest-scope target validation
-Validated in this workspace (~**29 s**):
+Validated in this workspace (~**36 s**):
 ```zsh
 export JAVA_HOME=/opt/local/Library/Java/JavaVirtualMachines/openjdk11-temurin/Contents/Home
 mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-prebuild \
   -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/prebuild/pom.xml \
   -Pplatform.mac.aarch64 verify
 ```
-Use this first when editing `pom.xml`, `products/pom.xml`, `dev-platform/rcp-target/**`, or overlay repos.
+Use this first when editing `pom.xml`, `products/pom.xml`, `dev-platform/rcp-target/**`, or overlay repos. It now refreshes the Apple Silicon overlay p2 sites (`launcher-arm64`, `macos-arm64`, `jna`) before validating `rcp.target`.
 
 ### Split staged build for scoped work
 Use one shared scratch repo for the whole cycle and delete it first:
