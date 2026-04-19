@@ -19,8 +19,7 @@
 - Product packaging variants are profile-driven in `products/pom.xml`:
   - `product.org` for the OpenSource product archive.
   - `repositoryP2` for p2 repository output.
-  - `platform.linux`, `platform.win`, and `platform.mac` to constrain target environments.
-  - `platform.mac` targets `macosx/cocoa/x86_64` (Intel mac; Apple Silicon runs via Rosetta).
+  - `platform.mac.aarch64` for the supported native Apple Silicon product path.
 - Root `pom.xml` holds shared Tycho config and local p2 repository wiring; avoid duplicating repository declarations in child modules.
 
 ## Project-specific patterns to preserve
@@ -46,7 +45,7 @@
 - Validate target definition first when dependencies change: run Maven from `AGGREGATOR/prebuild/pom.xml`.
 - Build only the affected plugin family via `AGGREGATOR/plugins/{core|platform|app|uml|bpmn|plugdules}/pom.xml`.
 - Rebuild impacted features via `AGGREGATOR/features/opensource/pom.xml` when plugin membership or feature.xml changes.
-- Run product packaging only after plugin+feature success, using `AGGREGATOR/products/pom.xml` or `products/pom.xml` with `product.org` / `repositoryP2` and optional `platform.linux` / `platform.win` / `platform.mac`.
+- Run product packaging only after plugin+feature success, using `AGGREGATOR/products/pom.xml` or `products/pom.xml` with `product.org` and `platform.mac.aarch64` for the supported product path, or `repositoryP2` when you only need p2 repository output.
 - There are no obvious `eclipse-test-plugin` modules in current poms; rely on targeted Tycho compile/package validation across touched aggregators.
 
 ## Existing AI-instruction sources found

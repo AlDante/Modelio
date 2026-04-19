@@ -45,77 +45,12 @@
 	</build>
 
 	<profiles>
-		<profile>
-			<!-- Package all products for all supported platform -->
-			<id>package.all</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>${tycho-groupid}</groupId>
-						<artifactId>target-platform-configuration</artifactId>
-						<version>${tycho-version}</version>
-						<configuration>
-						<environments>
-							<environment>
-								<os>linux</os>
-								<ws>gtk</ws>
-								<arch>x86_64</arch>
-							</environment>
-							<environment>
-								<os>win32</os>
-								<ws>win32</ws>
-								<arch>x86_64</arch>
-							</environment>
-							<environment>
-								<os>macosx</os>
-								<ws>cocoa</ws>
-								<arch>x86_64</arch>
-							</environment>
-						</environments>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>${tycho-groupid}</groupId>
-					<artifactId>tycho-p2-director-plugin</artifactId>
-						<version>${tycho-version}</version>
-						<executions>
-							<execution>
-								<id>products</id>
-								<goals>
-									<goal>materialize-products</goal>
-									<goal>archive-products</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<products>
-								<product>
-									<id>org.modelio.product</id>
-									<attachId>OpenSource</attachId>
-									<rootFolder>${modelio.rootFolder}</rootFolder>
-								</product>
-							</products>
-							<installFeatures>true</installFeatures>
-							<profile>DefaultProfile</profile>
-						<formats>
-							<linux>tar.gz</linux>
-							<win32>zip</win32>
-							<macosx>tar.gz</macosx>
-						</formats>
-					</configuration>
-				</plugin>
-			</plugins>
-		</build>
-	</profile>
-
 	<!-- The following profiles allow to choose the Modelio packagings -->
 		<!-- Enable theses profiles in order to package them -->
 		<!-- - product.org -->
 		<!-- - product.com -->
 		<!-- - product.saas -->
-		<!-- - platform.linux -->
-		<!-- - platform.win -->
-		<!-- - platform.mac -->
+		<!-- - platform.mac.aarch64 -->
 		<!-- - repositoryP2 -->
 		<profile>
 			<id>product.org</id>
@@ -200,83 +135,6 @@
 			</plugins>
 		</build>
 	</profile>
-	<profile>
-		<id>platform.linux</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>${tycho-groupid}</groupId>
-						<artifactId>target-platform-configuration</artifactId>
-						<version>${tycho-version}</version>
-						<configuration>
-							<environments>
-								<environment>
-									<os>linux</os>
-									<ws>gtk</ws>
-									<arch>x86_64</arch>
-								</environment>
-							</environments>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>platform.win</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>${tycho-groupid}</groupId>
-						<artifactId>target-platform-configuration</artifactId>
-						<version>${tycho-version}</version>
-						<configuration>
-							<environments>
-								<environment>
-									<os>win32</os>
-									<ws>win32</ws>
-									<arch>x86_64</arch>
-								</environment>
-							</environments>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>platform.mac</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>${tycho-groupid}</groupId>
-						<artifactId>target-platform-configuration</artifactId>
-						<version>${tycho-version}</version>
-						<configuration>
-							<dependency-resolution>
-								<extraRequirements>
-									<requirement>
-										<type>eclipse-plugin</type>
-										<id>org.eclipse.equinox.launcher.cocoa.macosx</id>
-										<versionRange>[1.2.200.v20210527-0259,1.2.200.v20210527-0259]</versionRange>
-									</requirement>
-									<requirement>
-										<type>eclipse-plugin</type>
-										<id>org.eclipse.equinox.launcher.cocoa.macosx.aarch64</id>
-										<versionRange>[1.2.200.v20210527-0259,1.2.200.v20210527-0259]</versionRange>
-									</requirement>
-								</extraRequirements>
-							</dependency-resolution>
-							<environments>
-								<environment>
-									<os>macosx</os>
-									<ws>cocoa</ws>
-									<arch>x86_64</arch>
-								</environment>
-							</environments>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 		<profile>
 			<id>platform.mac.aarch64</id>
 			<properties>

@@ -786,6 +786,56 @@ Interpretation after this slice:
 - `org.modelio.e4.rcp` now treats the newer SWT overlay as an Apple Silicon-specific exception rather than a broader cross-platform replacement family,
 - the next bounded platform task should revisit whether the remaining non-aarch64 launcher/profile residue should also be narrowed to the supported path.
 
+#### Launcher-fragment narrowing for the supported Apple Silicon path - completed on 2026-04-19
+Changes completed in this bounded slice:
+- removed the explicit `org.eclipse.equinox.launcher.cocoa.macosx.x86_64` pin from `features/opensource/org.modelio.e4.rcp/feature.xml`,
+- removed the explicit `org.eclipse.equinox.launcher.gtk.linux.ppc64le` pin from the same feature,
+- removed the explicit `org.eclipse.equinox.launcher.gtk.linux.aarch64` pin from the same feature,
+- removed the explicit `org.eclipse.equinox.launcher.gtk.linux.x86_64` pin from the same feature,
+- removed the explicit `org.eclipse.equinox.launcher.win32.win32.x86_64` pin from the same feature,
+- kept the core `org.eclipse.equinox.launcher` bundle and the supported `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` fragment pin in place.
+
+Reason for this slice:
+- after the earlier SWT narrowing, the most obvious remaining cross-platform residue inside `org.modelio.e4.rcp` was the explicit launcher-fragment set for unsupported Intel mac, Linux, and Windows targets,
+- the repo guidance for this modernization stream now treats macOS Apple Silicon as the only supported runtime path,
+- narrowing the launcher fragment composition reduced another layer of mixed-train, cross-platform residue without broadening the change into product-profile deletion or target re-vendoring.
+
+Validation completed:
+- `AGGREGATOR/prebuild/pom.xml -Pplatform.mac.aarch64 clean install` succeeded with a fresh scratch Maven repository,
+- `AGGREGATOR/plugins/pom.xml -Pplatform.mac.aarch64 clean install` succeeded against the same scratch repository,
+- `AGGREGATOR/features/opensource/pom.xml -Pplatform.mac.aarch64 clean install` succeeded against the same scratch repository,
+- `AGGREGATOR/doc/pom.xml clean install` succeeded against the same scratch repository,
+- `AGGREGATOR/products/pom.xml -Pplatform.mac.aarch64,product.org clean package` succeeded against the same scratch repository.
+
+Interpretation after this slice:
+- `org.modelio.e4.rcp` now carries only the Apple Silicon launcher fragment as an explicit launcher override,
+- the remaining legacy profile residue now lives primarily in profile definitions such as `platform.mac`, `platform.win`, and `platform.linux`, which should be handled in a separate bounded product/profile cleanup slice rather than mixed into feature composition work.
+
+#### Product/profile cleanup for the supported Apple Silicon path - completed on 2026-04-19
+Changes completed in this bounded slice:
+- removed the legacy `package.all` profile from `products/pom.xml`,
+- removed the unsupported `platform.linux`, `platform.win`, and `platform.mac` packaging profiles from `products/pom.xml`,
+- kept `product.org`, `repositoryP2`, and `platform.mac.aarch64` in `products/pom.xml`,
+- removed the unsupported `platform.mac` profile from the root `pom.xml`,
+- removed the unsupported `platform.mac` profile from `maven/modelio-parent/pom.xml`,
+- updated `AGENTS.md` so the documented packaging contract now treats `platform.mac.aarch64` as the supported product profile.
+
+Reason for this slice:
+- after the SWT and launcher-fragment narrowing work, the remaining platform residue was concentrated in legacy packaging/profile declarations rather than feature composition,
+- the repo guidance for this modernization stream now treats macOS Apple Silicon as the only supported build and packaging target,
+- removing those unsupported product/profile declarations reduced configuration drift without changing the validated Apple Silicon path itself.
+
+Validation completed:
+- `AGGREGATOR/prebuild/pom.xml -Pplatform.mac.aarch64 clean install` succeeded with a fresh scratch Maven repository,
+- `AGGREGATOR/plugins/pom.xml -Pplatform.mac.aarch64 clean install` succeeded against the same scratch repository,
+- `AGGREGATOR/features/opensource/pom.xml -Pplatform.mac.aarch64 clean install` succeeded against the same scratch repository,
+- `AGGREGATOR/doc/pom.xml clean install` succeeded against the same scratch repository,
+- `AGGREGATOR/products/pom.xml -Pplatform.mac.aarch64,product.org clean package` succeeded against the same scratch repository.
+
+Interpretation after this slice:
+- the supported Apple Silicon packaging path is now less encumbered by obsolete Linux, Windows, and Intel mac profile declarations,
+- the next meaningful platform step is no longer profile pruning; it is either deciding whether historical docs like `MACOS_RECOVERY_PLAN.md` should be retired or moving on to the larger coherent-target / RCP re-vendoring work.
+
 #### Bounded Tycho 2.7.5 retry preparation - ready state as of 2026-04-16
 Why the retry is now cleaner than before:
 - the main staged reactor is green again on `Tycho 2.2.0`;
