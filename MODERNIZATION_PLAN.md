@@ -836,6 +836,45 @@ Interpretation after this slice:
 - the supported Apple Silicon packaging path is now less encumbered by obsolete Linux, Windows, and Intel mac profile declarations,
 - the next meaningful platform step is no longer profile pruning; it is either deciding whether historical docs like `MACOS_RECOVERY_PLAN.md` should be retired or moving on to the larger coherent-target / RCP re-vendoring work.
 
+#### Phase 5 preparation audit - coherent RCP re-vendoring boundary refreshed on 2026-04-19
+Audit goal:
+- identify the exact platform layers that still define the real modernization boundary after the Apple Silicon cleanup work,
+- avoid treating the remaining work as a vague “upgrade Eclipse” task when the repo still contains a very specific hybrid contract.
+
+Current audited platform stack:
+- the vendored base repository `dev-platform/rcp-target/rcp-eclipse/eclipse` still publishes the Eclipse `4.18 / 2020-12` train, including:
+  - `org.eclipse.platform.feature.group` `4.18.0.v20201202-1800`,
+  - `org.eclipse.rcp.feature.group` `4.18.0.v20201202-1800`,
+  - `org.eclipse.e4.rcp.feature.group` `4.18.0.v20201202-1103`,
+  - `org.eclipse.swt` `3.115.100.v20201202-1103`.
+- the active Apple Silicon overlay repositories still publish these replacement units on top of that baseline:
+  - `swt/` publishes `org.eclipse.swt` `3.120.0.v20220530-1036` plus mac SWT fragments including `org.eclipse.swt.cocoa.macosx.aarch64`,
+  - `launcher-arm64/` publishes `org.eclipse.equinox.launcher.cocoa.macosx` and `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` `1.2.200.v20210527-0259`,
+  - `macos-arm64/` publishes `org.eclipse.core.filesystem.macosx` `1.3.400.v20220812-1420` and `org.eclipse.equinox.security.macosx` `1.101.400.v20210427-1958`,
+  - `jna/repository/` publishes `com.sun.jna` and `com.sun.jna.platform` `5.18.1`.
+- the repo-owned feature and product layers that still sit directly on that contract are:
+  - `features/opensource/org.modelio.e4.rcp/feature.xml` at `4.18.0.v20201202-1103`,
+  - `features/opensource/org.modelio.rcp/feature.xml` at `4.18.0.v20201202-1800`,
+  - `features/opensource/org.modelio.platform.feature/feature.xml` at `4.18.0.v20201202-1800`,
+  - `products/modelio-os.product`, which still includes `org.modelio.e4.rcp`, `org.modelio.rcp`, and `org.modelio.platform.feature` directly.
+
+Interpretation from this audit:
+- the project is no longer blocked by packaging/profile residue; the remaining modernization boundary is the still-vendored `4.18` runtime contract itself,
+- the next real platform step cannot be just “bump one overlay” or “edit one feature”; the base `eclipse/` repository and the three repo-owned feature layers above it now need to be treated as one change set,
+- because `products/modelio-os.product` includes those features directly, product metadata belongs in the first coherent re-vendoring slice rather than as a later afterthought.
+
+Chosen first coherent re-vendoring slice to prepare next:
+- prepare a parallel replacement for the `dev-platform/rcp-target/rcp-eclipse/eclipse` baseline repository,
+- then repin together, in one bounded slice:
+  - `features/opensource/org.modelio.e4.rcp/feature.xml`,
+  - `features/opensource/org.modelio.rcp/feature.xml`,
+  - `features/opensource/org.modelio.platform.feature/feature.xml`,
+  - `products/modelio-os.product`.
+
+Explicit non-goal for that first slice:
+- do **not** attempt Java 25, Tycho uplift, or unrelated product-behaviour cleanup at the same time,
+- do **not** treat the current overlay generators as the destination state; after the base train is re-vendored, each overlay should be re-justified or removed.
+
 #### Bounded Tycho 2.7.5 retry preparation - ready state as of 2026-04-16
 Why the retry is now cleaner than before:
 - the main staged reactor is green again on `Tycho 2.2.0`;
