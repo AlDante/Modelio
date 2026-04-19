@@ -40,7 +40,7 @@ mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-prebuild \
   -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/prebuild/pom.xml \
   -Pplatform.mac.aarch64 verify
 ```
-Use this first when editing `pom.xml`, `products/pom.xml`, `dev-platform/rcp-target/**`, or overlay repos. It now refreshes the Apple Silicon overlay p2 sites (`launcher-arm64`, `macos-arm64`, `jna`) before validating `rcp.target`.
+Use this first when editing `pom.xml`, `products/pom.xml`, `dev-platform/rcp-target/**`, or overlay repos. It now refreshes the Apple Silicon overlay p2 sites (`swt`, `launcher-arm64`, `macos-arm64`, `jna`) before validating `rcp.target`.
 
 ### Split staged build for scoped work
 Use one shared scratch repo for the whole cycle and delete it first:

@@ -83,6 +83,7 @@ mvn -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/prebuild/pom.xml -Pplatform.
 ```
 
 This standalone `verify` form is enough when you only want to validate the target definition.
+The current prebuild reactor refreshes the repo-owned Apple Silicon overlay repositories (`swt`, `launcher-arm64`, `macos-arm64`, and `jna`) before validating `rcp.target`.
 If you are driving the build as separate IntelliJ Maven targets with a fresh scratch local repository,
 use the split scratch sequence in section `2.7` instead so the generated target artifact is installed for later stages.
 

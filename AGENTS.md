@@ -14,7 +14,7 @@
 
 ## Canonical build entrypoints
 - Full staged build (prebuild + plugins + features + products): run from `AGGREGATOR/pom.xml`.
-- Prebuild validates target-definition modules first (`AGGREGATOR/prebuild/pom.xml` now refreshes the Apple Silicon overlay repos `launcher-arm64`, `macos-arm64`, and `jna` before building root + `dev-platform/rcp-target`).
+- Prebuild validates target-definition modules first (`AGGREGATOR/prebuild/pom.xml` now refreshes the Apple Silicon overlay repos `swt`, `launcher-arm64`, `macos-arm64`, and `jna` before building root + `dev-platform/rcp-target`).
 - Run Maven on `Java 21` for the current Tycho baseline; the supported macOS `aarch64` product path now validates with Java 21 launcher metadata and no active `openjdk-jre11` target wiring.
 - Product packaging variants are profile-driven in `products/pom.xml`:
   - `product.org` for the OpenSource product archive.

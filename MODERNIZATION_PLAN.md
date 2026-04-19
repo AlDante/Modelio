@@ -16,7 +16,7 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
 
 ## Build-orchestration note from 2026-04-18
 - The temporary mixed-Tycho reactor blocker is gone because the main build, the shared modelio parent, and the docs parent are now all aligned on `Tycho 5.0.2`.
-- `AGGREGATOR/prebuild/pom.xml` now refreshes the stable Apple Silicon overlay repositories (`launcher-arm64`, `macos-arm64`, `jna`) before validating `dev-platform/rcp-target/rcp.target`.
+- `AGGREGATOR/prebuild/pom.xml` now refreshes the stable Apple Silicon overlay repositories (`swt`, `launcher-arm64`, `macos-arm64`, `jna`) before validating `dev-platform/rcp-target/rcp.target`.
 - The product-side `separateEnvironments` warning was removed from `products/pom.xml`, and the packaged macOS app no longer needs an explicit `org.eclipse.equinox.executable` feature entry to materialize successfully.
 - `Tycho 5.0.2` must be run on `Java 21`; attempting to run Maven on `Java 11` now fails before project resolution with `P2ArtifactRepositoryLayout has been compiled by a more recent version of the Java Runtime`.
 - This is a build-tool runtime requirement first, and the supported macOS `aarch64` product path now also validates with Java 21 launcher metadata and no active `openjdk-jre11` target wiring.
@@ -743,6 +743,25 @@ Interpretation after this cleanup:
 - the supported macOS `aarch64` path no longer carries active `openjdk-jre11` target or shared repository wiring,
 - the still-present `dev-platform/pack-resources/openjdk-jre11/` directory now appears to be historical or for unsupported non-macOS paths rather than an active input for the validated Apple Silicon build,
 - the next meaningful step is no longer Java-baseline wiring cleanup; it is broader platform modernisation work on top of the now-green Java 21 macOS baseline.
+
+#### Mixed-train RCP audit refresh and first coherent-target cleanup slice - completed on 2026-04-19
+Audit refresh findings from the current repo state:
+- the active RCP target is still a deliberate hybrid made from `dev-platform/rcp-target/rcp-eclipse/eclipse`, `eclipse-fr`, `swt`, `launcher-arm64`, `macos-arm64`, and `jna/repository`,
+- `eclipse-fr` is still a live input rather than removable baggage because `features/opensource/org.modelio.platform.libraries/feature.xml` still includes `org.eclipse.jface.nl_fr`,
+- the broad SWT overlay remains the least-minimal mixed-train input because `features/opensource/org.modelio.e4.rcp/feature.xml` still explicitly pins `org.eclipse.swt.win32.win32.x86_64`, `org.eclipse.swt.gtk.linux.x86_64`, `org.eclipse.swt.cocoa.macosx.x86_64`, and `org.eclipse.swt.cocoa.macosx.aarch64` at `3.120.0.v20220530-1036`,
+- that means the first coherent-target slice should not yet try to remove `eclipse-fr` or prune non-mac SWT fragments directly, because those would now broaden into feature-composition changes rather than target hygiene.
+
+Chosen first cleanup slice:
+- make the active overlay set reproducible as one coherent prebuild contract before narrowing any feature composition,
+- specifically, add `dev-platform/rcp-target/rcp-eclipse/swt` to `AGGREGATOR/prebuild/pom.xml` so all currently active non-baseline Apple Silicon overlays (`swt`, `launcher-arm64`, `macos-arm64`, and `jna`) are refreshed together before the root build and `dev-platform/rcp-target` target-definition validation.
+
+Validation completed for this slice:
+- `AGGREGATOR/prebuild/pom.xml -Pplatform.mac.aarch64 clean install` succeeded on `Java 21` with a fresh scratch Maven repository at `/Users/david/IdeaProjects/Modelio/tmp/m2-coherent-target-prebuild`,
+- reactor result: `swt-4-24-p2-site`, `equinox-launcher-arm64-p2-site`, `macos-arm64-p2-site`, `jna-p2-site`, `modelio-parent`, `rcp`, and `aggregator-prebuild` all finished `SUCCESS`.
+
+Interpretation after this slice:
+- the mixed-train target is still intentionally hybrid, but the active overlay portion is now regenerated coherently rather than partly checked-in and partly refreshed,
+- the next bounded platform step should focus on narrowing feature composition for the supported Apple Silicon path, with the SWT overlay being the first high-value candidate because it still carries unsupported Windows, Linux, and Intel mac fragment pins.
 
 #### Bounded Tycho 2.7.5 retry preparation - ready state as of 2026-04-16
 Why the retry is now cleaner than before:
