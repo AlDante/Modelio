@@ -763,6 +763,29 @@ Interpretation after this slice:
 - the mixed-train target is still intentionally hybrid, but the active overlay portion is now regenerated coherently rather than partly checked-in and partly refreshed,
 - the next bounded platform step should focus on narrowing feature composition for the supported Apple Silicon path, with the SWT overlay being the first high-value candidate because it still carries unsupported Windows, Linux, and Intel mac fragment pins.
 
+#### SWT feature-composition narrowing for the supported Apple Silicon path - completed on 2026-04-19
+Changes completed in this bounded slice:
+- removed the explicit `org.eclipse.swt.win32.win32.x86_64` pin from `features/opensource/org.modelio.e4.rcp/feature.xml`,
+- removed the explicit `org.eclipse.swt.gtk.linux.x86_64` pin from the same feature,
+- removed the explicit `org.eclipse.swt.cocoa.macosx.x86_64` pin from the same feature,
+- kept the newer SWT base bundle `org.eclipse.swt` and the supported `org.eclipse.swt.cocoa.macosx.aarch64` fragment pin in place.
+
+Reason for this slice:
+- the repo guidance now treats macOS Apple Silicon as the only supported runtime path,
+- the SWT overlay had remained the broadest mixed-train exception because `org.modelio.e4.rcp` still pinned newer SWT fragments for unsupported Windows, Linux, and Intel mac targets,
+- narrowing those pins reduced cross-platform skew without changing the approved Apple Silicon overlay family itself.
+
+Validation completed:
+- `AGGREGATOR/prebuild/pom.xml -Pplatform.mac.aarch64 clean install` succeeded with a fresh scratch Maven repository,
+- `AGGREGATOR/plugins/pom.xml -Pplatform.mac.aarch64 clean install` succeeded against the same scratch repository,
+- `AGGREGATOR/features/opensource/pom.xml -Pplatform.mac.aarch64 clean install` succeeded against the same scratch repository,
+- `AGGREGATOR/doc/pom.xml clean install` succeeded against the same scratch repository,
+- `AGGREGATOR/products/pom.xml -Pplatform.mac.aarch64,product.org clean package` succeeded against the same scratch repository.
+
+Interpretation after this slice:
+- `org.modelio.e4.rcp` now treats the newer SWT overlay as an Apple Silicon-specific exception rather than a broader cross-platform replacement family,
+- the next bounded platform task should revisit whether the remaining non-aarch64 launcher/profile residue should also be narrowed to the supported path.
+
 #### Bounded Tycho 2.7.5 retry preparation - ready state as of 2026-04-16
 Why the retry is now cleaner than before:
 - the main staged reactor is green again on `Tycho 2.2.0`;
