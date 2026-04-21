@@ -6,7 +6,7 @@
 		<location path="dev-platform/rcp-target/javax/jaxb" type="Directory"/>
 
 		<!-- Eclipse RCP platform -->
-		<location path="dev-platform/rcp-target/rcp-eclipse/eclipse" type="Directory"/>
+		<location path="dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03" type="Directory"/>
 		<location path="dev-platform/rcp-target/rcp-eclipse/eclipse-fr" type="Directory"/>
 		<location path="dev-platform/rcp-target/rcp-eclipse/launcher-arm64" type="Directory"/>
 		<location path="dev-platform/rcp-target/rcp-eclipse/macos-arm64" type="Directory"/>

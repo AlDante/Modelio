@@ -1099,6 +1099,45 @@ Practical consequence of this extra prep step:
 - the next grouped patch no longer needs to guess either the replacement versions or the direct staged artefacts for the three affected repo-owned feature layers,
 - the first grouped repinning patch can now be authored directly from `repin-suggestions.json`, while still leaving `dev-platform/rcp-target/rcp.target` and the active baseline repo untouched until that patch is ready.
 
+#### Phase 5 execution slice - grouped repo-owned feature repinning prepared on 2026-04-20
+Changes completed in this slice:
+- repinned `features/opensource/org.modelio.e4.rcp/feature.xml` from the old `4.18 / 2020-12` Eclipse pin set to the staged `2026-03` versions for the E4 workbench, Equinox runtime, SWT, launcher, JFace, and JNA-facing entries,
+- repaired the previously stray `org.eclipse.swt` text lines in that feature back into a proper `<plugin .../>` entry and set it to `3.133.0.v20260225-1014`,
+- removed the two Chromium fragment pins that are absent from the staged `2026-03` train:
+  - `org.eclipse.swt.browser.chromium.win32.win32.x86_64`,
+  - `org.eclipse.swt.browser.chromium.gtk.linux.x86_64`,
+- repinned `features/opensource/org.modelio.rcp/feature.xml` to the staged `2026-03` workbench/UI shell versions and aligned its include on the repinned `org.modelio.e4.rcp` feature version,
+- repinned `features/opensource/org.modelio.platform.feature/feature.xml` to the staged `2026-03` platform/IDE versions, aligned its include on the repinned `org.modelio.rcp` feature version, and removed the legacy native fragment pins that are absent from the staged train:
+  - `org.eclipse.core.net.linux.x86_64`,
+  - `org.eclipse.core.net.win32.x86_64`,
+  - `org.eclipse.core.resources.win32.x86_64`,
+  - `org.eclipse.core.filesystem.win32.x86_64`,
+  - `org.eclipse.equinox.security.win32.x86_64`,
+  - `org.eclipse.equinox.security.linux.x86_64`.
+
+Resulting feature versions after the grouped patch:
+- `org.modelio.e4.rcp` = `4.39.0.v20260225-1014`,
+- `org.modelio.rcp` = `4.39.0.v20260226-0420`,
+- `org.modelio.platform.feature` = `4.39.0.v20260226-0420`.
+
+Validation completed for this slice:
+- direct XML/error validation on the three edited feature files found no problems,
+- a metadata-level consistency check using `tmp/validate_feature_repin.py` completed successfully and confirmed that every repinned `org.eclipse.*` and `com.sun.jna*` entry in:
+  - `features/opensource/org.modelio.e4.rcp/feature.xml`,
+  - `features/opensource/org.modelio.rcp/feature.xml`,
+  - `features/opensource/org.modelio.platform.feature/feature.xml`
+  now exists at the same version in the staged `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/content.xml` metadata.
+
+Important boundary after this slice:
+- the repo-owned feature layers are now repinned to the staged `2026-03` metadata contract,
+- but the active target and shared repository wiring still point at the live `rcp-eclipse/eclipse` baseline,
+- and the staged `eclipse-2026-03/` directory is still only a metadata-first staging area plus the bounded `slice-cache/`, not yet a complete active replacement repository.
+
+Practical next step after this grouped patch:
+- materialise the bounded active target slice needed to resolve the repinned features from the staged `2026-03` baseline,
+- then update `dev-platform/rcp-target/rcp.target` and the shared p2 repository wiring in one bounded follow-up step,
+- and only then run the normal staged Maven validation ladder against the new baseline.
+
 #### Bounded Tycho 2.7.5 retry preparation - ready state as of 2026-04-16
 Why the retry is now cleaner than before:
 - the main staged reactor is green again on `Tycho 2.2.0`;

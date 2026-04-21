@@ -34,7 +34,7 @@
 		<repository>
 			<id>rcp-Eclipse</id>
 			<layout>p2</layout>
-			<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/eclipse</url>
+			<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03</url>
 		</repository>
 		<repository>
 			<id>rcp-Eclipse-fr</id>
