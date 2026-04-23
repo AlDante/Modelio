@@ -144,7 +144,7 @@ public class BpmnSubProcessEditPart extends AbstractBpmnNodeEditPart {
     @Override
     protected void reorderChild(final EditPart child, final int index) {
         removeChildVisual(child);
-        List<EditPart> achildren = getChildren();
+        List<EditPart> achildren = (List<EditPart>) (List<?>) getChildren();
         achildren.remove(child);
         achildren.add(index, child);
         addChildVisual(child, index);

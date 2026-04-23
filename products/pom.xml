@@ -151,13 +151,8 @@
 								<extraRequirements>
 									<requirement>
 										<type>eclipse-plugin</type>
-										<id>org.eclipse.equinox.launcher.cocoa.macosx</id>
-										<versionRange>[1.2.200.v20210527-0259,1.2.200.v20210527-0259]</versionRange>
-									</requirement>
-									<requirement>
-										<type>eclipse-plugin</type>
 										<id>org.eclipse.equinox.launcher.cocoa.macosx.aarch64</id>
-										<versionRange>[1.2.200.v20210527-0259,1.2.200.v20210527-0259]</versionRange>
+										<versionRange>[1.2.1400.v20250801-0854,1.2.1400.v20250801-0854]</versionRange>
 									</requirement>
 								</extraRequirements>
 							</dependency-resolution>

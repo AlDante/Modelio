@@ -33,6 +33,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
@@ -383,18 +384,24 @@ class WorkflowLayoutEditPolicy extends DefaultFreeZoneLayoutEditPolicy {
             }
             
             // Walk source connections
-            List<GraphicalEditPart> links = ep.getSourceConnections();
-            for (GraphicalEditPart link : links) {
-                if (isLinkToInclude(link, operationSet) && linkEditParts.add(link)) {
-                    graphWalker.accept(link);
+            List<? extends ConnectionEditPart> links = ep.getSourceConnections();
+            for (ConnectionEditPart link : links) {
+                if (link instanceof GraphicalEditPart) {
+                    GraphicalEditPart graphicalLink = (GraphicalEditPart) link;
+                    if (isLinkToInclude(graphicalLink, operationSet) && linkEditParts.add(graphicalLink)) {
+                        graphWalker.accept(graphicalLink);
+                    }
                 }
             }
             
             // Walk target connections
             links = ep.getTargetConnections();
-            for (GraphicalEditPart link : links) {
-                if (isLinkToInclude(link, operationSet) && linkEditParts.add(link)) {
-                    graphWalker.accept(link);
+            for (ConnectionEditPart link : links) {
+                if (link instanceof GraphicalEditPart) {
+                    GraphicalEditPart graphicalLink = (GraphicalEditPart) link;
+                    if (isLinkToInclude(graphicalLink, operationSet) && linkEditParts.add(graphicalLink)) {
+                        graphWalker.accept(graphicalLink);
+                    }
                 }
             
             }

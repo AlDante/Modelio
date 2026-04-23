@@ -387,7 +387,7 @@ public class WorkflowEditPart extends FreeZoneEditPart {
             
             Point offset = getOrigin(parent);
             Rectangle parentBounds = parent.getBounds();
-            List<IFigure> lchildren = parent.getChildren();
+            List<? extends IFigure> lchildren = parent.getChildren();
             for (IFigure f : lchildren) {
                 if (isLaneSet(f)) {
                     Rectangle bounds = getConstraint(f);
@@ -416,7 +416,7 @@ public class WorkflowEditPart extends FreeZoneEditPart {
             final Rectangle lanesetrect = new Rectangle();
             final Rectangle nonlanerect = new Rectangle();
             final Rectangle childRect = new Rectangle();
-            final List<IFigure> children = figure.getChildren();
+            final List<? extends IFigure> children = figure.getChildren();
             for (IFigure child : children) {
                 final Rectangle childConstraint = (Rectangle) this.constraints.get(child);
                 boolean childIsLaneSet = isLaneSet(child);

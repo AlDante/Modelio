@@ -191,28 +191,28 @@ along with Modelio.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
          id="org.eclipse.uml2"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="3.2.0.v201101271655"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.uml2.common"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.6.0.v201105021727"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.uml2.uml"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="3.2.100.v201108110105"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.uml2.uml.resources"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="3.1.100.v201008191510"
          unpack="false"/>
 
    <plugin

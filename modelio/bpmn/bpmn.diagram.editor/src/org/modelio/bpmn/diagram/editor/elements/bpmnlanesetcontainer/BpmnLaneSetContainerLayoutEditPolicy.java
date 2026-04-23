@@ -512,7 +512,7 @@ class BpmnLaneSetContainerLayoutEditPolicy extends OrderedLayoutEditPolicy {
 
     @objid ("7df5a858-9304-4aff-8dba-a34051c1a760")
     protected Command getDeleteChildrenCommand(GroupRequest request) {
-        List<GraphicalEditPart> editParts = request.getEditParts();
+        List<GraphicalEditPart> editParts = (List<GraphicalEditPart>) (List<?>) request.getEditParts();
         CompoundCommand command = new CompoundCommand();
         for (int i = 0; i < editParts.size(); i++) {
             GraphicalEditPart child = editParts.get(i);
@@ -675,11 +675,12 @@ class BpmnLaneSetContainerLayoutEditPolicy extends OrderedLayoutEditPolicy {
         // This is the maximum size of all children.
         // It is used as the minimum size of the container
         Dimension maxRelChildrenSize = new Dimension();
+        List<GraphicalEditPart> resizedEditParts = (List<GraphicalEditPart>) (List<?>) request.getEditParts();
         
         // Handle resizes perpendicular to lane orientation
         for (GraphicalEditPart child : (List<GraphicalEditPart>) getHost().getChildren()) {
             IFigure childFigure = child.getFigure();
-          if (request.getEditParts().contains(child)) {
+          if (resizedEditParts.contains(child)) {
                 Dimension newRelChildSize = getBoundsFor(request, child).getSize();
                 maxRelChildrenSize.union(newRelChildSize);
         
@@ -694,7 +695,7 @@ class BpmnLaneSetContainerLayoutEditPolicy extends OrderedLayoutEditPolicy {
                         moveDirY * Math.abs(childAbsSizeDelta.height));
         
             } else {
-                request.getEditParts().add(child);
+                resizedEditParts.add(child);
                 maxRelChildrenSize.union(childFigure.getMinimumSize());
             }
         }

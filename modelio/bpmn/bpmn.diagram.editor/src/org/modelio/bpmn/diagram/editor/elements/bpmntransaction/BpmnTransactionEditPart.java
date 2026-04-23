@@ -148,7 +148,7 @@ public class BpmnTransactionEditPart extends AbstractBpmnNodeEditPart {
     @Override
     protected void reorderChild(final EditPart child, final int index) {
         removeChildVisual(child);
-        List<EditPart> c = getChildren();
+        List<EditPart> c = (List<EditPart>) (List<?>) getChildren();
         c.remove(child);
         c.add(index, child);
         addChildVisual(child, index);
