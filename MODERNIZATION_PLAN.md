@@ -1130,13 +1130,30 @@ Validation completed for this slice:
 
 Important boundary after this slice:
 - the repo-owned feature layers are now repinned to the staged `2026-03` metadata contract,
-- but the active target and shared repository wiring still point at the live `rcp-eclipse/eclipse` baseline,
-- and the staged `eclipse-2026-03/` directory is still only a metadata-first staging area plus the bounded `slice-cache/`, not yet a complete active replacement repository.
+- the active target and shared repository wiring now point at `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03` in `dev-platform/rcp-target/rcp.target`, `pom.xml`, and `maven/modelio-parent/pom.xml`,
+- and the remaining risk is no longer “make the new train active at all”, but “finish stabilising the active `2026-03` mirror and retire temporary compatibility baggage deliberately”.
 
 Practical next step after this grouped patch:
-- materialise the bounded active target slice needed to resolve the repinned features from the staged `2026-03` baseline,
-- then update `dev-platform/rcp-target/rcp.target` and the shared p2 repository wiring in one bounded follow-up step,
-- and only then run the normal staged Maven validation ladder against the new baseline.
+- keep topping up any missing upstream bundles exposed by the active `2026-03` packaging path until the staged mirror is complete,
+- rerun the normal staged Maven validation ladder from a fresh scratch repository against the active `2026-03` baseline,
+- then audit each remaining overlay/input family (`swt`, `launcher-arm64`, `macos-arm64`, `jna`, and the direct staged mirror contents) to decide which ones are still justified on the fully active train.
+
+#### Deferred post-modernisation follow-up - target-platform provenance and binary ownership
+- The current `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/` mirror is still a correctness-first staging area backed by vendored upstream p2 artefacts, and some packaging fixes have required topping up missing external bundles directly in that mirror.
+- That is acceptable during the active `2026-03` migration because it keeps the modernization slice focused on feature/product correctness rather than on inventing a new provisioning system mid-flight.
+- It is **not** the intended final ownership model.
+- After the full modernization is complete and the `2026-03` stack is green end-to-end, run one final bounded follow-up to decide how those external jars should be provisioned long-term.
+
+Questions that follow-up must answer:
+1. Should the repo continue to vendor the full staged p2 mirror under `dev-platform/rcp-target/rcp-eclipse/**` and commit missing upstream bundles directly?
+2. Should the mirror instead be regenerated from a documented bootstrap step (for example a repo-owned fetch/materialisation script) so clean clones do not depend on ad-hoc manual top-ups?
+3. Which currently vendored overlay repos should remain repo-owned generators (`jna`, any still-justified Apple Silicon overlays) versus plain mirrored upstream inputs?
+4. What minimal reproducibility contract should a clean clone satisfy before the first Maven build starts?
+
+Boundary for now:
+- do **not** broaden the active modernization work into this provisioning redesign yet,
+- do **not** block the current `2026-03` migration on replacing the vendored-mirror approach,
+- treat this as one of the last cleanup tasks, after the modernized product path is already stable and boring.
 
 #### Bounded Tycho 2.7.5 retry preparation - ready state as of 2026-04-16
 Why the retry is now cleaner than before:
