@@ -242,8 +242,8 @@ public class DefaultBendpointEditPolicy extends BendpointEditPolicy {
 
     @objid ("72de9a17-6672-4d84-bf53-4637558588fd")
     @Override
-    protected List<?> createSelectionHandles() {
-        List<Object> newHandles = super.createSelectionHandles();
+    protected List createSelectionHandles() {
+        List newHandles = super.createSelectionHandles();
         return SelectionHandlesBuilder.disableHandlesIfReadOnly(getHost(), newHandles);
     }
 

@@ -47,7 +47,6 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.gef.internal.GEFMessages;
-import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 import org.eclipse.gef.ui.palette.FlyoutPaletteComposite;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 import org.eclipse.gef.ui.palette.PaletteViewer;
@@ -78,6 +77,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.MouseTrackListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
@@ -116,6 +116,34 @@ public class FlyoutPaletteComposite2 extends Composite {
 
     @objid ("65957c24-33f7-11e2-95fe-001ec947c8cc")
     public static final int STATE_HIDDEN = 8;
+
+    private static Color paletteSystemColor(int colorId) {
+        Display display = Display.getCurrent();
+        if (display == null) {
+            display = Display.getDefault();
+        }
+        return display.getSystemColor(colorId);
+    }
+
+    private static Color widgetBackgroundColor() {
+        return paletteSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+    }
+
+    private static Color widgetListBackgroundColor() {
+        return paletteSystemColor(SWT.COLOR_LIST_BACKGROUND);
+    }
+
+    private static Color widgetNormalShadowColor() {
+        return paletteSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW);
+    }
+
+    private static Color widgetDarkShadowColor() {
+        return paletteSystemColor(SWT.COLOR_WIDGET_DARK_SHADOW);
+    }
+
+    private static Color widgetBackgroundListBackground85Color() {
+        return paletteSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW);
+    }
 
     @objid ("65957c26-33f7-11e2-95fe-001ec947c8cc")
     public static final int STATE_EXPANDED = 1;
@@ -806,26 +834,26 @@ public class FlyoutPaletteComposite2 extends Composite {
         void paintSash(GC gc) {
             Rectangle bounds = getBounds();
             if (isInState(FlyoutPaletteComposite2.STATE_PINNED_OPEN)) {
-                gc.setBackground(PaletteColorUtil.WIDGET_BACKGROUND);
+                gc.setBackground(widgetBackgroundColor());
                 gc.fillRectangle(0, 0, bounds.width, bounds.height);
             
-                gc.setForeground(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
+                gc.setForeground(widgetListBackgroundColor());
                 gc.drawLine(0, 0, bounds.width, 0);
-                gc.setForeground(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
+                gc.setForeground(widgetNormalShadowColor());
                 gc.drawLine(0, bounds.height - 1, bounds.width - 1, bounds.height - 1);
-                gc.setForeground(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
+                gc.setForeground(widgetListBackgroundColor());
                 gc.drawLine(0, 0, 0, bounds.height);
-                gc.setForeground(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
+                gc.setForeground(widgetNormalShadowColor());
                 gc.drawLine(bounds.width - 1, 0, bounds.width - 1, bounds.height - 1);
             } else {
-                gc.setForeground(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
+                gc.setForeground(widgetNormalShadowColor());
                 gc.drawLine(0, 0, 0, bounds.height);
                 gc.drawLine(bounds.width - 1, 0, bounds.width - 1, bounds.height);
             
-                gc.setForeground(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
+                gc.setForeground(widgetListBackgroundColor());
                 gc.drawLine(1, 0, 1, bounds.height);
             
-                gc.setForeground(PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_85);
+                gc.setForeground(widgetBackgroundListBackground85Color());
                 gc.drawLine(2, 0, 2, bounds.height);
             }
             
@@ -1218,12 +1246,12 @@ public class FlyoutPaletteComposite2 extends Composite {
             graphics.pushState();
             org.eclipse.draw2d.geometry.Rectangle r = org.eclipse.draw2d.geometry.Rectangle.SINGLETON;
             r.setBounds(getBounds());
-            graphics.setForegroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
-            graphics.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND);
+            graphics.setForegroundColor(widgetListBackgroundColor());
+            graphics.setBackgroundColor(widgetBackgroundColor());
             graphics.fillGradient(r, true);
             
             // draw bottom border
-            graphics.setForegroundColor(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
+            graphics.setForegroundColor(widgetNormalShadowColor());
             graphics.drawLine(r.getBottomLeft().getTranslated(0, -1), r.getBottomRight().getTranslated(0, -1));
             
             graphics.popState();
@@ -1369,8 +1397,8 @@ public class FlyoutPaletteComposite2 extends Composite {
                 
                 this.triangle = new Triangle();
                 this.triangle.setOutline(true);
-                this.triangle.setBackgroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
-                this.triangle.setForegroundColor(PaletteColorUtil.WIDGET_DARK_SHADOW);
+                this.triangle.setBackgroundColor(widgetListBackgroundColor());
+                this.triangle.setForegroundColor(widgetDarkShadowColor());
                 setContents(this.triangle);
                 
             }
@@ -1402,13 +1430,13 @@ public class FlyoutPaletteComposite2 extends Composite {
                 graphics.pushState();
                 org.eclipse.draw2d.geometry.Rectangle r = org.eclipse.draw2d.geometry.Rectangle.SINGLETON;
                 r.setBounds(getBounds());
-                graphics.setForegroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
-                graphics.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND);
+                graphics.setForegroundColor(widgetListBackgroundColor());
+                graphics.setBackgroundColor(widgetBackgroundColor());
                 graphics.fillGradient(r, true);
                 graphics.popState();
                 
                 // draw bottom border
-                graphics.setForegroundColor(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
+                graphics.setForegroundColor(widgetNormalShadowColor());
                 graphics.drawLine(r.getBottomLeft().getTranslated(0, -1), r.getBottomRight().getTranslated(0, -1));
                 
             }

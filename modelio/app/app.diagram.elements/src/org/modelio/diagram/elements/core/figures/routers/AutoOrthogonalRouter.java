@@ -577,7 +577,16 @@ public class AutoOrthogonalRouter extends BendpointConnectionRouter {
     @objid ("1310b8f9-0b28-4d91-b947-0125bad0cef8")
     @SuppressWarnings ("unchecked")
     private List<MPoint> getBendpoints(Connection connection) {
-        return (List<MPoint>) getConstraint(connection);
+        List<MPoint> ret = new ArrayList<>();
+        Object constraint = getConstraint(connection);
+        if (constraint instanceof List<?>) {
+            for (Object bendpoint : (List<?>) constraint) {
+                if (bendpoint instanceof MPoint) {
+                    ret.add((MPoint) bendpoint);
+                }
+            }
+        }
+        return ret;
     }
 
     @objid ("a3745fc5-6399-4760-b708-bfcbb1dfa1df")

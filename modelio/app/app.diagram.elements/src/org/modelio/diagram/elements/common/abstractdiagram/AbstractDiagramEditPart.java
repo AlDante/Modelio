@@ -738,8 +738,8 @@ public class AbstractDiagramEditPart extends AbstractNodeEditPart {
         @objid ("e6becfb4-2ff2-4371-9167-f2861abb8295")
         @Override
         public EditPart getTargetEditPart(Request request) {
-            List<EditPart> l = getHost().getChildren();
-            ListIterator<EditPart> it = l.listIterator(l.size());
+            List<? extends EditPart> l = getHost().getChildren();
+            ListIterator<? extends EditPart> it = l.listIterator(l.size());
             while (it.hasPrevious()) {
                 EditPart o = it.previous();
                 if (o instanceof DrawingLayerEditPart) {

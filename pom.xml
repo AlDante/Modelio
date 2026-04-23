@@ -38,24 +38,14 @@ This pom executes a maven target on ALL the (eclipse) features that compose the 
 					<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03</url>
 				</repository>
 				<repository>
+					<id>rcp-Eclipse-legacy</id>
+					<layout>p2</layout>
+					<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/eclipse</url>
+				</repository>
+				<repository>
 					<id>rcp-Eclipse-fr</id>
 					<layout>p2</layout>
 					<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/eclipse-fr</url>
-				</repository>
-				<repository>
-					<id>SWT</id>
-					<layout>p2</layout>
-					<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/swt</url>
-				</repository>
-				<repository>
-					<id>launcher-arm64</id>
-					<layout>p2</layout>
-					<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/launcher-arm64</url>
-				</repository>
-				<repository>
-					<id>macos-arm64</id>
-					<layout>p2</layout>
-					<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/macos-arm64</url>
 				</repository>
 				<repository>
 					<id>jna</id>
@@ -145,11 +135,6 @@ This pom executes a maven target on ALL the (eclipse) features that compose the 
 					<id>nebula</id>
 					<layout>p2</layout>
 					<url>file://${modelio.ws.path}/dev-platform/rcp-target/org.eclipse/nebula</url>
-				</repository>
-				<repository>
-					<id>gef-draw2d</id>
-					<layout>p2</layout>
-					<url>file://${modelio.ws.path}/dev-platform/rcp-target/org.eclipse/gef-draw2d</url>
 				</repository>
 				<repository>
 					<id>uml2</id>
@@ -305,7 +290,7 @@ This pom executes a maven target on ALL the (eclipse) features that compose the 
 									<requirement>
 										<type>eclipse-plugin</type>
 										<id>org.eclipse.swt.cocoa.macosx.aarch64</id>
-										<versionRange>[3.120.0.v20220530-1036,3.120.0.v20220530-1036]</versionRange>
+													<versionRange>[3.133.0.v20260225-1014,3.133.0.v20260225-1014]</versionRange>
 									</requirement>
 								</extraRequirements>
 							</dependency-resolution>

@@ -139,7 +139,7 @@ public class TranslateChildrenOnResizeEditPolicy extends GraphicalEditPolicy {
                 return;
             
             ChangeBoundsRequest r = new ChangeBoundsRequest(REQ_MOVE_CHILDREN);
-            List<GraphicalEditPart> containerChildren = this.editPart.getChildren();
+            List<? extends GraphicalEditPart> containerChildren = this.editPart.getChildren();
             r.setEditParts(new ArrayList<>(containerChildren));
             r.getMoveDelta().setLocation(tx, ty);
             r.getExtendedData().put("noautoexpand", Boolean.TRUE); // to avoid some infinite loops from auto expand edit policies
@@ -178,14 +178,15 @@ public class TranslateChildrenOnResizeEditPolicy extends GraphicalEditPolicy {
             if (connDx==0 && connDy == 0)
                 return;
             
-            List<GraphicalEditPart> containerChildren = this.editPart.getChildren();
-            
+            List<? extends GraphicalEditPart> containerChildren = this.editPart.getChildren();
+
             // Move all inner connections the difference of container move and children move.
             ChangeBoundsRequest r = new ChangeBoundsRequest(REQ_MOVE);
-            r.setEditParts(new ArrayList<>(containerChildren));
+            List<GraphicalEditPart> movedEditParts = new ArrayList<>(containerChildren);
+            r.setEditParts(movedEditParts);
             r.getMoveDelta().setLocation(connDx, connDy);
             
-            ToolSelectionUtils.addAllLinksFor(r.getEditParts(), r, true);
+            ToolSelectionUtils.addAllLinksFor(movedEditParts, r, true);
             //Some bendpoint policies check source and target are part of the request.
             //r.getEditParts().removeAll(containerChildren);
             for (Object objEp : r.getEditParts()) {

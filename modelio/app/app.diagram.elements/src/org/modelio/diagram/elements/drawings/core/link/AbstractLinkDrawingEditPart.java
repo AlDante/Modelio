@@ -567,7 +567,7 @@ public class AbstractLinkDrawingEditPart extends AbstractConnectionEditPart impl
         
         // Copy of AbstractEditPart#reorderChild(EditPart, int)
         removeChildVisual(child);
-        List<Object> lchildren = getChildren();
+        List<Object> lchildren = (List<Object>) (List<?>) getChildren();
         lchildren.remove(child);
         lchildren.add(index, child);
         addChildVisual(child, index);

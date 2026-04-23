@@ -472,7 +472,7 @@ public class CompositionLinkEditPart extends AbstractConnectionEditPart implemen
         // super.reorderChild(child, index);
         // Copy of AbstractEditPart#reorderChild(EditPart, int)
         removeChildVisual(child);
-        List<Object> lchildren = getChildren();
+        List<Object> lchildren = (List<Object>) (List<?>) getChildren();
         lchildren.remove(child);
         lchildren.add(index, child);
         addChildVisual(child, index);

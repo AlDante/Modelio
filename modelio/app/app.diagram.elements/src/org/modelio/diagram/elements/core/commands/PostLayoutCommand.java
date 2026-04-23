@@ -126,7 +126,7 @@ public class PostLayoutCommand extends CompoundCommand {
         req.setType(REQ_TYPE);
         RequestHelper.addSharedEditParts(req, this.origin);
         
-        for (Iterator<EditPart> iterator = req.getEditParts().iterator(); iterator.hasNext();) {
+        for (Iterator<? extends EditPart> iterator = req.getEditParts().iterator(); iterator.hasNext();) {
             EditPart child = iterator.next();
             collectPostExecuteCommands(req, child);
         }
@@ -143,7 +143,7 @@ public class PostLayoutCommand extends CompoundCommand {
                     return;
                 }
             }
-            for (Iterator<EditPart> iterator = ep.getChildren().iterator(); iterator.hasNext();) {
+            for (Iterator<? extends EditPart> iterator = ep.getChildren().iterator(); iterator.hasNext();) {
                 EditPart child = iterator.next();
                 collectPostExecuteCommands(req, child);
             }

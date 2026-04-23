@@ -19,6 +19,7 @@
  */
 package org.modelio.diagram.elements.core.figures.routers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.IntPredicate;
@@ -259,7 +260,16 @@ public class OrthogonalRectifierRouter extends BendpointConnectionRouter {
     @objid ("e917b8b4-3347-455e-929f-a5ac5ca182e1")
     @SuppressWarnings ("unchecked")
     private List<MPoint> getBendpoints(Connection connection) {
-        return (List<MPoint>) getConstraint(connection);
+        List<MPoint> ret = new ArrayList<>();
+        Object constraint = getConstraint(connection);
+        if (constraint instanceof List<?>) {
+            for (Object bendpoint : (List<?>) constraint) {
+                if (bendpoint instanceof MPoint) {
+                    ret.add((MPoint) bendpoint);
+                }
+            }
+        }
+        return ret;
     }
 
     @objid ("fb9e9f17-fc94-4f85-9252-5840d86182c7")

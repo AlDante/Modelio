@@ -181,12 +181,13 @@ public class AutoExpandHelper {
 
     @objid ("2d56d43b-c120-4574-8109-2758ad86fbbf")
     protected static Dimension computePreferredContainerSize(ChangeBoundsRequest request, EditPart containerEditPart, IFigure layoutContainer) {
-        List<GraphicalEditPart> reqChildren = request.getEditParts();
-        List<GraphicalEditPart> containerChildren = containerEditPart.getChildren();
-        
+        List<? extends EditPart> reqChildren = request.getEditParts();
+        List<? extends EditPart> containerChildren = containerEditPart.getChildren();
+
         // First force container children preferred size depending on whether
         // they are involved in the request or not.
-        for (GraphicalEditPart child : containerChildren) {
+        for (EditPart editPart : containerChildren) {
+            GraphicalEditPart child = (GraphicalEditPart) editPart;
             if (reqChildren.contains(child)) {
                 // Compute involved child bounds from the request and temporary force
                 // their preferred size to the computed one.
@@ -202,19 +203,20 @@ public class AutoExpandHelper {
         Dimension requiredSize = layoutContainer.getPreferredSize();
         
         // restore children old layout
-        for (GraphicalEditPart child : containerChildren) {
-            TempSizeLayout.restore(child.getFigure());
+        for (EditPart editPart : containerChildren) {
+            TempSizeLayout.restore(((GraphicalEditPart) editPart).getFigure());
         }
         return requiredSize;
     }
 
     @objid ("6616b43a-ac78-4bfe-b91d-1553cbacc909")
     protected static Dimension computeRequiredContainerSizeForNewChild(GraphicalEditPart newChild, EditPart containerEditPart, IFigure layoutContainer) {
-        List<GraphicalEditPart> containerChildren = containerEditPart.getChildren();
-        
+        List<? extends EditPart> containerChildren = containerEditPart.getChildren();
+
         // First force container children preferred size depending on whether
         // they are involved in the request or not.
-        for (GraphicalEditPart child : containerChildren) {
+        for (EditPart editPart : containerChildren) {
+            GraphicalEditPart child = (GraphicalEditPart) editPart;
             if (child != newChild) {
                 // force preferred size to current one
                 TempSizeLayout.apply(child.getFigure(), child.getFigure().getSize());
@@ -225,7 +227,8 @@ public class AutoExpandHelper {
         Dimension requiredSize = layoutContainer.getPreferredSize();
         
         // restore children old layout
-        for (GraphicalEditPart child : containerChildren) {
+        for (EditPart editPart : containerChildren) {
+            GraphicalEditPart child = (GraphicalEditPart) editPart;
             if (child != newChild) {
                 TempSizeLayout.restore(child.getFigure());
             }

@@ -27,6 +27,7 @@ import com.modeliosoft.modelio.javadesigner.annotations.objid;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.CompoundSnapToHelper;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
@@ -156,13 +157,15 @@ public class SnapEditPartAdapter {
             if (this.margin > 0 && this.movedInset == null && request instanceof GroupRequest) {
                 // Cache the maximum insets of the dragged element(s)
                 this.movedInset = new Insets();
-                List<GraphicalEditPart> dragged = ((GroupRequest) request).getEditParts();
-                for (GraphicalEditPart ep : dragged) {
-                    Insets inset = ep.getFigure().getInsets();
-                    this.movedInset.top = Math.max(this.movedInset.top, inset.top);
-                    this.movedInset.bottom = Math.max(this.movedInset.bottom, inset.bottom);
-                    this.movedInset.left = Math.max(this.movedInset.left, inset.left);
-                    this.movedInset.right = Math.max(this.movedInset.right, inset.right);
+                for (Object editPartObj : ((GroupRequest) request).getEditParts()) {
+                    if (editPartObj instanceof GraphicalEditPart) {
+                        GraphicalEditPart ep = (GraphicalEditPart) editPartObj;
+                        Insets inset = ep.getFigure().getInsets();
+                        this.movedInset.top = Math.max(this.movedInset.top, inset.top);
+                        this.movedInset.bottom = Math.max(this.movedInset.bottom, inset.bottom);
+                        this.movedInset.left = Math.max(this.movedInset.left, inset.left);
+                        this.movedInset.right = Math.max(this.movedInset.right, inset.right);
+                    }
                 }
             }
             return super.snapRectangle(request, snapOrientation, baseRect, result);

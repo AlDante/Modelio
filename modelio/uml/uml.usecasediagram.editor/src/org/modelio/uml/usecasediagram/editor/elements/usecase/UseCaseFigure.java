@@ -79,7 +79,7 @@ public class UseCaseFigure extends EllipseFigure {
     @objid ("5e6bc1f1-55b7-11e2-877f-002564c97630")
     private void updateChildrenSeparationLine() {
         // Sort out visible and non visible children
-        final List<IFigure> children = getChildren();
+        final List<? extends IFigure> children = getChildren();
         final ArrayList<IFigure> withBorder = new ArrayList<>(children.size());
         final ArrayList<IFigure> withNoBorder = new ArrayList<>(children.size());
         for (IFigure child : children) {

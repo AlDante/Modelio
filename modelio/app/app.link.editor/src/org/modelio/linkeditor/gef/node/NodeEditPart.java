@@ -118,7 +118,7 @@ public class NodeEditPart extends AbstractGraphicalEditPart implements org.eclip
     protected void createEditPolicies() {
         installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new SelectionHandlesEditPolicy() {
             @Override
-            protected List<?> createSelectionHandles() {
+            protected List createSelectionHandles() {
                 return Collections.emptyList();
             }
         });

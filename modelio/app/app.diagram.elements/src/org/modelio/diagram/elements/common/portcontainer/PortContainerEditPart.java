@@ -246,7 +246,7 @@ public class PortContainerEditPart extends AbstractNodeEditPart {
         
         PortContainerLayoutHelper h = new PortContainerLayoutHelper(portContainerFigure);
         Point layoutOrigin = PortContainerLayoutHelper.getLayoutOrigin(portContainerFigure);
-        List<GraphicalEditPart> lchildren = getChildren();
+        List<? extends GraphicalEditPart> lchildren = getChildren();
         for (GraphicalEditPart child : lchildren) {
             GmNodeModel cm = (GmNodeModel) child.getModel();
             if (!pcModel.isSatellite(cm)) {

@@ -7,11 +7,9 @@
 
 		<!-- Eclipse RCP platform -->
 		<location path="dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03" type="Directory"/>
+		<location path="dev-platform/rcp-target/rcp-eclipse/eclipse" type="Directory"/>
 		<location path="dev-platform/rcp-target/rcp-eclipse/eclipse-fr" type="Directory"/>
-		<location path="dev-platform/rcp-target/rcp-eclipse/launcher-arm64" type="Directory"/>
-		<location path="dev-platform/rcp-target/rcp-eclipse/macos-arm64" type="Directory"/>
 		<location path="dev-platform/rcp-target/rcp-eclipse/jna/repository" type="Directory"/>
-		<location path="dev-platform/rcp-target/rcp-eclipse/swt" type="Directory"/>
 
 		<!-- Third-party Libraries re-packaged by Modeliosoft or Modeliosoft libraries -->
 		<location path="dev-platform/rcp-target/modelio-integ/org.astyle/astyle" type="Directory"/>
@@ -30,7 +28,6 @@
 		<location path="dev-platform/rcp-target/org.eclipse/nebula-nattable" type="Directory"/>
 		<location path="dev-platform/rcp-target/org.eclipse/nebula-incubator" type="Directory"/>
 		<location path="dev-platform/rcp-target/org.eclipse/nebula" type="Directory"/>
-		<location path="dev-platform/rcp-target/org.eclipse/gef-draw2d" type="Directory"/>
 		<location path="dev-platform/rcp-target/org.eclipse/uml2" type="Directory"/>
 		<location path="dev-platform/rcp-target/org.eclipse/emf" type="Directory"/>
 		<location path="dev-platform/rcp-target/tmatesoft/svnkit-1.10.9" type="Directory"/>

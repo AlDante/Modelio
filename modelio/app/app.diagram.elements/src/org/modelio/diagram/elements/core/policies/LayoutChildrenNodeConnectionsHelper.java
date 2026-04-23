@@ -92,7 +92,11 @@ public class LayoutChildrenNodeConnectionsHelper {
         if (DISABLED)
             return this;
         
-        this.editParts2.addAll(req.getEditParts());
+        for (EditPart editPart : req.getEditParts()) {
+            if (editPart instanceof GraphicalEditPart) {
+                this.editParts2.add((GraphicalEditPart) editPart);
+            }
+        }
         return this;
     }
 
@@ -102,7 +106,7 @@ public class LayoutChildrenNodeConnectionsHelper {
      * @return this instance
      */
     @objid ("6bd26e1b-876a-4aea-b72f-0a38afe749a8")
-    public LayoutChildrenNodeConnectionsHelper addEditParts(Collection<GraphicalEditPart> nodes) {
+    public LayoutChildrenNodeConnectionsHelper addEditParts(Collection<? extends GraphicalEditPart> nodes) {
         if (DISABLED)
             return this;
         
@@ -202,7 +206,7 @@ public class LayoutChildrenNodeConnectionsHelper {
         if (DISABLED)
             return this;
         
-        this.editParts2.removeAll(req.getEditParts());
+        this.editParts2.removeIf(req.getEditParts()::contains);
         return this;
     }
 

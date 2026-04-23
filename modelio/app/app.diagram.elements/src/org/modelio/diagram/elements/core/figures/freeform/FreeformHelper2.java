@@ -61,7 +61,7 @@ public class FreeformHelper2 implements FreeformListener {
         }
         
         Rectangle r;
-        List<IFigure> children = this.host.getChildren();
+        List<? extends IFigure> children = this.host.getChildren();
         for (IFigure child : children) {
             if (this.extentFilter.test(child)) {
                 if (child instanceof FreeformFigure) {
@@ -127,7 +127,7 @@ public class FreeformHelper2 implements FreeformListener {
         Rectangle childrenBounds = bounds.getCopy();
         this.host.translateFromParent(childrenBounds);
         
-        List<IFigure> children = this.host.getChildren();
+        List<? extends IFigure> children = this.host.getChildren();
         for (IFigure child : children) {
             if (child instanceof FreeformFigure) {
                 ((FreeformFigure) child).setFreeformBounds(childrenBounds);

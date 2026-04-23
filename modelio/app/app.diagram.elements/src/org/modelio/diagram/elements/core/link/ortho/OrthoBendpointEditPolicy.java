@@ -181,7 +181,7 @@ public class OrthoBendpointEditPolicy extends SelectionHandlesEditPolicy impleme
      */
     @objid ("803af83a-1dec-11e2-8cad-001ec947c8cc")
     @Override
-    protected List<?> createSelectionHandles() {
+    protected List createSelectionHandles() {
         boolean userEditable = ((IGmObject) getHost().getModel()).isUserEditable();
         
         List<ConnectionHandle> list = new ArrayList<>();

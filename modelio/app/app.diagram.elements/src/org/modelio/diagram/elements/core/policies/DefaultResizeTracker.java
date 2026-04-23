@@ -19,6 +19,7 @@
  */
 package org.modelio.diagram.elements.core.policies;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.modeliosoft.modelio.javadesigner.annotations.objid;
 import org.eclipse.draw2d.IFigure;
@@ -110,8 +111,8 @@ public class DefaultResizeTracker extends ResizeTracker {
     @objid ("88094cde-a0a3-466f-b022-b4c215f587b0")
     @Override
     protected List createOperationSet() {
-        List<EditPart> ret = super.createOperationSet();
-        
+        List<EditPart> ret = new ArrayList<>(super.createOperationSet());
+
         ret.removeIf(ep -> !(ep instanceof GraphicalEditPart && ((IGmObject) ep.getModel()).isUserEditable()));
         return ret;
     }

@@ -12,9 +12,6 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>../../dev-platform/rcp-target/rcp-eclipse/swt</module>
-		<module>../../dev-platform/rcp-target/rcp-eclipse/launcher-arm64</module>
-		<module>../../dev-platform/rcp-target/rcp-eclipse/macos-arm64</module>
 		<module>../../dev-platform/rcp-target/rcp-eclipse/jna</module>
 		<module>../..</module>
 		<module>../../dev-platform/rcp-target</module>

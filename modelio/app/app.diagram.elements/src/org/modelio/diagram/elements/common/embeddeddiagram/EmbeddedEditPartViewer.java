@@ -77,6 +77,12 @@ class EmbeddedEditPartViewer implements GraphicalViewer {
         
     }
 
+    @objid ("1fb4a9b2-e0aa-4f29-a2b2-02f4f40d1d77")
+    @Override
+    public EditPart getEditPartForModel(Object model) {
+        return (EditPart) getEditPartRegistry().get(model);
+    }
+
     @objid ("6778bac8-98fb-4553-9f43-e62bb9a90e88")
     @Override
     public void addDragSourceListener(TransferDragSourceListener listener) {

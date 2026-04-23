@@ -78,7 +78,7 @@ public class ToolSelectionUtils {
      */
     @objid ("eade2183-e87c-47d4-b1e0-aa70f2eccc34")
     public static Set<GraphicalEditPart> getAllChildrenInDiagram(GraphicalEditPart editPart, Set<GraphicalEditPart> transitiveChildren) {
-        List<GraphicalEditPart> children = editPart.getChildren();
+        List<? extends GraphicalEditPart> children = editPart.getChildren();
         transitiveChildren.addAll(children);
         for (GraphicalEditPart child : children) {
             if (!(child.getModel() instanceof IGmDiagram)) {
@@ -158,7 +158,11 @@ public class ToolSelectionUtils {
         }
         
         HashSet<GraphicalEditPart> ret = new HashSet<>(editParts);
-        ret.addAll(request.getEditParts());
+        for (EditPart editPart : request.getEditParts()) {
+            if (editPart instanceof GraphicalEditPart) {
+                ret.add((GraphicalEditPart) editPart);
+            }
+        }
         return ret;
     }
 
@@ -186,7 +190,7 @@ public class ToolSelectionUtils {
         if (editParts.isEmpty())
             return;
         
-        Map<Object,EditPart> epFactory = null;
+        Map<Object, ?> epFactory = null;
         Collection<IGmDiagram> rootDiagrams = new ArrayList<>(1);
         
         for (GraphicalEditPart ep : editParts) {
@@ -228,17 +232,17 @@ public class ToolSelectionUtils {
         }
         
         for (GraphicalEditPart child : transitiveChildren) {
-            List<GraphicalEditPart> links = child.getSourceConnections();
-            for (GraphicalEditPart link : links) {
+            List<? extends ConnectionEditPart> links = child.getSourceConnections();
+            for (ConnectionEditPart link : links) {
                 if (isLinkToInclude(link, request, editParts, linkTester)) {
-                    linksToAdd.add(link);
+                    linksToAdd.add((GraphicalEditPart) link);
                 }
             }
         
             links = child.getTargetConnections();
-            for (GraphicalEditPart link : links) {
+            for (ConnectionEditPart link : links) {
                 if (isLinkToInclude(link, request, editParts, linkTester)) {
-                    linksToAdd.add(link);
+                    linksToAdd.add((GraphicalEditPart) link);
                 }
         
             }

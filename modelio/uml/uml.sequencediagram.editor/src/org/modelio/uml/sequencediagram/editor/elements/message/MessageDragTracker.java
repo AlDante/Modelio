@@ -154,9 +154,9 @@ public class MessageDragTracker extends SelectEditPartTracker {
      */
     @objid ("d95c0968-55b6-11e2-877f-002564c97630")
     @Override
-    protected List<?> createOperationSet() {
+    protected List createOperationSet() {
         if (getCurrentViewer() != null) {
-            List<?> list = ToolUtilities.getSelectionWithoutDependants(getCurrentViewer());
+            List list = ToolUtilities.getSelectionWithoutDependants(getCurrentViewer());
             return list;
         }
         return new ArrayList<>();
@@ -247,7 +247,7 @@ public class MessageDragTracker extends SelectEditPartTracker {
 
     @objid ("d95d8ff9-55b6-11e2-877f-002564c97630")
     @Override
-    protected Collection<?> getExclusionSet() {
+    protected Collection getExclusionSet() {
         if (this.exclusionSet == null) {
             this.exclusionSet = new ArrayList<>();
             this.exclusionSet.add(getConnection());

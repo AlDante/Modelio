@@ -63,7 +63,7 @@ public class FreeZoneLayout extends XYLayout {
         Point offset = getOrigin(parent);
         Rectangle clientArea = parent.getClientArea();
         
-        Iterator<IFigure> children = parent.getChildren().iterator();
+        Iterator<? extends IFigure> children = parent.getChildren().iterator();
         while (children.hasNext()) {
             IFigure f = children.next();
             Rectangle bounds = getConstraint(f);
@@ -104,7 +104,7 @@ public class FreeZoneLayout extends XYLayout {
     @Override
     protected Dimension calculatePreferredSize(IFigure f, int wHint, int hHint) {
         Rectangle rect = new Rectangle();
-        Iterator<IFigure> children = f.getChildren().iterator();
+        Iterator<? extends IFigure> children = f.getChildren().iterator();
         while (children.hasNext()) {
             IFigure child = children.next();
             Rectangle r = getConstraint(child);

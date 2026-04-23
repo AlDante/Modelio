@@ -238,15 +238,17 @@ public class BaseFreeZoneLayoutEditPolicy extends XYLayoutEditPolicy {
     @Override
     protected Command getAddCommand(final Request genericReq) {
         ChangeBoundsRequest request = (ChangeBoundsRequest) genericReq;
-        List<GraphicalEditPart> editParts = request.getEditParts();
         CompoundCommand command = new CompoundCommand();
         command.setDebugLabel("Add in " + getClass().getSimpleName());//$NON-NLS-1$
         
-        for (GraphicalEditPart child : editParts) {
-            if (child instanceof ConnectionEditPart) {
-                command.add(child.getCommand(genericReq));
-            } else {
-                command.add(createAddCommand(request, child, translateToModelConstraint(getConstraintFor(request, child))));
+        for (EditPart editPart : request.getEditParts()) {
+            if (editPart instanceof GraphicalEditPart) {
+                GraphicalEditPart child = (GraphicalEditPart) editPart;
+                if (child instanceof ConnectionEditPart) {
+                    command.add(child.getCommand(genericReq));
+                } else {
+                    command.add(createAddCommand(request, child, translateToModelConstraint(getConstraintFor(request, child))));
+                }
             }
         }
         return command.unwrap();
@@ -706,7 +708,7 @@ public class BaseFreeZoneLayoutEditPolicy extends XYLayoutEditPolicy {
             helper.setAvoidBendPoints(gmStyle.getBoolean(LayoutAssistantStyleKeys.AVOIDBENDDPOINTS));
         
             // Populate the helper
-            List<GraphicalEditPart> children = getHost().getChildren();
+            List<? extends GraphicalEditPart> children = getHost().getChildren();
             for (GraphicalEditPart child : children) {
                 if (child instanceof AbstractNodeEditPart) {
                     if (!toExclude.contains(child)) {

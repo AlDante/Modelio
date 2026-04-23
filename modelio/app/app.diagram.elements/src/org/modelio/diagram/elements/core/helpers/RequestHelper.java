@@ -31,6 +31,7 @@ import org.eclipse.draw2d.geometry.PrecisionDimension;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
@@ -211,16 +212,18 @@ public class RequestHelper {
      */
     @objid ("b5f66a38-a6f9-47ec-9ad1-0b5f39f63a38")
     public static void addSharedEditParts(GroupRequest req, GroupRequest parentRequest) {
-        List<GraphicalEditPart> editParts = parentRequest.getEditParts();
-        
         Set<GraphicalEditPart> vals = (Set<GraphicalEditPart>) req.getExtendedData().get(SHARED_EDIT_PARTS);
         if (vals == null) {
-            vals = new HashSet<>(editParts.size());
+            vals = new HashSet<>(parentRequest.getEditParts().size());
             req.getExtendedData().put(SHARED_EDIT_PARTS, vals);
         }
-        
-        vals.addAll(editParts);
-        
+
+        for (Object editPartObj : parentRequest.getEditParts()) {
+            if (editPartObj instanceof GraphicalEditPart) {
+                vals.add((GraphicalEditPart) editPartObj);
+            }
+        }
+
     }
 
 }

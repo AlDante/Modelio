@@ -210,7 +210,7 @@ public class SelectConnectionEditPartTracker extends SelectEditPartTracker {
 
     @objid ("806f6c18-1dec-11e2-8cad-001ec947c8cc")
     @Override
-    protected final Collection<?> getExclusionSet() {
+    protected final Collection getExclusionSet() {
         if (this.exclusionSet == null) {
             this.exclusionSet = new ArrayList<>();
             this.exclusionSet.add(getConnection());
@@ -484,7 +484,7 @@ public class SelectConnectionEditPartTracker extends SelectEditPartTracker {
         }
         setShowingFeedback(false);
         
-        final List<EditPart> editParts = getOperationSet();
+        final List<? extends EditPart> editParts = getOperationSet();
         for (EditPart editPart : editParts) {
             editPart.eraseSourceFeedback(getSourceRequest());
         }

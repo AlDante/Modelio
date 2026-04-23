@@ -45,7 +45,7 @@ public class ChildFigureLineSeparator {
     }
 
     @objid ("7f6b8ba9-1dec-11e2-8cad-001ec947c8cc")
-    private static void updateSeparation(List<IFigure> children, Border separationBorder) {
+    private static void updateSeparation(List<? extends IFigure> children, Border separationBorder) {
         // Sort out visible and non visible children
         final ArrayList<IFigure> withBorder = new ArrayList<>(children.size());
         final ArrayList<IFigure> withNoBorder = new ArrayList<>(children.size());

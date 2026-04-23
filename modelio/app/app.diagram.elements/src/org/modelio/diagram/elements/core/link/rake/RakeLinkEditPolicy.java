@@ -340,7 +340,7 @@ public class RakeLinkEditPolicy extends SelectionHandlesEditPolicy implements Pr
      */
     @objid ("80611dfb-1dec-11e2-8cad-001ec947c8cc")
     @Override
-    protected List<?> createSelectionHandles() {
+    protected List createSelectionHandles() {
         return SelectionHandlesBuilder.disableHandlesIfReadOnly(getHost(), createManualHandles());
     }
 

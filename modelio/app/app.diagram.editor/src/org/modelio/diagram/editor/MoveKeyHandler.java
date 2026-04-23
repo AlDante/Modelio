@@ -19,6 +19,7 @@
  */
 package org.modelio.diagram.editor;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.modeliosoft.modelio.javadesigner.annotations.objid;
 import org.eclipse.draw2d.IFigure;
@@ -72,8 +73,13 @@ public class MoveKeyHandler extends KeyHandler {
     @objid ("666c0f92-33f7-11e2-95fe-001ec947c8cc")
     @Override
     public boolean keyPressed(final KeyEvent event) {
-        List<GraphicalEditPart> selectedEditParts = ToolUtilities.getSelectionWithoutDependants(this.viewer);
-        
+        List<GraphicalEditPart> selectedEditParts = new ArrayList<>();
+        for (EditPart editPart : ToolUtilities.getSelectionWithoutDependants(this.viewer)) {
+            if (editPart instanceof GraphicalEditPart) {
+                selectedEditParts.add((GraphicalEditPart) editPart);
+            }
+        }
+
         if (!selectedEditParts.isEmpty()) {
             EditPart contents = this.viewer.getContents();
             SnapToHelper snapToHelper = contents.getAdapter(SnapToHelper.class);

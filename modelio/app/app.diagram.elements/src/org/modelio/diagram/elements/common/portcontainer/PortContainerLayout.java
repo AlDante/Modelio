@@ -569,7 +569,7 @@ public class PortContainerLayout extends AbstractLayout {
         ret.setMainNodeFigure(hostFigure.getMainNodeFigure());
         
         LayoutManager hostLm = hostFigure.getLayoutManager();
-        for (Iterator<IFigure> iterator = hostFigure.getChildren().iterator(); iterator.hasNext();) {
+        for (Iterator<? extends IFigure> iterator = hostFigure.getChildren().iterator(); iterator.hasNext();) {
             IFigure fig = iterator.next();
             ret.setConstraint(fig, hostLm.getConstraint(fig));
         }

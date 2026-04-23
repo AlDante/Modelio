@@ -803,7 +803,7 @@ public abstract class AbstractDiagramEditor implements IDiagramEditor {
         
         // Set the new palette contents
         if (replacementPalette != null) {
-            this.paletteRoot.setChildren(replacementPalette.getChildren());
+            this.paletteRoot.setChildren(new ArrayList<>(replacementPalette.getChildren()));
         }
         
     }

@@ -24,6 +24,7 @@ import java.util.List;
 import com.modeliosoft.modelio.javadesigner.annotations.objid;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.BendpointRequest;
@@ -69,8 +70,8 @@ public class ConnectionSegmentTracker extends SimpleDragTracker {
      */
     @objid ("8033d141-1dec-11e2-8cad-001ec947c8cc")
     @Override
-    protected List<Object> createOperationSet() {
-        List<Object> list = new ArrayList<>();
+    protected List<EditPart> createOperationSet() {
+        List<EditPart> list = new ArrayList<>();
         list.add(getConnectionEditPart());
         return list;
     }

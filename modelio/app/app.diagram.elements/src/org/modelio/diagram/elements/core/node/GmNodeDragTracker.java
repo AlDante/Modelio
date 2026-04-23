@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 import com.modeliosoft.modelio.javadesigner.annotations.objid;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
@@ -96,12 +97,14 @@ public class GmNodeDragTracker extends DragEditPartsTracker {
      */
     @objid ("8090ccdb-1dec-11e2-8cad-001ec947c8cc")
     @Override
-    protected Collection<?> getExclusionSet() {
+    protected Collection getExclusionSet() {
         if (this.exclusionSet == null) {
-            List<GraphicalEditPart> set = getOperationSet();
+            List<? extends EditPart> set = getOperationSet();
             this.exclusionSet = new ArrayList<>(set.size() + 1);
-            for (GraphicalEditPart editpart : set) {
-                this.exclusionSet.add(editpart.getFigure());
+            for (EditPart editpart : set) {
+                if (editpart instanceof GraphicalEditPart) {
+                    this.exclusionSet.add(((GraphicalEditPart) editpart).getFigure());
+                }
             }
         }
         return this.exclusionSet;
@@ -109,8 +112,8 @@ public class GmNodeDragTracker extends DragEditPartsTracker {
 
     @objid ("5185803f-b008-41e9-9c1e-38961ab98b30")
     @Override
-    protected List<?> createOperationSet() {
-        List<GraphicalEditPart> operationSet = super.createOperationSet();
+    protected List<EditPart> createOperationSet() {
+        List<EditPart> operationSet = new ArrayList<>(super.createOperationSet());
         if (false)
             return operationSet;
         
@@ -128,10 +131,18 @@ public class GmNodeDragTracker extends DragEditPartsTracker {
     }
 
     @objid ("e6b8995c-0750-4d51-a183-a322226c6d2a")
-    protected void computeAllLinksFor(final List<GraphicalEditPart> operationSet, final Set<GraphicalEditPart> linksToAdd) {
+    protected void computeAllLinksFor(final List<EditPart> operationSet, final Set<GraphicalEditPart> linksToAdd) {
         if (true) {
             // Code that does same thing and look in inner diagrams (is it wanted here?)
-            ToolSelectionUtils.addAllLinksFor(operationSet, getTargetRequest(), true);
+            List<GraphicalEditPart> graphicalOperationSet = new ArrayList<>();
+            for (EditPart editPart : operationSet) {
+                if (editPart instanceof GraphicalEditPart) {
+                    graphicalOperationSet.add((GraphicalEditPart) editPart);
+                }
+            }
+            ToolSelectionUtils.addAllLinksFor(graphicalOperationSet, getTargetRequest(), true);
+            linksToAdd.addAll(graphicalOperationSet);
+            linksToAdd.removeAll(operationSet);
         } else {
             // Original code that looks like old code in ToolSelectionUtils.addAllLinksFor(...)
             // To be deleted if moving containers with links inside does work.
@@ -142,17 +153,17 @@ public class GmNodeDragTracker extends DragEditPartsTracker {
                 }
             }
             for (GraphicalEditPart child : transitiveChildren) {
-                List<GraphicalEditPart> links = child.getSourceConnections();
-                for (GraphicalEditPart link : links) {
+                List<? extends ConnectionEditPart> links = child.getSourceConnections();
+                for (ConnectionEditPart link : links) {
                     if (isLinkToInclude(link, operationSet)) {
-                        linksToAdd.add(link);
+                        linksToAdd.add((GraphicalEditPart) link);
                     }
                 }
         
                 links = child.getTargetConnections();
-                for (GraphicalEditPart link : links) {
+                for (ConnectionEditPart link : links) {
                     if (isLinkToInclude(link, operationSet)) {
-                        linksToAdd.add(link);
+                        linksToAdd.add((GraphicalEditPart) link);
                     }
         
                 }
@@ -166,8 +177,8 @@ public class GmNodeDragTracker extends DragEditPartsTracker {
         if (command instanceof DefaultReparentElementCommand) {
             return (DefaultReparentElementCommand) command;
         } else if (command instanceof CompoundCommand) {
-            List<Command> nestedCommands = ((CompoundCommand) command).getCommands();
-        
+            List<? extends Command> nestedCommands = ((CompoundCommand) command).getCommands();
+
             // Look for a reparent command in the compound
             for (Command nested : nestedCommands) {
                 DefaultReparentElementCommand ret = getReparentCommand(nested);
@@ -210,7 +221,7 @@ public class GmNodeDragTracker extends DragEditPartsTracker {
     }
 
     @objid ("42eb079a-fc9f-4fe7-8d51-5f9f8d0ddffc")
-    private boolean isLinkToInclude(GraphicalEditPart link, final List<GraphicalEditPart> operationSet) {
+    private boolean isLinkToInclude(GraphicalEditPart link, final List<EditPart> operationSet) {
         if (link instanceof LinkEditPart && !operationSet.contains(link)) {
             LinkEditPart linkEditPart = (LinkEditPart) link;
             EditPart linkSource = linkEditPart.getSource();

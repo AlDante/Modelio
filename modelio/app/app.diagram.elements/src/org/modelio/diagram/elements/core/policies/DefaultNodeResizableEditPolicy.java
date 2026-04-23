@@ -92,7 +92,7 @@ public class DefaultNodeResizableEditPolicy extends ResizableEditPolicy {
 
     @objid ("80c07c0f-1dec-11e2-8cad-001ec947c8cc")
     @Override
-    protected List<?> createSelectionHandles() {
+    protected List createSelectionHandles() {
         return new SelectionHandlesBuilder((GraphicalEditPart) getHost())
                 .withResizeDirections(getResizeDirections())
                 .withDragAllowed(isDragAllowed())

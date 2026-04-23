@@ -112,7 +112,7 @@ class PortResizeHelper {
             String subIndent = indent.concat("  ");
             s.append(c.getClass().getSimpleName());
             s.append(" [");
-            for (Iterator<Command> iterator = c.getCommands().iterator(); iterator.hasNext();) {
+            for (Iterator<? extends Command> iterator = c.getCommands().iterator(); iterator.hasNext();) {
                 Command sub = iterator.next();
                 s.append("\n");
                 s.append(indent);

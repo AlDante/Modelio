@@ -366,7 +366,7 @@ public class ResizableGroupLayoutEditPolicy extends OrderedLayoutEditPolicy {
      */
     @objid ("7f1354a2-1dec-11e2-8cad-001ec947c8cc")
     protected int getFeedbackIndexFor(Request request) {
-        List<GraphicalEditPart> children = getHost().getChildren();
+        List<? extends GraphicalEditPart> children = getHost().getChildren();
         if (children.isEmpty()) {
             return -1;
         }
@@ -447,8 +447,8 @@ public class ResizableGroupLayoutEditPolicy extends OrderedLayoutEditPolicy {
     @objid ("7f1354aa-1dec-11e2-8cad-001ec947c8cc")
     @Override
     protected EditPart getInsertionReference(Request request) {
-        List<EditPart> children = getHost().getChildren();
-        
+        List<? extends EditPart> children = getHost().getChildren();
+
         if (RequestConstants.REQ_CREATE.equals(request.getType())) {
             int i = getFeedbackIndexFor(request);
             if (i == -1) {
@@ -517,7 +517,12 @@ public class ResizableGroupLayoutEditPolicy extends OrderedLayoutEditPolicy {
 
     @objid ("ab8d1d68-8ccb-4834-8e0b-ee511eb10fee")
     protected Command getDeleteChildrenCommand(GroupRequest request) {
-        List<GraphicalEditPart> editParts = request.getEditParts();
+        List<GraphicalEditPart> editParts = new ArrayList<>();
+        for (EditPart editPart : request.getEditParts()) {
+            if (editPart instanceof GraphicalEditPart) {
+                editParts.add((GraphicalEditPart) editPart);
+            }
+        }
         CompoundCommand command = new CompoundCommand();
         for (int i = 0; i < editParts.size(); i++) {
             GraphicalEditPart child = editParts.get(i);
@@ -718,7 +723,7 @@ public class ResizableGroupLayoutEditPolicy extends OrderedLayoutEditPolicy {
      */
     @objid ("eb866229-2b1f-457d-9015-8541bbd15806")
     private boolean containsExtremity(List<?> resizedEditParts, boolean topBorder) {
-        List<GraphicalEditPart> hostChildren = getHost().getChildren();
+        List<? extends GraphicalEditPart> hostChildren = getHost().getChildren();
         int idxToFind = topBorder ? 0 : hostChildren.size() - 1;
         for (int i = 0; i < resizedEditParts.size(); i++) {
             GraphicalEditPart resizedChild = (GraphicalEditPart) resizedEditParts.get(i);
@@ -750,10 +755,7 @@ public class ResizableGroupLayoutEditPolicy extends OrderedLayoutEditPolicy {
         // Previous child is initially "null", indicating there is no neighbour
         // on the left of first child.
         GraphicalEditPart previousChild = null;
-        List<GraphicalEditPart> nextChildren = new ArrayList<>(getHost().getChildren().size());
-        for (Object childObj : getHost().getChildren()) {
-            nextChildren.add((GraphicalEditPart) childObj);
-        }
+        List<GraphicalEditPart> nextChildren = new ArrayList<>(getHost().getChildren());
         nextChildren.removeAll(request.getEditParts());
         // Add "null" at the end, indicating there is no neighbour on the right
         // of last child.
@@ -877,8 +879,8 @@ public class ResizableGroupLayoutEditPolicy extends OrderedLayoutEditPolicy {
 
     @objid ("c9bed871-d50a-42c4-bdb7-04c794cc8560")
     private void putExpandNeighbourChildConstraints(List<?> resizedEditParts, boolean topLeftBorderMoved, Dimension containerDelta, Map<GmNodeModel, Integer> newConstraints) {
-        List<GraphicalEditPart> hostChildren = getHost().getChildren();
-        
+        List<? extends GraphicalEditPart> hostChildren = getHost().getChildren();
+
         int shrinkIxStart;
         if (topLeftBorderMoved) {
             // top/left border moved
@@ -913,8 +915,8 @@ public class ResizableGroupLayoutEditPolicy extends OrderedLayoutEditPolicy {
 
     @objid ("ab220182-907e-49bb-9449-27d554d65ad8")
     private Dimension putShrinkChildrenConstraints(List<?> resizedEditParts, boolean topLeftBorderMoved, Dimension containerDelta, Map<GmNodeModel, Integer> newConstraints) {
-        List<GraphicalEditPart> hostChildren = getHost().getChildren();
-        
+        List<? extends GraphicalEditPart> hostChildren = getHost().getChildren();
+
         int shrinkIxStart;
         int shrinkIxEnd;
         if (topLeftBorderMoved) {
@@ -953,7 +955,7 @@ public class ResizableGroupLayoutEditPolicy extends OrderedLayoutEditPolicy {
      */
     @objid ("2b8e575b-93f6-43f7-af3a-6ebc78944ecc")
     private Dimension putShrinkChildrenConstraints(int start, int end, int inc, Map<GmNodeModel, Integer> newConstraints, Dimension askedShrink) {
-        List<GraphicalEditPart> hostChildren = getHost().getChildren();
+        List<? extends GraphicalEditPart> hostChildren = getHost().getChildren();
         Dimension remainingShrink = askedShrink.getCopy();
         boolean horizontal = isHorizontal();
         
@@ -1012,7 +1014,7 @@ public class ResizableGroupLayoutEditPolicy extends OrderedLayoutEditPolicy {
 
     @objid ("7f18195d-1dec-11e2-8cad-001ec947c8cc")
     private void showInsertionFeedback(Request request) {
-        List<GraphicalEditPart> childrenEditParts = getHost().getChildren();
+        List<? extends GraphicalEditPart> childrenEditParts = getHost().getChildren();
         Polyline fb = getLineFeedback();
         Transposer transposer = new Transposer();
         transposer.setEnabled(!isHorizontal());
