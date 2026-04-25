@@ -1,9 +1,257 @@
-# Modelio modernization plan
+# Modernisation plan
 
-## Purpose
-Modernize Modelio in a correctness-first sequence without breaking the now-working Apple Silicon packaging flow.
+## Status of this document
 
-## Status snapshot as of 2026-04-18
+This document now has a single active execution plan: **Slices A–D** below.
+
+Earlier roadmap material from previous iterations is retained only where it helps explain why the repository ended up in its current state. Any such material should be treated as **historical context only**, not as the plan of record.
+
+## Current mixed pieces vs the clean target
+
+The repository is now much healthier than the starting point, but it is still a **deliberate hybrid**: some parts already come from the modern upstream stack, while other parts are still carried forward from older or locally-preserved inputs to keep the build and product assembly moving.
+
+The clean end-state is a repository that builds and ships from **one internally consistent vendored train**, with Apple Silicon treated as a first-class supported platform rather than a compatibility add-on.
+
+| Area | Current mixed state | Clean target |
+|---|---|---|
+| Target platform contents | Combination of modern upstream bundles plus older locally-carried/vendored pieces used to fill resolution gaps | One pinned, mirrored, internally consistent vendored release train with no silent fallbacks |
+| Feature composition | Some features/products still rely on a mixture of old and new inputs | All features resolved only from the chosen vendored train |
+| Product assembly | Product definitions still tolerate historical carry-overs to keep packaging working | Products assembled only from the clean vendored stack |
+| macOS runtime stack | Apple Silicon support works in places, but some launcher/runtime assumptions still reflect older Intel-era packaging | Fully clean macOS/aarch64 product stack: launcher, SWT fragments, runtime, metadata, validation |
+| Provenance/versioning | Some artefacts are effectively “known-good carried pieces” rather than part of one aligned train | Every shipped IU traceable to the chosen mirrored upstream baseline or an explicit in-repo patch fork |
+| Validation | Fresh scratch validation is mostly green, but the full ladder still needs to be completed and locked in | Repeatable full scratch validation with app integrity/artefact checks as standard acceptance gates |
+
+## How much work remains?
+
+The modernisation is **substantially advanced but not yet complete**.
+
+What is already true:
+- the scratch-repo build can progress on the modernised path,
+- `prebuild` is green from a fresh repo,
+- the repo is no longer blocked on the original legacy-only stack,
+- Apple Silicon enablement is no longer theoretical.
+
+What is not yet true:
+- the repository does **not** yet represent one fully clean, internally consistent vendored train,
+- all remaining historical carry-overs have **not** yet been eliminated,
+- the full validation ladder and final product integrity checks are **not** yet all signed off.
+
+### Remaining effort estimate
+
+Assuming no major new upstream incompatibility is uncovered, the remaining work is approximately:
+
+| Slice | Scope | Rough effort |
+|---|---|---|
+| Slice A | Top up missing upstream bundles into the vendored train and freeze the resolved baseline | 3–5 days |
+| Slice B | Recut features/products to consume only the clean vendored train and remove historical fallbacks | 3–6 days |
+| Slice C | Finish the clean Apple Silicon product/runtime stack and packaging integrity work | 4–7 days |
+| Slice D | Complete validation, lock CI gates, and retire the hybrid path | 2–4 days |
+
+**Overall remaining work:** roughly **2–4 focused weeks** of engineering/validation, depending on how many additional missing IUs are exposed during Slice A and whether product packaging reveals any macOS-specific edge cases.
+
+## Active plan of record
+
+The following slices are the active plan we are working to going forward. These supersede earlier roadmap variants.
+
+# Active execution plan: Slices A–D
+
+## Slice A — Complete the vendored upstream train
+
+### Objective
+Eliminate the current “hybrid” target platform by topping up the missing upstream bundles/features that are still being carried indirectly, historically, or opportunistically.
+
+### Why this is first
+Until the vendored repository contains the full set of upstream IUs actually needed by our features/products, the build can remain green for the wrong reasons:
+- accidental resolution against historical carried bundles,
+- transitive availability from non-authoritative repos,
+- inconsistent versions across platform layers,
+- Apple Silicon artefacts assembled from a mixed baseline.
+
+### What needs topping up
+
+The current gap is not “everything”; it is the set of upstream bundle families that are still missing from the vendored train but are required by the modernised build/product stack.
+
+The top-up work should explicitly check and mirror the following bundle families as needed by the current feature/product graph:
+
+#### 1. Equinox runtime/service layer
+These are often the first source of hidden hybridisation because older carried copies can satisfy them quietly:
+- `org.eclipse.osgi`
+- `org.eclipse.equinox.common`
+- `org.eclipse.equinox.registry`
+- `org.eclipse.equinox.preferences`
+- `org.eclipse.equinox.app`
+- `org.eclipse.equinox.ds`
+- `org.eclipse.equinox.event`
+- `org.eclipse.equinox.cm`
+- `org.eclipse.equinox.metatype`
+- `org.eclipse.equinox.console` (if still used)
+- `org.eclipse.equinox.launcher`
+- macOS launcher fragments, especially:
+  - `org.eclipse.equinox.launcher.cocoa.macosx.x86_64`
+  - `org.eclipse.equinox.launcher.cocoa.macosx.aarch64`
+
+#### 2. Core Eclipse runtime bundles
+These frequently appear as transitive gaps when features are recut against a cleaner baseline:
+- `org.eclipse.core.runtime`
+- `org.eclipse.core.jobs`
+- `org.eclipse.core.contenttype`
+- `org.eclipse.core.filesystem`
+- `org.eclipse.core.resources`
+- `org.eclipse.core.expressions`
+- `org.eclipse.core.commands`
+- `org.eclipse.core.databinding*` (if still consumed)
+
+#### 3. UI / workbench / e4 compatibility layer
+If the product still depends on the 4.x workbench stack, these need to come from the same chosen train:
+- `org.eclipse.swt`
+- `org.eclipse.swt.cocoa.macosx.aarch64`
+- `org.eclipse.jface`
+- `org.eclipse.ui`
+- `org.eclipse.ui.workbench`
+- `org.eclipse.ui.ide` (if applicable)
+- `org.eclipse.e4.core.contexts`
+- `org.eclipse.e4.core.di`
+- `org.eclipse.e4.core.commands`
+- `org.eclipse.e4.ui.services`
+- `org.eclipse.e4.ui.workbench`
+- `org.eclipse.e4.ui.workbench.swt`
+- `org.eclipse.e4.ui.css.core`
+- `org.eclipse.e4.ui.css.swt`
+
+#### 4. p2 / install / update stack
+If products or tests rely on provisioning/update flows, these must also be aligned rather than inherited ad hoc:
+- `org.eclipse.equinox.p2.core`
+- `org.eclipse.equinox.p2.engine`
+- `org.eclipse.equinox.p2.director`
+- `org.eclipse.equinox.p2.metadata`
+- `org.eclipse.equinox.p2.repository`
+- `org.eclipse.equinox.p2.artifact.repository`
+- `org.eclipse.equinox.p2.metadata.repository`
+- `org.eclipse.equinox.p2.garbagecollector`
+- relevant p2 UI bundles if they are part of the shipped product
+
+#### 5. Third-party/Orbit bundles required by the above
+We should not guess these. We should mirror the exact ones exposed by the resolved dependency graph, for example service-component and annotation/runtime support bundles where required by the selected train.
+
+### How Slice A will happen
+
+#### Step A1 — Freeze the chosen upstream baseline
+Pick the exact upstream train/repositories that define the clean target baseline for this repo.
+
+That chosen baseline must become the sole authoritative source for:
+- platform bundles,
+- launcher fragments,
+- SWT/native fragments,
+- p2 stack,
+- any shipped runtime pieces that are meant to come from upstream.
+
+#### Step A2 — Generate the missing-IU delta
+Run target resolution and feature/product assembly against the chosen baseline and produce the explicit delta of missing installable units:
+- what the build currently needs,
+- what is already mirrored,
+- what is still being satisfied only by historical carry-overs or incidental availability.
+
+This delta should be recorded in source control as a reviewable allow-list or manifest, not left implicit.
+
+#### Step A3 — Mirror the missing upstream artefacts into the vendored repo
+Top up the vendored repository by mirroring the missing IUs from the chosen upstream source into the in-repo/vendor-controlled p2 repository.
+
+This should include:
+- binary bundles,
+- associated source bundles where we normally keep them,
+- platform-specific fragments needed for macOS/aarch64,
+- any required feature IUs used directly by our build/products.
+
+#### Step A4 — Re-resolve using only the vendored repo
+After the mirror is topped up, rerun resolution/builds with non-vendored fallback repos removed or disabled so that accidental hybrid resolution cannot hide remaining gaps.
+
+#### Step A5 — Freeze and document the result
+Record:
+- the exact upstream baseline,
+- the exact mirrored IU set,
+- why each non-upstream carried artefact still exists, if any remain.
+
+### Definition of done for Slice A
+Slice A is complete when:
+- the vendored repository contains the full upstream IU set needed by the current feature/product graph,
+- resolution succeeds without depending on historical fallback pieces,
+- macOS/aarch64 launcher/SWT/runtime artefacts are present from the same chosen baseline,
+- the remaining “mixed” area is visibly smaller and explicitly documented.
+
+---
+
+## Slice B — Recut features and products onto the clean train
+
+### Objective
+Move feature definitions, product definitions, and aggregation metadata fully onto the topped-up vendored train so that the repository stops depending on historical compatibility allowances.
+
+### Work
+- Update features to reference the clean vendored units only.
+- Remove or isolate legacy inclusions that were kept only to bridge earlier migration gaps.
+- Align product definitions with the chosen train versions.
+- Remove obsolete repository references and compatibility scaffolding.
+- Ensure generated p2 metadata reflects only the clean source set.
+
+### Definition of done
+- `AGGREGATOR/features/opensource`, `AGGREGATOR/doc`, and `AGGREGATOR/products` resolve against the vendored train without historical fallbacks.
+- Product definitions no longer need mixed old/new inputs to assemble.
+- Any remaining legacy inclusion is explicitly justified as temporary and tracked.
+
+---
+
+## Slice C — Finish the clean Apple Silicon stack
+
+### Objective
+Make macOS Apple Silicon a first-class, internally consistent product/runtime path rather than a “works with exceptions” path.
+
+### Work
+- Ensure the product uses the correct `cocoa.macosx.aarch64` launcher/SWT fragments from the chosen train.
+- Align the bundled runtime/JRE strategy for macOS/aarch64.
+- Verify product metadata (`Info.plist`, launcher naming, app layout) is consistent.
+- Validate artefact integrity for app bundles, launchers, native fragments, and packaged runtime.
+- Remove any remaining Intel-era assumptions that survive only because the repo is still hybrid.
+
+### Definition of done
+- Built macOS products are natively Apple Silicon clean.
+- No Intel-era compatibility artefacts are required for the standard path.
+- App integrity/artefact checks pass on the produced deliverables.
+
+---
+
+## Slice D — Lock validation, CI, and retirement of the hybrid path
+
+### Objective
+Turn the now-cleaned build path into the normal path and demote the mixed/historical path to archival relevance only.
+
+### Work
+- Complete fresh scratch validation across:
+  - `AGGREGATOR/prebuild`
+  - `AGGREGATOR/plugins`
+  - `AGGREGATOR/features/opensource`
+  - `AGGREGATOR/doc`
+  - `AGGREGATOR/products`
+- Run final app integrity and artefact checks.
+- Add CI gates/assertions so the build fails if:
+  - non-vendored repos are pulled in unexpectedly,
+  - wrong-arch native fragments appear,
+  - historical fallback pieces re-enter silently.
+- Mark any pre-slices roadmap material as historical.
+
+### Definition of done
+- Full scratch-repo validation is green.
+- Product and artefact checks are green.
+- CI protects the repository from regressing back into a mixed stack.
+- This document’s active plan is complete.
+
+---
+
+# Historical material
+
+Any roadmap sections below this point are retained only for historical relevance, auditability, or context. They are **not** the active execution plan.
+
+> **Historical note:** The sections below describe previous planning iterations. They are preserved for context only and should not be treated as the current delivery plan. The active plan of record is the Slices A–D section above.
+
+## [Historical] Status snapshot as of 2026-04-18
 - The immediate recovery goal is already achieved: the project builds and a signed Apple Silicon `Modelio.app` can be produced and launched.
 - The modernization plan is still correctness-first. The intended order remains: stabilize the current platform composition first, then clean up remaining mac-native skew, then revisit Tycho, then move Java, then re-vendor Eclipse/RCP.
 - The bounded `Tycho 5.0.2` probe is now green on the current vendored `4.18` runtime target.
@@ -14,14 +262,14 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
   - `doc/parent/pom.xml` = `5.0.2`
   - `dev-platform/rcp-target/jakarta/jaxb/pom.xml` = `5.0.2`
 
-## Build-orchestration note from 2026-04-18
+## [Historical] Build-orchestration note from 2026-04-18
 - The temporary mixed-Tycho reactor blocker is gone because the main build, the shared modelio parent, and the docs parent are now all aligned on `Tycho 5.0.2`.
 - `AGGREGATOR/prebuild/pom.xml` now refreshes the stable Apple Silicon overlay repositories (`swt`, `launcher-arm64`, `macos-arm64`, `jna`) before validating `dev-platform/rcp-target/rcp.target`.
 - The product-side `separateEnvironments` warning was removed from `products/pom.xml`, and the packaged macOS app no longer needs an explicit `org.eclipse.equinox.executable` feature entry to materialize successfully.
 - `Tycho 5.0.2` must be run on `Java 21`; attempting to run Maven on `Java 11` now fails before project resolution with `P2ArtifactRepositoryLayout has been compiled by a more recent version of the Java Runtime`.
 - This is a build-tool runtime requirement first, and the supported macOS `aarch64` product path now also validates with Java 21 launcher metadata and no active `openjdk-jre11` target wiring.
 
-## Status update as of 2026-04-17
+## [Historical] Status update as of 2026-04-17
 - The documented macOS `aarch64` scratch-build workflow is now verified through `products`, not just through `plugins` and `features`.
 - A clean staged run using a dedicated scratch local repository now succeeds in this order: `prebuild -> plugins -> features -> doc -> products`.
 - The `products` stage required an explicit fix in `products/pom.xml` so the `platform.mac.aarch64` profile requests the Equinox mac launcher bundles during product materialization.
@@ -32,12 +280,12 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
   - and the final launchable output path `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app`.
 - This means the current `Tycho 5.0.2` / `Java 21` build contract is reproducible from scratch for the Apple Silicon product path, now without active `openjdk-jre11` target wiring.
 
-### Immediate next modernization step
+### [Historical] Immediate next modernisation step
 - **Do not broaden the work into RCP re-vendoring yet.**
 - The repo-owned runtime metadata cleanup, runtime-baseline audit, Java 21 runtime spike, and `openjdk-jre11` wiring cleanup are now complete for the supported macOS `aarch64` path.
 - The next bounded step can now broaden back out to platform modernisation work rather than more Java-baseline housekeeping.
 
-### Progress update on 2026-04-17
+### [Historical] Progress update on 2026-04-17
 - The headless target-definition cleanup has now started and its first pass is complete.
 - `dev-platform/rcp-target/rcp.target` and `dev-platform/rcp-target/rcp_debug.target` were changed from `${project_loc:/...}` paths to workspace-relative paths.
 - The stale missing `test-resources/files` target entry was removed from both target definitions.
@@ -48,7 +296,7 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
 - The target-platform contract is now normalized across `dev-platform/rcp-target/rcp.target`, `dev-platform/rcp-target/rcp_debug.target`, `pom.xml`, `maven/modelio-parent/pom.xml`, and IntelliJ repository metadata so the same Apple Silicon overlay set is described consistently in every build entrypoint.
 - This means the original immediate target-platform hardening goal is substantially complete: the headless path warnings are gone and the external/manual JNA prerequisite has been removed from the validated staged workflow.
 
-### Remaining follow-up after target-platform hardening
+### [Historical] Remaining follow-up after target-platform hardening
 - The one-shot `AGGREGATOR/pom.xml` scratch path has now also been revalidated after the SWT-resolution investigation.
 - Root cause of the transient `org.modelio.platform.rcp` compile failure: fresh scratch resolution was mirroring the `org.eclipse.swt` base bundle without also mirroring the Apple Silicon SWT fragment, and the base SWT jar is only a stub for compilation purposes.
 - The fix was to explicitly require `org.eclipse.swt.cocoa.macosx.aarch64` in the root `platform.mac.aarch64` profile.
@@ -57,18 +305,18 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
   2. the one-shot `AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org clean package` path from a fresh local Maven repository.
 - Only after this should the plan broaden again toward lower-priority build-hygiene cleanup or renewed Tycho bridge work.
 
-### Why this is the next step
+### [Historical] Why this was the next step
 - The major build-breaker work is now done: scratch `products` packaging can complete and materialize the final `.app`.
 - The highest remaining reproducibility risks are now in the target-platform contract itself, not in plugin/feature/product reactor wiring.
 - Until the target platform is self-contained and warning-clean, further Tycho uplift or broader platform modernization will keep producing noisy and harder-to-localize failures.
 
-### Deferred until after target-platform cleanup
+### [Historical] Deferred until after target-platform cleanup
 - central encoding cleanup,
 - missing `.settings/org.eclipse.jdt.core.prefs` cleanup,
 - further Tycho bridge work beyond the already-proved bounded experiments,
 - broader Java baseline movement.
 
-## Current baseline verified from the repo
+## [Historical] Current baseline verified from the repo
 - Build/tooling is now centered on `Tycho 5.0.2` and `Java 21` in `pom.xml`, `maven/modelio-parent/pom.xml`, and `doc/parent/pom.xml`.
 - The vendored Eclipse platform in `dev-platform/rcp-target/rcp-eclipse/eclipse` is still the `2020-12` line (`org.eclipse.platform_4.18.0.v20201202-1800`).
 - `features/opensource/org.modelio.e4.rcp/feature.xml` and `features/opensource/org.modelio.rcp/feature.xml` hard-pin many 2020-era bundle versions.
@@ -77,21 +325,21 @@ Modernize Modelio in a correctness-first sequence without breaking the now-worki
 - Bundle execution-environment baselines in owned source manifests are now normalized to `JavaSE-21` for the supported macOS `aarch64` path; the repo no longer has owned source `JavaSE-1.8` BREE declarations under `modelio/**/META-INF/MANIFEST.MF`.
 - Remaining Java-era assumptions still exist mostly as historical or unsupported-path metadata: the repo-owned runtime `.classpath` JRE containers and docs parent compiler metadata are aligned, the macOS launcher metadata is now on Java 21, and active `openjdk-jre11` target wiring has been removed from the supported macOS path.
 
-## Recommended destination
+## [Historical] Recommended destination
 - **Primary platform target:** a coherent vendored Eclipse/RCP `2026-03` stack, not a launcher-only uplift.
 - **Primary Java target:** stabilize first on a modern LTS baseline (`Java 21`) for build + runtime.
 - **Stretch Java target:** evaluate `Java 25` only after the `2026-03` migration is green end-to-end.
 - **macOS target:** full native Apple Silicon product with no shipped `x86_64` mac-native code.
 
-## Why not jump straight to Java 25?
+## [Historical] Why not jump straight to Java 25?
 Because this repo is constrained by four compatibility layers at once: Tycho, Eclipse RCP, vendored p2 content, and OSGi bundle execution environments. Jumping straight from the current `Java 11` / `RCP 4.18` baseline to `Java 25` would blur together toolchain failures, API breakage, reflective-access issues, and product packaging regressions.
 
-## Tycho upgrade evaluation
+## [Historical] Tycho upgrade evaluation
 - The main build, including the docs branch parent, is now green on `Tycho 5.0.2` in `pom.xml`, `maven/modelio-parent/pom.xml`, and `doc/parent/pom.xml`.
 - The build-tool objective for this phase is therefore met: the same source tree now builds cleanly on the newer Tycho line while still targeting the unchanged vendored `4.18` runtime.
 - The next build-layer step should not be another Tycho experiment; it should be to keep `5.0.2` stable while the remaining Java-baseline cleanup is completed.
 
-### Recommendation
+### [Historical] Recommendation
 - **Do not combine the newly green `5.0.2` baseline with runtime-side modernization.**
 - **Do keep the vendored `4.18` runtime fixed while the remaining Java-baseline cleanup is finished.**
 - Use a staged path:
@@ -99,23 +347,23 @@ Because this repo is constrained by four compatibility layers at once: Tycho, Ec
   2. validate a Java 21 runtime uplift only after those Java 8 build-metadata remnants are gone,
   3. only then move to `RCP 2026-03`, after Tycho is already boring.
 
-### Why we ran a Tycho probe anyway
+### [Historical] Why we ran a Tycho probe anyway
 - The early `2.7.5` trial was a bounded compatibility probe to answer one question: “is the build-tool uplift likely to be a cheap isolated step?”
 - The answer appears to be **no, not yet**. Tycho hit target-validation problems in the current vendored target layout before any useful product-level signal was obtained.
 - That result supports the original sequencing rather than contradicting it: the repo still needs more platform cleanup before Tycho becomes a low-noise change.
 
-### Why this timing is safer
+### [Historical] Why this timing was safer
 - Right now the repo still mixes old platform bundles with newer SWT/native overlays; an immediate Tycho jump would make it unclear whether a failure came from the build tool, the target platform, or native fragment composition.
 - A Tycho-only spike against the unchanged `4.18` target gives a much cleaner signal.
 - By the time the Eclipse train is re-vendored, the build layer should already be stable.
 
-### Go / no-go rule for Tycho
+### [Historical] Go / no-go rule for Tycho
 - **Go** if prebuild, plugin aggregation, feature aggregation, and product packaging all stay green with the same vendored target content.
 - **No-go** if the Tycho change forces broad `feature.xml` repinning, introduces new p2 ambiguity, or breaks the native mac package before any platform upgrade has begun.
 
-## Migration sequence
+## [Historical] Migration sequence
 
-### Phase 0 - Freeze and measure the current contract
+### [Historical] Phase 0 - Freeze and measure the current contract
 Scope:
 - Record the exact current platform, Tycho, Java, and native-fragment inventory.
 - Treat `dev-platform/rcp-target/**`, `products/modelio-os.product`, and `features/opensource/org.modelio.*/*.xml` as the contract to preserve while upgrading.
@@ -130,7 +378,7 @@ Primary files:
 Exit gate:
 - We can reproduce the current working macOS ARM package and the existing Linux/Windows builds from a clean workspace.
 
-### Phase 1 - Remove baseline skew before any major uplift
+### [Historical] Phase 1 - Remove baseline skew before any major uplift
 Scope:
 - Stop mixing unrelated Eclipse generations in `org.modelio.e4.rcp`.
 - Align SWT, Equinox, workbench, launcher, and native fragments to one coherent train.
@@ -159,7 +407,7 @@ Primary files:
 Exit gate:
 - The existing product packages cleanly from one internally consistent vendored target platform.
 
-#### Concrete remaining checklist for Phase 1
+#### [Historical] Concrete remaining checklist for Phase 1
 1. **Inventory the mixed-train inputs.**
    - Review `features/opensource/org.modelio.e4.rcp/feature.xml` and `dev-platform/rcp-target/rcp.target`.
    - Classify every non-baseline overlay currently involved in the Apple Silicon recovery path: newer `SWT`, arm64 launcher fragments, mac arm64 native fragments, `JNA`, and any browser-related fragment.
@@ -190,7 +438,7 @@ Exit gate:
    - Re-run prebuild, plugin aggregation, feature aggregation, and product packaging before claiming Phase 1 complete.
    - Exit condition: the existing product packages cleanly from the coherent vendored target, satisfying the Phase 1 gate.
 
-#### Phase 1 Step 1 findings - mixed-train inventory completed on 2026-04-15
+#### [Historical] Phase 1 Step 1 findings - mixed-train inventory completed on 2026-04-15
 - `dev-platform/rcp-target/rcp.target` currently resolves the RCP layer from **six** separate inputs at once: `eclipse/`, `eclipse-fr/`, `launcher-arm64/`, `macos-arm64/`, `jna/repository`, and `swt/`.
 - The dominant baseline is still the vendored Eclipse `4.18 / 2020-12` repository under `dev-platform/rcp-target/rcp-eclipse/eclipse`.
 - Apple Silicon support was recovered by layering newer repos on top of that baseline rather than by re-vendoring one coherent platform train.
@@ -212,7 +460,7 @@ Implication for Phase 1 Step 2:
 - The most realistic normalization target is still the current `4.18 / 2020-12` baseline, with only the minimum Apple Silicon overlays kept deliberately.
 - The browser fragment is the clearest item that cannot currently be normalized into a native arm64 story from the vendored inputs alone.
 
-#### Phase 1 Step 2 findings - baseline normalization target chosen on 2026-04-15
+#### [Historical] Phase 1 Step 2 findings - baseline normalization target chosen on 2026-04-15
 - **Chosen Phase 1 baseline:** keep `dev-platform/rcp-target/rcp-eclipse/eclipse` as the canonical runtime train to normalize around.
 - **Reason:** it is still the dominant vendored RCP stack, and the current Apple Silicon recovery works by layering a small number of newer repos over it.
 - **Normalization rule for Phase 1:** remove no repos immediately; instead, classify each repo as canonical baseline, baseline-adjacent, temporary Apple Silicon overlay, or unresolved exception.
@@ -236,7 +484,7 @@ Immediate consequence for Phase 1 Step 3:
 - Re-pinning should aim for a **deliberate hybrid** rather than an accidental one: baseline `4.18 / 2020-12`, plus only the four explicitly retained overlays above.
 - Any bundle pin that still falls outside that rule after re-checking should be treated as new skew and either justified or removed.
 
-#### Phase 1 Step 3 findings - `org.modelio.e4.rcp` audit completed on 2026-04-15
+#### [Historical] Phase 1 Step 3 findings - `org.modelio.e4.rcp` audit completed on 2026-04-15
 - A repo-to-feature audit of `features/opensource/org.modelio.e4.rcp/feature.xml` found **86** pinned plugins.
 - After checking those pins against the approved repo set from Step 2, `org.modelio.e4.rcp` is already very close to the intended deliberate hybrid.
 - In practice, the feature currently resolves from:
@@ -266,7 +514,7 @@ Foreign-language support note:
 - `org.modelio.e4.rcp` itself does not depend on `nl_*` bundles.
 - If simplification becomes necessary during a later modernization step, `eclipse-fr` is a reasonable early candidate to drop because its current justification comes from separate feature composition, not from this e4 runtime core.
 
-#### Phase 1 Step 4 findings - mac Chromium browser disabled on 2026-04-15
+#### [Historical] Phase 1 Step 4 findings - mac Chromium browser disabled on 2026-04-15
 - `org.eclipse.swt.browser.chromium.cocoa.macosx.x86_64` is **not required for basic Modelio startup**.
 - The codebase uses generic SWT `Browser` widgets, but no Chromium-specific selection or `SWT.CHROMIUM` usage was found.
 - Startup-adjacent browser usage exists in the first-launch `WelcomeView`, but that code still relies on the generic SWT browser API rather than on the Chromium fragment specifically.
@@ -278,7 +526,7 @@ Restoration note for later modernization:
 - That restoration belongs after the broader RCP modernization work, not as a one-off exception in the current hybrid baseline.
 - If browser-backed UI on macOS shows regressions before then, prefer targeted fallback behavior (for example, welcome/help degradation) over re-introducing `x86_64` browser native code.
 
-#### Phase 2 Step 1 findings - mac AStyle fragment disabled on 2026-04-15
+#### [Historical] Phase 2 Step 1 findings - mac AStyle fragment disabled on 2026-04-15
 - `org.modelio.astyle.macosx.cocoa.x86_64` was shipped only as an Intel mac fragment from `dev-platform/rcp-target/modelio-integ/org.astyle/astyle/plugins/`.
 - No vendored native `aarch64` AStyle fragment exists in the current repo.
 - Code inspection indicates AStyle is not required for basic application startup:
@@ -291,7 +539,7 @@ Restoration note for AStyle:
 - mac AStyle support should be restored only when a native `aarch64` fragment is available and vendored into the modernized platform stack.
 - Until then, prefer temporary loss of AStyle-backed formatting on macOS ARM over re-introducing Intel-only native payload.
 
-#### Phase 2 Step 2 findings - packaged app native audit completed on 2026-04-15
+#### [Historical] Phase 2 Step 2 findings - packaged app native audit completed on 2026-04-15
 - Audited artifact:
   - `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app`
 - Audit method:
@@ -369,7 +617,7 @@ Interpretation:
 - The full staged reactor is operational again.
 - The final Apple Silicon app remains free of shipped `x86_64` payload after the Tycho-alignment fix.
 
-### Phase 2 - Complete mac parity at the current functional level
+### [Historical] Phase 2 - Complete mac parity at the current functional level
 Scope:
 - Replace or remove Intel-only mac fragments in:
   - `features/opensource/org.modelio.platform.feature/feature.xml`
@@ -392,7 +640,7 @@ Primary files:
 Exit gate:
 - Apple Silicon package launches natively and artifact inspection finds no shipped `x86_64` mac binaries.
 
-### Phase 3 - Upgrade build infrastructure before language level
+### [Historical] Phase 3 - Upgrade build infrastructure before language level
 Scope:
 - Move Maven/Tycho/toolchain configuration to versions that can support the chosen new Eclipse train.
 - Keep repository wiring centralized in the parent POMs; do not duplicate p2 declarations across modules.
@@ -421,7 +669,7 @@ Primary files:
 Exit gate:
 - The same source tree builds cleanly with the upgraded build stack while still targeting the pre-uplift runtime.
 
-#### Phase 3 completion update - 2026-04-17
+#### [Historical] Phase 3 completion update - 2026-04-17
 - The full `Tycho 2.7.5` validation ladder is now green on `Java 11`:
   - `AGGREGATOR/prebuild/pom.xml -Pplatform.mac.aarch64 clean install`
   - `AGGREGATOR/plugins/pom.xml -Pplatform.mac.aarch64 clean install`
@@ -440,7 +688,7 @@ Exit gate:
   - packaging-time `plutil` and `codesign --verify --deep --strict --verbose=2` checks pass,
   - `diagnostics/macos-aarch64/final-app-x86_64-audit-after-tycho-275.txt` reports `HITS 0`.
 
-#### Phase 3 completion update - 2026-04-18
+#### [Historical] Phase 3 completion update - 2026-04-18
 - The bounded `Tycho 5.0.2` probe is also green, but **only when Maven runs on Java 21**.
 - Validated staged ladder on `Java 21`:
   - `AGGREGATOR/prebuild/pom.xml -Pplatform.mac.aarch64 clean install`
@@ -458,7 +706,7 @@ Exit gate:
   - `Tycho 5.0.2` is now an accepted baseline for this repo,
   - the next bounded step should move away from Tycho experiments and back to Java-baseline cleanup inside owned bundles.
 
-#### Exploratory Phase 3 notes from the early Tycho probe
+#### [Historical] Exploratory Phase 3 notes from the early Tycho probe
 
 ##### Freeze rule for the Tycho trial
 During the Tycho-only uplift, do **not** edit these runtime-side files:
@@ -590,7 +838,7 @@ Interpretation rule from this point:
 - if `2.7.5` can later be made green **without** broad runtime-side churn, re-run the full ladder and only then consider **Step 3.2 - Trial `Tycho 5.0.2`**,
 - if fixing `2.7.5` requires widespread target cleanup, feature repinning, or re-vendoring, treat that as evidence to postpone the Tycho uplift rather than smuggling a platform migration into Phase 3.
 
-### Phase 4 - Normalize Java baselines, but only to a safe stepping stone
+### [Historical] Phase 4 - Normalize Java baselines, but only to a safe stepping stone
 Scope:
 - First eliminate remaining `JavaSE-1.8` manifests and normalize everything to `JavaSE-11` or the selected intermediate baseline.
 - Then move the codebase to `Java 17` or `Java 21` together with manifest, compiler, and packaging updates.
@@ -836,7 +1084,7 @@ Interpretation after this slice:
 - the supported Apple Silicon packaging path is now less encumbered by obsolete Linux, Windows, and Intel mac profile declarations,
 - the next meaningful platform step is no longer profile pruning; it is either deciding whether historical docs like `MACOS_RECOVERY_PLAN.md` should be retired or moving on to the larger coherent-target / RCP re-vendoring work.
 
-#### Phase 5 preparation audit - coherent RCP re-vendoring boundary refreshed on 2026-04-19
+#### [Historical] Phase 5 preparation audit - coherent RCP re-vendoring boundary refreshed on 2026-04-19
 Audit goal:
 - identify the exact platform layers that still define the real modernization boundary after the Apple Silicon cleanup work,
 - avoid treating the remaining work as a vague “upgrade Eclipse” task when the repo still contains a very specific hybrid contract.
@@ -875,7 +1123,7 @@ Explicit non-goal for that first slice:
 - do **not** attempt Java 25, Tycho uplift, or unrelated product-behaviour cleanup at the same time,
 - do **not** treat the current overlay generators as the destination state; after the base train is re-vendored, each overlay should be re-justified or removed.
 
-#### Phase 5 preparation audit - repo-owned `org.eclipse.*` pin groups refreshed on 2026-04-19
+#### [Historical] Phase 5 preparation audit - repo-owned `org.eclipse.*` pin groups refreshed on 2026-04-19
 Audit purpose:
 - move from a repo-level “the platform is still 4.18 plus overlays” statement to an actionable inventory of the `org.eclipse.*` pins that must move together in the first coherent re-vendoring slice.
 
@@ -932,7 +1180,7 @@ Specific boundary for the first execution slice:
 - keep `JNA` as an explicit follow-up check rather than assuming it disappears automatically,
 - treat the current overlay families (`swt`, `launcher-arm64`, `macos-arm64`, `jna`) as compatibility shims to be re-justified after the new base train is in place, not as part of the destination contract.
 
-#### Phase 5 execution prep - concrete re-vendoring checklist and initial version-diff audit on 2026-04-19
+#### [Historical] Phase 5 execution prep - concrete re-vendoring checklist and initial version-diff audit on 2026-04-19
 Decision taken for the first real replacement slice:
 - the replacement target train for the next platform move is **Eclipse RCP `2026-03`**,
 - this is now the explicit planning target because the repo guidance already converges on it in:
@@ -1099,7 +1347,7 @@ Practical consequence of this extra prep step:
 - the next grouped patch no longer needs to guess either the replacement versions or the direct staged artefacts for the three affected repo-owned feature layers,
 - the first grouped repinning patch can now be authored directly from `repin-suggestions.json`, while still leaving `dev-platform/rcp-target/rcp.target` and the active baseline repo untouched until that patch is ready.
 
-#### Phase 5 execution slice - grouped repo-owned feature repinning prepared on 2026-04-20
+#### [Historical] Phase 5 execution slice - grouped repo-owned feature repinning prepared on 2026-04-20
 Changes completed in this slice:
 - repinned `features/opensource/org.modelio.e4.rcp/feature.xml` from the old `4.18 / 2020-12` Eclipse pin set to the staged `2026-03` versions for the E4 workbench, Equinox runtime, SWT, launcher, JFace, and JNA-facing entries,
 - repaired the previously stray `org.eclipse.swt` text lines in that feature back into a proper `<plugin .../>` entry and set it to `3.133.0.v20260225-1014`,
@@ -1138,7 +1386,7 @@ Practical next step after this grouped patch:
 - rerun the normal staged Maven validation ladder from a fresh scratch repository against the active `2026-03` baseline,
 - then audit each remaining overlay/input family (`swt`, `launcher-arm64`, `macos-arm64`, `jna`, and the direct staged mirror contents) to decide which ones are still justified on the fully active train.
 
-#### Deferred post-modernisation follow-up - target-platform provenance and binary ownership
+#### [Historical] Follow-up note from the earlier phase-based plan - target-platform provenance and binary ownership
 - The current `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/` mirror is still a correctness-first staging area backed by vendored upstream p2 artefacts, and some packaging fixes have required topping up missing external bundles directly in that mirror.
 - That is acceptable during the active `2026-03` migration because it keeps the modernization slice focused on feature/product correctness rather than on inventing a new provisioning system mid-flight.
 - It is **not** the intended final ownership model.
@@ -1155,7 +1403,11 @@ Boundary for now:
 - do **not** block the current `2026-03` migration on replacing the vendored-mirror approach,
 - treat this as one of the last cleanup tasks, after the modernized product path is already stable and boring.
 
-#### Bounded Tycho 2.7.5 retry preparation - ready state as of 2026-04-16
+#### [Historical] Material from earlier plan iterations
+- The remaining Tycho retry notes, older phase labels, and earlier sequencing rules below are kept for historical relevance only.
+- Do **not** use them as the current roadmap; use Slices A-D above instead.
+
+#### [Historical] Bounded Tycho 2.7.5 retry preparation - ready state as of 2026-04-16
 Why the retry is now cleaner than before:
 - the main staged reactor is green again on `Tycho 2.2.0`;
 - Apple Silicon packaging is green;
@@ -1195,7 +1447,7 @@ Primary files:
 Exit gate:
 - Full product build and smoke launch succeed on the new LTS Java without ad-hoc runtime flags.
 
-### Phase 5 - Re-vendor the full Eclipse/RCP stack to 2026-03
+### [Historical] Phase 5 - Re-vendor the full Eclipse/RCP stack to 2026-03
 Scope:
 - Refresh the vendored p2 content under `dev-platform/rcp-target/rcp-eclipse/**` as a coherent train.
 - Re-resolve pinned versions in:
@@ -1217,7 +1469,7 @@ Primary files:
 Exit gate:
 - The full product packages and launches on the new vendored RCP stack across the supported platforms.
 
-### Phase 6 - Reassess Java 25 as an optional final hop
+### [Historical] Phase 6 - Reassess Java 25 as an optional final hop
 Scope:
 - Only now test the highest Java level.
 - Treat this as a separate change with its own compiler/runtime verification and packaging run.
@@ -1228,7 +1480,7 @@ Decision rule:
 Exit gate:
 - `Java 25` is adopted only if build, packaging, and runtime are all cleaner than the LTS alternative.
 
-## Order I would insist on
+## [Historical] Order I would insist on
 1. Reproducible current baseline.
 2. Coherent target platform.
 3. Native mac parity.
@@ -1237,7 +1489,7 @@ Exit gate:
 6. Full RCP `2026-03` uplift.
 7. Optional `Java 25` evaluation.
 
-## Operational verification ladder
+## [Historical] Operational verification ladder
 
 Use the same smallest-scope-first validation pattern after each phase change:
 
@@ -1258,14 +1510,14 @@ find /Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.prod
 
 Expected result for a correct native package: no output.
 
-## What I would explicitly avoid
+## [Historical] What I would explicitly avoid
 - No big-bang migration of Tycho + RCP + Java + mac-native fragments in one shot.
 - No claim that `2026-03` is “done” if the app still ships `x86_64` browser or AStyle fragments on macOS.
 - No `Java 25` commitment until the codebase is already green on the modernized RCP stack.
 - No keeping long-term hand-maintained version skew inside `feature.xml` unless a specific override is documented and tested.
 - No direct `Tycho 2.2.0 -> 5.0.2` jump unless a short spike proves it is genuinely low-risk.
 
-## Friend review - skeptical critique
+## [Historical] Friend review - skeptical critique
 A cautious reviewer would push back on one point: aiming for both `RCP 2026-03` and `Java 25` as a single declared destination is probably too ambitious for a Tycho/OSGi product with vendored p2 repositories and custom native fragments. The safer interpretation of “most current possible” is:
 - **commit to `RCP 2026-03`,**
 - **stabilize on `Java 21` first,**
