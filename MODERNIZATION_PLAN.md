@@ -32,8 +32,6 @@ What is already true:
 - Apple Silicon enablement is no longer theoretical.
 
 What is not yet true:
-- the repository does **not** yet represent one fully clean, internally consistent vendored train,
-- all remaining historical carry-overs have **not** yet been eliminated,
 - the full validation ladder and final product integrity checks are **not** yet all signed off.
 
 ### Remaining effort estimate
@@ -42,12 +40,12 @@ Assuming no major new upstream incompatibility is uncovered, the remaining work 
 
 | Slice | Scope | Rough effort |
 |---|---|---|
-| Slice A | Top up missing upstream bundles into the vendored train and freeze the resolved baseline | 3–5 days |
+| Slice A | Top up missing upstream bundles into the vendored train and freeze the resolved baseline | **Completed on 2026-04-25** |
 | Slice B | Recut features/products to consume only the clean vendored train and remove historical fallbacks | 3–6 days |
 | Slice C | Finish the clean Apple Silicon product/runtime stack and packaging integrity work | 4–7 days |
 | Slice D | Complete validation, lock CI gates, and retire the hybrid path | 2–4 days |
 
-**Overall remaining work:** roughly **2–4 focused weeks** of engineering/validation, depending on how many additional missing IUs are exposed during Slice A and whether product packaging reveals any macOS-specific edge cases.
+**Overall remaining work:** roughly **1–3 focused weeks** of engineering/validation across Slices B–D.
 
 ## Active plan of record
 
@@ -177,6 +175,15 @@ Slice A is complete when:
 - resolution succeeds without depending on historical fallback pieces,
 - macOS/aarch64 launcher/SWT/runtime artefacts are present from the same chosen baseline,
 - the remaining “mixed” area is visibly smaller and explicitly documented.
+
+#### Slice A completion note - completed on 2026-04-25
+- repinned the remaining legacy-carried `org.modelio.e4.rcp` and `org.modelio.platform.feature` payloads to `eclipse-2026-03` versions,
+- removed the French-only `org.eclipse.jface.nl_fr` fragment and the French product documentation feature so the supported path is English-only,
+- switched `products/modelio-os.product` from the obsolete `httpclient45` ECF feature stack to the modern `org.eclipse.equinox.p2.user.ui` feature,
+- removed the active `eclipse/`, `eclipse-fr/`, and `jna/repository/` fallback wiring from `pom.xml`, `maven/modelio-parent/pom.xml`, `rcp.target`, and `rcp_debug.target`,
+- mirrored the missing upstream `com.jcraft.jsch_0.1.55.v20230916-1400.jar` and matching source bundle into `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/plugins/`,
+- regenerated the committed Slice A audit so it now records `151` audited entries resolving from `eclipse-2026-03` only, with `0` duplicate, fallback-only, or unresolved entries in the active RCP-family scope,
+- validated the result with a fresh-scratch `AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org clean package` run plus `plutil` and `codesign` checks on the produced `Modelio.app`.
 
 ---
 

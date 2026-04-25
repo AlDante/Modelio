@@ -37,21 +37,6 @@ This pom executes a maven target on ALL the (eclipse) features that compose the 
 					<layout>p2</layout>
 					<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03</url>
 				</repository>
-				<repository>
-					<id>rcp-Eclipse-legacy</id>
-					<layout>p2</layout>
-					<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/eclipse</url>
-				</repository>
-				<repository>
-					<id>rcp-Eclipse-fr</id>
-					<layout>p2</layout>
-					<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/eclipse-fr</url>
-				</repository>
-				<repository>
-					<id>jna</id>
-					<layout>p2</layout>
-					<url>file://${modelio.ws.path}/dev-platform/rcp-target/rcp-eclipse/jna/repository</url>
-				</repository>
 
 				<!-- Third-party Libraries re-packaged by Modeliosoft or Modeliosoft libraries -->
 				<repository>

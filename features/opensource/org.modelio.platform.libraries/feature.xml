@@ -90,10 +90,10 @@ along with Modelio.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
          unpack="false"/>
 
    <plugin
-         id="org.apache.commons.logging"
+         id="org.apache.commons.commons-logging"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.3.5"
          unpack="false"/>
 
    <plugin
@@ -227,14 +227,6 @@ along with Modelio.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jface.nl_fr"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
          unpack="false"/>
 
 </feature>

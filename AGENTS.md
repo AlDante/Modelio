@@ -10,11 +10,11 @@
 - Aggregators under `AGGREGATOR/` define build order and stitch modules from `modelio/`, `features/`, and `products/`.
 - Feature composition is in `features/opensource/*` (for example `features/opensource/org.modelio.application.ui/feature.xml`).
 - Final product definition is `products/modelio-os.product`; packaging profiles are in `products/pom.xml`.
-- Target platform is local-file based from `dev-platform/rcp-target/rcp.target`; the previously shared `openjdk-jre11` target wiring is no longer active for the supported macOS `aarch64` path.
+- Target platform is local-file based from `dev-platform/rcp-target/rcp.target`; the supported macOS `aarch64` path now resolves its upstream RCP content from `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/` without active `eclipse/`, `eclipse-fr/`, `jna/repository/`, or `openjdk-jre11` fallback wiring.
 
 ## Canonical build entrypoints
 - Full staged build (prebuild + plugins + features + products): run from `AGGREGATOR/pom.xml`.
-- Prebuild validates target-definition modules first (`AGGREGATOR/prebuild/pom.xml` now refreshes the Apple Silicon overlay repos `swt`, `launcher-arm64`, `macos-arm64`, and `jna` before building root + `dev-platform/rcp-target`).
+- Prebuild validates the shared parent + target-definition modules first (`AGGREGATOR/prebuild/pom.xml` builds root + `dev-platform/rcp-target` against the cleaned 2026-03 baseline wiring).
 - Run Maven on `Java 21` for the current Tycho baseline; the supported macOS `aarch64` product path now validates with Java 21 launcher metadata and no active `openjdk-jre11` target wiring.
 - Product packaging variants are profile-driven in `products/pom.xml`:
   - `product.org` for the OpenSource product archive.

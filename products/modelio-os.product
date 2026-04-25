@@ -43,11 +43,7 @@
       <feature id="org.eclipse.emf.common"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.help"/>
-      <feature id="org.eclipse.ecf.filetransfer.httpclient45.feature"/>
-      <feature id="org.eclipse.ecf.filetransfer.feature"/>
-      <feature id="org.eclipse.ecf.core.feature"/>
-      <feature id="org.eclipse.ecf.core.ssl.feature"/>
-      <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>
+      <feature id="org.eclipse.equinox.p2.user.ui"/>
       <feature id="org.eclipse.draw2d"/>
       <feature id="org.eclipse.gef"/>
       <feature id="org.modelio.jaxb.feature"/>
@@ -81,7 +77,7 @@
       <feature id="org.modelio.functions.xmi"/>
       <feature id="org.modelio.platform.feature"/>
       <feature id="org.modelio.platform.libraries"/>
-      <feature id="org.modelio.documentation.modeler.nl_fr.feature"/>
+      <feature id="org.modelio.documentation.modeler.feature"/>
       <feature id="org.modelio.functions.modelviewtemplate"/>
    </features>
 

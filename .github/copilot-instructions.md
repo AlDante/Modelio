@@ -15,7 +15,7 @@ mvn -version
 ```
 - Validated runtime/tooling in this workspace: Maven **3.9.14**, Java **21.0.5**.
 - `Tycho 5.0.2` itself now requires Maven to run on Java 21; running it on Java 11 fails before project resolution with `P2ArtifactRepositoryLayout has been compiled by a more recent version of the Java Runtime`.
-- The supported macOS Apple Silicon product path now validates with Java 21 launcher metadata, and the previously shared `openjdk-jre11` target wiring has been removed from the active macOS build inputs; do not confuse that with the separate build JDK requirement for Tycho.
+- The supported macOS Apple Silicon product path now validates with Java 21 launcher metadata, and the active upstream RCP wiring now resolves from `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/` only; the old `eclipse/`, `eclipse-fr/`, `jna/repository/`, and `openjdk-jre11` fallback inputs are no longer active for this path.
 - Prefer **MacPorts** tooling. Toolchain templates exist in `maven/toolchains.macos.macports.xml` and `AGGREGATOR/toolchains.xml`, but the most reliable build bootstrap is still `JAVA_HOME`.
 - The shell is flaky. Prefer one command per invocation or a temporary script. **Do not use `&` command chaining.**
 - For scratch validation, use a fresh local Maven repo instead of `~/.m2` to avoid stale Tycho/p2 mirror state.
@@ -33,14 +33,14 @@ mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch \
 Postcondition: `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app` exists.
 
 ### Smallest-scope target validation
-Validated in this workspace (~**38 s**):
+Validated in this workspace (~**1 min** from a fresh scratch repository):
 ```zsh
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
 mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-prebuild \
   -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/prebuild/pom.xml \
   -Pplatform.mac.aarch64 verify
 ```
-Use this first when editing `pom.xml`, `products/pom.xml`, `dev-platform/rcp-target/**`, or overlay repos. It now refreshes the Apple Silicon overlay p2 sites (`swt`, `launcher-arm64`, `macos-arm64`, `jna`) before validating `rcp.target`.
+Use this first when editing `pom.xml`, `products/pom.xml`, or `dev-platform/rcp-target/**`. It validates the cleaned 2026-03-only target wiring before broader staged builds.
 
 ### Split staged build for scoped work
 Use one shared scratch repo for the whole cycle and delete it first:
@@ -78,7 +78,7 @@ open /Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.prod
 ## Layout and change rules
 - `AGGREGATOR/pom.xml` is the staged top-level build and runs `doc -> prebuild -> plugins -> features -> products`.
 - `dev-platform/rcp-target/pom.xml` builds the local target-definition artifact `org.modelio:rcp`; `dev-platform/rcp-target/rcp.target` is the main target file.
-- Root `pom.xml` centralizes Tycho config and local p2 repositories, including the Apple Silicon overlays: `rcp-eclipse/launcher-arm64`, `rcp-eclipse/macos-arm64`, `rcp-eclipse/jna/repository`, and `rcp-eclipse/swt`.
+- Root `pom.xml` centralizes Tycho config and local p2 repositories; the active upstream RCP baseline is now `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03` without legacy Eclipse, French localisation, or JNA fallback repositories.
 - `products/modelio-os.product` is the final product definition. `products/pom.xml` controls profile-based packaging (`product.org`, `repositoryP2`, `platform.*`) and patches/signs the macOS app with `products/patch_macos_aarch64_app.py`.
 - OSGi dependencies are usually declared in `META-INF/MANIFEST.MF`, not Maven dependencies. Example: `modelio/platform/platform.rcp/META-INF/MANIFEST.MF` requires `org.eclipse.swt`; `modelio/platform/platform.ui/META-INF/MANIFEST.MF` requires `org.eclipse.gef` and `org.eclipse.nebula.widgets.gallery`.
 - UI wiring often spans `plugin.xml` plus e4 fragments. Example: `modelio/app/app.project.ui/plugin.xml` contributes `e4model/projectui.e4xmi`.

@@ -1,45 +1,51 @@
-# Eclipse RCP 2026-03 staging area
+# Eclipse RCP 2026-03 mirror
 
-This directory is the **parallel staging area** for the first coherent RCP re-vendoring slice.
+This directory is the **active primary vendored RCP baseline** for the current modernised path.
 
 ## Current status
-- It is **not** part of the active target definition.
-- The active build still uses `../eclipse/` as the baseline RCP repository.
-- This staging area is currently intended for **metadata-first auditing** before any target swap.
+- The active target and shared repository wiring now point at `eclipse-2026-03/` only for the upstream RCP baseline.
+- Fresh-scratch validation with the current active wiring is green through:
+  - `AGGREGATOR/prebuild`
+  - `AGGREGATOR/plugins`
+  - `AGGREGATOR/features/opensource`
+  - `AGGREGATOR/doc`
+  - `AGGREGATOR/products`
+- The mirror no longer presents as a metadata-only staging area; it is now part of the live build path.
+- The legacy `eclipse/`, `eclipse-fr/`, and `jna/repository/` inputs are no longer part of the active target or shared repository wiring.
 
 ## Source repository
 - Composite release URL: `https://download.eclipse.org/releases/2026-03/`
-- Direct child repository selected for staging: `https://download.eclipse.org/releases/2026-03/202603111000/`
+- Direct child repository selected for mirroring: `https://download.eclipse.org/releases/2026-03/202603111000/`
 
-## Files expected here
-- `content.jar`
-- `content.xml`
-- `artifacts.jar`
-- `artifacts.xml`
+## Slice A audit artefacts
 - `stage-manifest.json`
+  - records the initially staged upstream metadata inputs.
+- `slice-a-resolution-audit.json`
+  - records which active `features/opensource/*/feature.xml` RCP-family entries resolve from `eclipse-2026-03`.
+- `generate_slice_a_resolution_audit.py`
+  - regenerates `slice-a-resolution-audit.json`.
 
-## Refresh command
+## Slice A completion state
+From the committed audit in `slice-a-resolution-audit.json`:
+- `151` audited entries resolve from `eclipse-2026-03` only.
+- `0` audited entries resolve from duplicate fallback sources.
+- `0` audited entries still depend on `eclipse/`, `eclipse-fr/`, or `jna/repository`.
+- `0` audited entries are unresolved within the active RCP-family scope.
+
+Slice A is now complete for the active RCP baseline:
+- the target and shared Tycho repository wiring resolve from `eclipse-2026-03` without historical fallback repos,
+- `features/opensource/org.modelio.e4.rcp/feature.xml` and `features/opensource/org.modelio.platform.feature/feature.xml` have been repinned to modern 2026-03-provided payloads,
+- the French-only `org.eclipse.jface.nl_fr` and French product documentation feature have been removed from the supported product path,
+- the product definition now uses the modern `org.eclipse.equinox.p2.user.ui` feature instead of the obsolete `httpclient45` ECF feature stack,
+- the missing upstream `com.jcraft.jsch_0.1.55.v20230916-1400.jar` and matching source bundle were mirrored into `eclipse-2026-03/plugins/` so the vendored baseline is self-contained.
+
+Boundary that still remains outside this specific audit:
+- the separately vendored `org.eclipse.uml2*` line continues to be supplied from `dev-platform/rcp-target/org.eclipse/uml2/`, not from the RCP mirror.
+
+## Regeneration commands
 ```zsh
 python3 -u /Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/stage_metadata.py
-```
-
-## Repinning-slice preparation command
-```zsh
 python3 -u /Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/stage_repin_slice.py
+python3 -u /Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/generate_slice_a_resolution_audit.py
 ```
-
-This writes:
-- `repin-suggestions.json` with proposed `2026-03` replacements/removals for:
-  - `features/opensource/org.modelio.e4.rcp/feature.xml`
-  - `features/opensource/org.modelio.rcp/feature.xml`
-  - `features/opensource/org.modelio.platform.feature/feature.xml`
-- `slice-cache/plugins/` and `slice-cache/features/` with the direct staged artefacts referenced by those suggestions.
-
-## Important rule
-Do not point `dev-platform/rcp-target/rcp.target` at this directory until the grouped repinning work for:
-- `features/opensource/org.modelio.e4.rcp/feature.xml`
-- `features/opensource/org.modelio.rcp/feature.xml`
-- `features/opensource/org.modelio.platform.feature/feature.xml`
-- `products/modelio-os.product`
-has been prepared against the staged metadata.
 

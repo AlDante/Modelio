@@ -46,14 +46,16 @@ Current validated toolchain split:
 - product launcher metadata: `Java 21`
 - bundled runtime note: the currently validated macOS `aarch64` app does **not** materialise a repo-owned JRE directory, and active `openjdk-jre11` target wiring has been removed from this supported path
 
-### 2.1 JNA overlay status
+### 2.1 JNA status
 
 The Apple Silicon build no longer requires an external JNA source checkout as a manual prerequisite.
 
-The repo now consumes a stable repo-owned JNA p2 overlay from:
-- `dev-platform/rcp-target/rcp-eclipse/jna/repository/`
+The active Slice A wiring now consumes the upstream `2026-03` JNA bundles directly from:
+- `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/plugins/`
 
-That repository is the path used by:
+The historical repo-owned JNA overlay at `dev-platform/rcp-target/rcp-eclipse/jna/repository/` remains in the tree for reference and maintenance, but it is no longer part of the active target or shared Maven repository wiring.
+
+The active upstream RCP baseline path is the one used by:
 - `pom.xml`
 - `dev-platform/rcp-target/rcp.target`
 - `dev-platform/rcp-target/rcp_debug.target`
@@ -83,7 +85,7 @@ mvn -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/prebuild/pom.xml -Pplatform.
 ```
 
 This standalone `verify` form is enough when you only want to validate the target definition.
-The current prebuild reactor refreshes the repo-owned Apple Silicon overlay repositories (`swt`, `launcher-arm64`, `macos-arm64`, and `jna`) before validating `rcp.target`.
+The current prebuild reactor validates the cleaned `eclipse-2026-03`-only target wiring directly; it no longer depends on the legacy, French-localisation, or JNA fallback repositories for the supported Apple Silicon path.
 If you are driving the build as separate IntelliJ Maven targets with a fresh scratch local repository,
 use the split scratch sequence in section `2.7` instead so the generated target artifact is installed for later stages.
 

@@ -7,9 +7,6 @@
 
 		<!-- Eclipse RCP platform -->
 		<location path="dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03" type="Directory"/>
-		<location path="dev-platform/rcp-target/rcp-eclipse/eclipse" type="Directory"/>
-		<location path="dev-platform/rcp-target/rcp-eclipse/eclipse-fr" type="Directory"/>
-		<location path="dev-platform/rcp-target/rcp-eclipse/jna/repository" type="Directory"/>
 
 		<!-- Third-party Libraries re-packaged by Modeliosoft or Modeliosoft libraries -->
 		<location path="dev-platform/rcp-target/modelio-integ/org.astyle/astyle" type="Directory"/>

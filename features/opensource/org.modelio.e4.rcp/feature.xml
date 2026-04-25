@@ -94,58 +94,37 @@
 
    <plugin
          id="org.apache.batik.css"
-         download-size="353"
-         install-size="713"
-         version="1.13.0.v20200622-2037"
+         download-size="0"
+         install-size="0"
+         version="1.19.0.v20250506-1400"
          unpack="false"/>
 
    <plugin
-         id="org.w3c.css.sac"
-         download-size="35"
-         install-size="61"
-         version="1.3.1.v200903091627"
+         id="org.eclipse.orbit.xml-apis-ext"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.v20240917-0534"
          unpack="false"/>
 
    <plugin
          id="org.apache.batik.util"
-         download-size="144"
-         install-size="282"
-         version="1.13.0.v20200622-2037"
+         download-size="0"
+         install-size="0"
+         version="1.19.0.v20250506-1400"
          unpack="false"/>
 
    <plugin
-         id="org.w3c.dom.svg"
-         download-size="95"
-         install-size="134"
-         version="1.1.0.v201011041433"
+         id="jakarta.inject.jakarta.inject-api"
+         download-size="0"
+         install-size="0"
+         version="1.0.5"
          unpack="false"/>
 
    <plugin
-         id="org.w3c.dom.smil"
-         download-size="21"
-         install-size="40"
-         version="1.0.1.v200903091627"
-         unpack="false"/>
-
-   <plugin
-         id="org.w3c.dom.events"
-         download-size="15"
-         install-size="22"
-         version="3.0.0.draft20060413_v201105210656"
-         unpack="false"/>
-
-   <plugin
-         id="javax.inject"
-         download-size="14"
-         install-size="24"
-         version="1.0.0.v20091030"
-         unpack="false"/>
-
-   <plugin
-         id="javax.annotation"
-         download-size="46"
-         install-size="115"
-         version="1.3.5.v20200909-1856"
+         id="jakarta.annotation-api"
+         download-size="0"
+         install-size="0"
+         version="1.3.5"
          unpack="false"/>
 
    <plugin
@@ -164,37 +143,37 @@
 
    <plugin
          id="org.apache.batik.i18n"
-         download-size="23"
-         install-size="44"
-         version="1.13.0.v20200622-2037"
+         download-size="0"
+         install-size="0"
+         version="1.19.0.v20250506-1400"
          unpack="false"/>
 
    <plugin
          id="org.apache.batik.constants"
-         download-size="20"
-         install-size="39"
-         version="1.13.0.v20200622-2037"
+         download-size="0"
+         install-size="0"
+         version="1.19.0.v20250506-1400"
          unpack="false"/>
 
    <plugin
          id="org.apache.xmlgraphics"
-         download-size="703"
-         install-size="1400"
-         version="2.4.0.v20200622-2037"
+         download-size="0"
+         install-size="0"
+         version="2.11.0.v20250506-1400"
          unpack="false"/>
 
    <plugin
-         id="org.apache.commons.io"
-         download-size="227"
-         install-size="450"
-         version="2.6.0.v20190123-2029"
+         id="org.apache.commons.commons-io"
+         download-size="0"
+         install-size="0"
+         version="2.21.0"
          unpack="false"/>
 
    <plugin
-         id="org.apache.commons.logging"
-         download-size="71"
-         install-size="145"
-         version="1.2.0.v20180409-1502"
+         id="org.apache.commons.commons-logging"
+         download-size="0"
+         install-size="0"
+         version="1.3.5"
          unpack="false"/>
 
    <plugin
@@ -244,9 +223,9 @@
 
    <plugin
          id="org.apache.felix.scr"
-         download-size="411"
-         install-size="960"
-         version="2.1.24.v20200924-1939"
+         download-size="0"
+         install-size="0"
+         version="2.2.14"
          unpack="false"/>
 
    <plugin
@@ -335,9 +314,9 @@
 
    <plugin
          id="com.ibm.icu"
-         download-size="13251"
-         install-size="29339"
-         version="67.1.0.v20200706-1749"
+         download-size="0"
+         install-size="0"
+         version="78.2.0"
          unpack="false"/>
 
    <plugin
@@ -442,23 +421,23 @@
 
    <plugin
          id="org.apache.felix.gogo.command"
-         download-size="52"
-         install-size="107"
-         version="1.1.0.v20201023-1558"
+         download-size="0"
+         install-size="0"
+         version="1.1.2"
          unpack="false"/>
 
    <plugin
          id="org.apache.felix.gogo.runtime"
-         download-size="209"
-         install-size="404"
-         version="1.1.2.v20201023-1558"
+         download-size="0"
+         install-size="0"
+         version="1.1.6"
          unpack="false"/>
 
    <plugin
          id="org.apache.felix.gogo.shell"
-         download-size="68"
-         install-size="136"
-         version="1.1.2.v20201023-1558"
+         download-size="0"
+         install-size="0"
+         version="1.1.4"
          unpack="false"/>
 
    <plugin
@@ -487,13 +466,6 @@
          download-size="56"
          install-size="108"
          version="1.7.0.v20251222-0947"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.commons.jxpath"
-         download-size="317"
-         install-size="658"
-         version="1.3.0.v200911051830"
          unpack="false"/>
 
    <plugin

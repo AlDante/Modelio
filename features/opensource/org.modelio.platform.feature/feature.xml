@@ -32,9 +32,9 @@
 
    <plugin
          id="org.apache.ant"
-         download-size="3050"
-         install-size="3565"
-         version="1.10.9.v20201106-1946"/>
+         download-size="0"
+         install-size="0"
+         version="1.10.15.v20240901-1000"/>
 
    <plugin
          id="org.eclipse.ant.core"
@@ -45,9 +45,9 @@
 
    <plugin
          id="com.jcraft.jsch"
-         download-size="297"
-         install-size="539"
-         version="0.1.55.v20190404-1902"
+         download-size="0"
+         install-size="0"
+         version="0.1.55.v20230916-1400"
          unpack="false"/>
 
    <plugin
