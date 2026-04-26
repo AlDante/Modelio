@@ -36,6 +36,7 @@ import org.modelio.version.ModelioVersion;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.slf4j.ILoggerFactory;
 import org.slf4j.LoggerFactory;
 
 @objid ("0049aab6-4382-1fe3-9845-001ec947cd2a")
@@ -48,8 +49,7 @@ public class Utils implements BundleActivator {
     public void start(BundleContext bundleContext) {
         try {
             configureLogbackInBundle(bundleContext.getBundle());
-        } catch (JoranException | IOException e) {
-            // TODO Auto-generated catch block
+        } catch (JoranException | IOException | IllegalStateException e) {
             e.printStackTrace();
         }
         plugKernelLogToEclipseLog();
@@ -58,7 +58,7 @@ public class Utils implements BundleActivator {
 
     @objid ("f7d6e294-28b7-4056-86c0-197f5ccb3f52")
     private void configureLogbackInBundle(Bundle bundle) throws IOException, JoranException {
-        LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+        LoggerContext context = getRequiredLoggerContext();
         JoranConfigurator jc = new JoranConfigurator();
         jc.setContext(context);
         context.reset();
@@ -68,16 +68,42 @@ public class Utils implements BundleActivator {
         
         // this assumes that the logback.xml file is in the root of the bundle.
         URL logbackConfigFileUrl = FileLocator.find(bundle, new Path("config/logback.xml"), null);
-        jc.doConfigure(logbackConfigFileUrl.openStream());
-        
+        if (logbackConfigFileUrl == null) {
+            throw new IOException("Unable to locate config/logback.xml in bundle " + bundle.getSymbolicName());
+        }
+        try (var logbackConfigStream = logbackConfigFileUrl.openStream()) {
+            jc.doConfigure(logbackConfigStream);
+        }
+
     }
 
     @objid ("005028aa-4447-1fe3-9845-001ec947cd2a")
     @Override
     public void stop(BundleContext bundleContext) {
-        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-        loggerContext.stop();
-        
+        LoggerContext loggerContext = getLoggerContext();
+        if (loggerContext != null) {
+            loggerContext.stop();
+        }
+
+    }
+
+    private static LoggerContext getRequiredLoggerContext() {
+        LoggerContext loggerContext = getLoggerContext();
+        if (loggerContext != null) {
+            return loggerContext;
+        }
+
+        ILoggerFactory loggerFactory = LoggerFactory.getILoggerFactory();
+        String actualFactory = loggerFactory == null ? "null" : loggerFactory.getClass().getName();
+        throw new IllegalStateException("Expected Logback LoggerContext for " + PLUGIN_ID + " but got " + actualFactory);
+    }
+
+    private static LoggerContext getLoggerContext() {
+        ILoggerFactory loggerFactory = LoggerFactory.getILoggerFactory();
+        if (loggerFactory instanceof LoggerContext) {
+            return (LoggerContext) loggerFactory;
+        }
+        return null;
     }
 
     @objid ("5d0016a8-64f0-493c-9f8f-0158238c4637")
@@ -93,24 +119,25 @@ public class Utils implements BundleActivator {
      */
     @objid ("2ba8983e-a272-477b-811d-dc94502b0907")
     public static String getLogFile() {
-        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-        
+        LoggerContext lc = getLoggerContext();
+        if (lc == null) {
+            return null;
+        }
+
         // Look for default FILE appender on the root logger.
         Logger rootLogger = lc.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
         
         Appender<ILoggingEvent> appender = rootLogger.getAppender("LOGFILE");
-        if (appender != null) {
-            return ((FileAppender<ILoggingEvent>) appender).getFile();
+        if (appender instanceof FileAppender<?>) {
+            return ((FileAppender<?>) appender).getFile();
         }
         
         // Configuration file hacked, return the first file appender.
-        for (Logger logger : lc.getLoggerList()) {
-            Iterator<Appender<ILoggingEvent>> it = rootLogger.iteratorForAppenders();
-            while (it.hasNext()) {
-                Appender<ILoggingEvent> append = it.next();
-                if (append instanceof FileAppender) {
-                    return ((FileAppender<ILoggingEvent>) append).getFile();
-                }
+        Iterator<Appender<ILoggingEvent>> it = rootLogger.iteratorForAppenders();
+        while (it.hasNext()) {
+            Appender<ILoggingEvent> append = it.next();
+            if (append instanceof FileAppender<?>) {
+                return ((FileAppender<?>) append).getFile();
             }
         }
         
