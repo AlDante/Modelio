@@ -11,7 +11,7 @@ This directory is the **active primary vendored RCP baseline** for the current m
   - `AGGREGATOR/doc`
   - `AGGREGATOR/products`
 - The mirror no longer presents as a metadata-only staging area; it is now part of the live build path.
-- The legacy `eclipse/`, `eclipse-fr/`, and `jna/repository/` inputs are no longer part of the active target or shared repository wiring.
+- The legacy `eclipse/`, `eclipse-fr/`, and `jna/repository/` inputs are no longer part of the active target or shared repository wiring, and the retired `../eclipse/`, `../eclipse-fr/`, and `../jna/` directories have now been removed from the working tree.
 
 ## Source repository
 - Composite release URL: `https://download.eclipse.org/releases/2026-03/`
@@ -38,6 +38,10 @@ Slice A is now complete for the active RCP baseline:
 - the French-only `org.eclipse.jface.nl_fr` and French product documentation feature have been removed from the supported product path,
 - the product definition now uses the modern `org.eclipse.equinox.p2.user.ui` feature instead of the obsolete `httpclient45` ECF feature stack,
 - the missing upstream `com.jcraft.jsch_0.1.55.v20230916-1400.jar` and matching source bundle were mirrored into `eclipse-2026-03/plugins/` so the vendored baseline is self-contained.
+
+## Slice B retirement state
+- The supported feature and product path continues to resolve from `eclipse-2026-03` only.
+- The retired sibling directories `../eclipse/`, `../eclipse-fr/`, and `../jna/` have been removed so the clean vendored train is now the only in-tree RCP baseline/fallback path in this folder family.
 
 Boundary that still remains outside this specific audit:
 - the separately vendored `org.eclipse.uml2*` line continues to be supplied from `dev-platform/rcp-target/org.eclipse/uml2/`, not from the RCP mirror.

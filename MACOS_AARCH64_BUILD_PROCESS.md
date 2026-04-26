@@ -53,29 +53,21 @@ The Apple Silicon build no longer requires an external JNA source checkout as a 
 The active Slice A wiring now consumes the upstream `2026-03` JNA bundles directly from:
 - `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/plugins/`
 
-The historical repo-owned JNA overlay at `dev-platform/rcp-target/rcp-eclipse/jna/repository/` remains in the tree for reference and maintenance, but it is no longer part of the active target or shared Maven repository wiring.
+The retired repo-owned JNA overlay is no longer part of the working tree. If JNA ever needs refreshing again, mirror the required upstream bundles directly into `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/plugins/` alongside the existing Slice A audit artefacts.
 
 The active upstream RCP baseline path is the one used by:
 - `pom.xml`
 - `dev-platform/rcp-target/rcp.target`
 - `dev-platform/rcp-target/rcp_debug.target`
 
-### 2.2 Regenerate the JNA p2 overlay (maintenance only)
+### 2.2 Retired JNA overlay note
 
-The overlay project is:
-- `dev-platform/rcp-target/rcp-eclipse/jna/pom.xml`
+There is no longer a repo-owned JNA overlay project on the supported path.
 
-Regenerate its p2 repository with Maven only:
-
-```zsh
-cd /Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/jna
-mvn generate-resources
-```
-
-This refreshes the stable repo-owned overlay at:
-- `dev-platform/rcp-target/rcp-eclipse/jna/repository/`
-
-The generator refreshes that stable repository path and removes its transient staging directories before the build finishes, so `target/repository/` is no longer retained as a meaningful output.
+The current maintenance rule is simple:
+- keep the active JNA payload aligned with the vendored `eclipse-2026-03` baseline,
+- if a future refresh is needed, mirror the required bundles directly into `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/plugins/`,
+- then regenerate the Slice A audit artefacts under `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/`.
 
 ### 2.3 Validate the target definition
 
@@ -174,11 +166,11 @@ Validated IntelliJ Maven target order:
    ```
 
 Notes:
-- `AGGREGATOR/doc` is required before `products` because `products/modelio-os.product` includes `org.modelio.documentation.modeler.nl_fr.feature`.
+- `AGGREGATOR/doc` is required before `products` because `products/modelio-os.product` includes `org.modelio.documentation.modeler.feature`.
 - `product.org` is required for product materialization; without it, the `products` build may still create repository outputs under `products/target/`, but it will not produce the launchable `.app` bundle.
 - In IntelliJ, either keep the full Maven invocation in one command-line field or split it cleanly across the IDE fields without duplicating `-P`, `-f`, or `-Dmaven.repo.local`.
 - The current native flow no longer depends on an external JNA checkout.
-- If the JNA overlay ever needs to be refreshed, run the local Maven regeneration step from section `2.2`.
+- The retired repo-owned JNA overlay is no longer part of the supported maintenance workflow.
 
 ## 3. How the target platform is assembled
 
@@ -203,12 +195,14 @@ It validates:
 The target definition (`dev-platform/rcp-target/rcp.target`) pulls from local directory repositories.
 
 Key macOS aarch64-relevant inputs are:
-- `dev-platform/rcp-target/rcp-eclipse/eclipse`
-- `dev-platform/rcp-target/rcp-eclipse/eclipse-fr`
-- `dev-platform/rcp-target/rcp-eclipse/launcher-arm64`
-- `dev-platform/rcp-target/rcp-eclipse/macos-arm64`
-- `dev-platform/rcp-target/rcp-eclipse/jna/repository`
-- `dev-platform/rcp-target/rcp-eclipse/swt`
+- `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03`
+- `dev-platform/rcp-target/javax/jaxb`
+- `dev-platform/rcp-target/modelio-integ/**`
+- `dev-platform/rcp-target/apache/**`
+- `dev-platform/rcp-target/org.eclipse/**`
+- `dev-platform/rcp-target/tmatesoft/svnkit-1.10.9`
+- `dev-platform/rcp-target/org.slf4j/slf4j`
+- `dev-platform/rcp-target/ch.qos/logback`
 
 Relevant files:
 - `dev-platform/rcp-target/rcp.target`
@@ -217,52 +211,26 @@ Relevant files:
 - `maven/modelio-parent/pom.xml`
 
 The current normalized contract is:
-- the target-definition files and both shared parent POMs point at the same Apple Silicon overlay set;
+- the target-definition files and both shared parent POMs point at the same `eclipse-2026-03` upstream baseline plus the same companion vendored repositories under `dev-platform/rcp-target/**`;
 - the supported macOS `aarch64` path no longer carries active `openjdk-jre11` target wiring;
+- the supported macOS `aarch64` path no longer carries active `eclipse/`, `eclipse-fr/`, or `jna/repository/` fallback wiring;
+- the retired `dev-platform/rcp-target/rcp-eclipse/eclipse/`, `eclipse-fr/`, and `jna/` directories have been removed from the working tree;
 - the packaged app now validates with Java 21 launcher metadata in `products/modelio-os.product` / `modelio.ini`.
-- IntelliJ repository metadata now points JNA at `dev-platform/rcp-target/rcp-eclipse/jna/repository/`, matching Maven.
+- platform-specific launcher fragments, SWT fragments, and JNA bundles now resolve from `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03` itself.
 
 ### 3.3 Additive p2 overlays
 
-The base vendored Eclipse site is supplemented by small local p2 overlays.
+For the supported Apple Silicon path there are now **no active additive RCP overlays** in the target or shared Maven repository wiring.
 
-#### ARM launcher overlay
-Project:
-- `dev-platform/rcp-target/rcp-eclipse/launcher-arm64/pom.xml`
+The launcher fragments, macOS native fragments, and JNA bundles required by the product are resolved directly from:
+- `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03`
 
-Publishes:
-- `org.eclipse.equinox.launcher.cocoa.macosx`
-- `org.eclipse.equinox.launcher.cocoa.macosx.aarch64`
-
-Repository location:
-- `dev-platform/rcp-target/rcp-eclipse/launcher-arm64/`
-
-#### macOS fragment overlay
-Project:
-- `dev-platform/rcp-target/rcp-eclipse/macos-arm64/pom.xml`
-
-Publishes:
-- `org.eclipse.core.filesystem.macosx`
-- `org.eclipse.equinox.security.macosx`
-
-Repository location:
-- `dev-platform/rcp-target/rcp-eclipse/macos-arm64/`
-
-#### JNA overlay
-Project:
-- `dev-platform/rcp-target/rcp-eclipse/jna/pom.xml`
-
-Publishes:
-- `com.sun.jna`
-- `com.sun.jna.platform`
-
-Generated repository location:
-- `dev-platform/rcp-target/rcp-eclipse/jna/repository/`
+The older `eclipse/`, `eclipse-fr/`, and `jna/` directories have been retired from the tree. The remaining historical Apple Silicon helper directories are now limited to `launcher-arm64/` and `macos-arm64/`, and they are not part of the active build path.
 
 ### 3.4 macOS aarch64 SWT guardrail
 
 The root `pom.xml` `platform.mac.aarch64` profile now explicitly requires:
-- `org.eclipse.swt.cocoa.macosx.aarch64` `3.120.0.v20220530-1036`
+- `org.eclipse.swt.cocoa.macosx.aarch64` `3.133.0.v20260225-1014`
 
 Reason:
 - the resolved `org.eclipse.swt` base bundle is only a stub jar for compilation purposes;
@@ -271,22 +239,20 @@ Reason:
 
 The current checked build therefore treats the SWT fragment as a deterministic part of the Apple Silicon target contract, not as an optional side effect of p2 resolution.
 
-## 4. Why the JNA overlay exists
+## 4. JNA transition note
 
-The old vendored Eclipse baseline still contains:
-- `com.sun.jna 4.5.1`
-- `com.sun.jna.platform 4.5.1`
-
-That version is Intel-only on macOS and does not satisfy Apple Silicon native resolution.
+Earlier Apple Silicon enablement work needed a repo-owned JNA overlay because the older vendored baseline did not provide a suitable native JNA line for the supported product path.
 
 The feature that had to be updated was:
 - `features/opensource/org.modelio.e4.rcp/feature.xml`
 
 That feature now requests:
-- `com.sun.jna 5.18.1`
+- `com.sun.jna 5.18.1.v20251001-0800`
 - `com.sun.jna.platform 5.18.1`
 
-The generated macOS aarch64 product now ships:
+The active `eclipse-2026-03` baseline now supplies those bundles directly, so the supported product path no longer depends on a repo-owned JNA overlay.
+
+The generated macOS aarch64 product is expected to ship:
 - `Contents/Eclipse/plugins/com.sun.jna_5.18.1.jar`
 - `Contents/Eclipse/plugins/com.sun.jna.platform_5.18.1.jar`
 
@@ -369,21 +335,18 @@ This directory contains both:
 
 This is the directory map to check first.
 
-### 8.1 Overlay build outputs
+### 8.1 Active baseline inputs
 
-#### JNA overlay repository
-- `dev-platform/rcp-target/rcp-eclipse/jna/repository/`
-- files:
-  - `artifacts.jar`
-  - `content.jar`
-  - `plugins/com.sun.jna_5.18.1.jar`
-  - `plugins/com.sun.jna.platform_5.18.1.jar`
+For the supported Apple Silicon path, inspect the active vendored baseline first:
+- `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/`
 
-#### Launcher overlay repository
-- `dev-platform/rcp-target/rcp-eclipse/launcher-arm64/`
+Important payload now expected there includes:
+- `plugins/com.sun.jna_5.18.1.v20251001-0800.jar`
+- `plugins/com.sun.jna.platform_5.18.1.jar`
+- `plugins/org.eclipse.equinox.launcher.cocoa.macosx.aarch64_1.2.1400.v20250801-0854.jar`
+- `plugins/org.eclipse.swt.cocoa.macosx.aarch64_3.133.0.v20260225-1014.jar`
 
-#### macOS fragment overlay repository
-- `dev-platform/rcp-target/rcp-eclipse/macos-arm64/`
+The retired `eclipse/`, `eclipse-fr/`, and `jna/` directories are no longer present. If you need historical context, the remaining background-only helper directories are `launcher-arm64/` and `macos-arm64/`, but they are no longer primary lookup points for the active product path.
 
 ### 8.2 Product packaging intermediates
 
@@ -458,8 +421,8 @@ The current macOS packaging also keeps the human-facing bundle name stable as `M
 The packaged plugin directory is still the most reliable place to confirm what was actually shipped.
 
 Examples confirmed in the current native build:
-- `org.eclipse.swt.cocoa.macosx.aarch64_3.120.0.v20220530-1036.jar`
-- `org.eclipse.equinox.launcher.cocoa.macosx_1.2.200.v20210527-0259/.../eclipse_11408.so`
+- `org.eclipse.swt.cocoa.macosx.aarch64_3.133.0.v20260225-1014.jar`
+- `org.eclipse.equinox.launcher.cocoa.macosx_1.2.1400.v20250801-0854/.../eclipse_*.so`
 - `com.sun.jna_5.18.1.jar`
 - `com.sun.jna.platform_5.18.1.jar`
 
@@ -530,20 +493,20 @@ In other words:
 
 Although the generated bundle is now wrapper-complete, the Eclipse payload inside it can still be started manually with Java when you want lower-level debugging.
 
-The following path was tested successfully and the application reached UI startup:
+Use the same Java 21 toolchain as the normal build path:
 
 ```zsh
 cd "/Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Eclipse"
 
-"/opt/local/Library/Java/JavaVirtualMachines/openjdk11-temurin/Contents/Home/bin/java" \
+"$JAVA_HOME/bin/java" \
   -Xms512m \
   -Xmx2048m \
   -Dpython.console.encoding=UTF-8 \
-  -Dosgi.requiredJavaVersion=11 \
+  -Dosgi.requiredJavaVersion=21 \
   --add-modules=ALL-SYSTEM \
   -XstartOnFirstThread \
   -Dorg.eclipse.swt.internal.carbon.smallFonts \
-  -jar plugins/org.eclipse.equinox.launcher_1.6.0.v20200915-1508.jar \
+  -jar plugins/org.eclipse.equinox.launcher_1.7.100.v20251111-0406.jar \
   -consoleLog \
   -clean \
   -configuration configuration \
@@ -591,7 +554,7 @@ Expected:
 ### 11.2 ARM launcher fragment check
 
 In the generated product, confirm the ARM launcher fragment exists under:
-- `Contents/Eclipse/plugins/org.eclipse.equinox.launcher.cocoa.macosx_1.2.200.v20210527-0259/`
+- `Contents/Eclipse/plugins/org.eclipse.equinox.launcher.cocoa.macosx_1.2.1400.v20250801-0854/`
 
 Historical evidence files in this repo such as `diagnostics/macos-aarch64/launcher-filetypes.txt` and `diagnostics/macos-aarch64/final-aarch64-launcher-check.txt` remain useful as background verification artifacts, but the checked-in build now generates `Contents/MacOS/modelio` directly.
 
@@ -629,7 +592,7 @@ You may see this intermediate directory during packaging:
 - `products/target/org.eclipse.equinox.executable-3.8.1000.v20200915-1508/bin/cocoa/macosx/x86_64/Eclipse.app`
 
 That path comes from the upstream executable feature stored in:
-- `dev-platform/rcp-target/rcp-eclipse/eclipse/features/org.eclipse.equinox.executable_3.8.1000.v20200915-1508/feature.xml`
+- the matching `org.eclipse.equinox.executable_*` feature inside `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/features/`
 
 The staging tree exists because Tycho unpacks the executable feature during product assembly.
 
@@ -682,9 +645,9 @@ When debugging or locating outputs, use this order.
 
 ### Target and overlays
 1. `dev-platform/rcp-target/rcp.target`
-2. `dev-platform/rcp-target/rcp-eclipse/jna/repository/`
-3. `dev-platform/rcp-target/rcp-eclipse/launcher-arm64/`
-4. `dev-platform/rcp-target/rcp-eclipse/macos-arm64/`
+2. `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/`
+3. `dev-platform/rcp-target/rcp-eclipse/launcher-arm64/` and `dev-platform/rcp-target/rcp-eclipse/macos-arm64/` (historical reference only)
+4. retired directories `dev-platform/rcp-target/rcp-eclipse/eclipse/`, `eclipse-fr/`, and `jna/` are no longer present and should not be recreated for the supported path
 
 ### Plugin and feature outputs
 5. module-local `target/` directories under `modelio/**` and `features/**`
@@ -743,23 +706,17 @@ If you need to **run** the generated output normally, launch the `.app` bundle o
 
 If you need lower-level startup debugging, use the manual Java launch path from section `10.3`.
 
-If you intentionally need to refresh the repo-owned JNA overlay before one of those flows, run:
-
-```zsh
-cd /Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/jna
-mvn generate-resources
-```
+If a future JNA refresh is required, mirror the replacement bundles directly into `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/plugins/` and then regenerate the Slice A audit artefacts.
 
 ## 16. Summary
 
 The most important path to remember is:
 
-1. build or refresh overlays,
-2. validate the target,
-3. build plugins,
-4. build features,
-5. package products,
-6. inspect the generated product here:
+1. validate the target,
+2. build plugins,
+3. build features,
+4. package products,
+5. inspect the generated product here:
    - `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app`
 
 Current important distinction:

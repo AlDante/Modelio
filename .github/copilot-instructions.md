@@ -15,7 +15,7 @@ mvn -version
 ```
 - Validated runtime/tooling in this workspace: Maven **3.9.14**, Java **21.0.5**.
 - `Tycho 5.0.2` itself now requires Maven to run on Java 21; running it on Java 11 fails before project resolution with `P2ArtifactRepositoryLayout has been compiled by a more recent version of the Java Runtime`.
-- The supported macOS Apple Silicon product path now validates with Java 21 launcher metadata, and the active upstream RCP wiring now resolves from `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/` only; the old `eclipse/`, `eclipse-fr/`, `jna/repository/`, and `openjdk-jre11` fallback inputs are no longer active for this path.
+- The supported macOS Apple Silicon product path now validates with Java 21 launcher metadata, and the active upstream RCP wiring now resolves from `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/` only; the old `eclipse/`, `eclipse-fr/`, `jna/repository/`, and `openjdk-jre11` fallback inputs are no longer active for this path, and the retired `dev-platform/rcp-target/rcp-eclipse/{eclipse,eclipse-fr,jna}/` directories have been removed from the working tree.
 - Prefer **MacPorts** tooling. Toolchain templates exist in `maven/toolchains.macos.macports.xml` and `AGGREGATOR/toolchains.xml`, but the most reliable build bootstrap is still `JAVA_HOME`.
 - The shell is flaky. Prefer one command per invocation or a temporary script. **Do not use `&` command chaining.**
 - For scratch validation, use a fresh local Maven repo instead of `~/.m2` to avoid stale Tycho/p2 mirror state.

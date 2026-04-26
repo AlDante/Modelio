@@ -10,7 +10,7 @@
 - Aggregators under `AGGREGATOR/` define build order and stitch modules from `modelio/`, `features/`, and `products/`.
 - Feature composition is in `features/opensource/*` (for example `features/opensource/org.modelio.application.ui/feature.xml`).
 - Final product definition is `products/modelio-os.product`; packaging profiles are in `products/pom.xml`.
-- Target platform is local-file based from `dev-platform/rcp-target/rcp.target`; the supported macOS `aarch64` path now resolves its upstream RCP content from `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/` without active `eclipse/`, `eclipse-fr/`, `jna/repository/`, or `openjdk-jre11` fallback wiring.
+- Target platform is local-file based from `dev-platform/rcp-target/rcp.target`; the supported macOS `aarch64` path now resolves its upstream RCP content from `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/` without active `eclipse/`, `eclipse-fr/`, `jna/repository/`, or `openjdk-jre11` fallback wiring, and the retired `dev-platform/rcp-target/rcp-eclipse/{eclipse,eclipse-fr,jna}/` directories have been removed from the working tree.
 
 ## Canonical build entrypoints
 - Full staged build (prebuild + plugins + features + products): run from `AGGREGATOR/pom.xml`.

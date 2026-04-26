@@ -41,11 +41,11 @@ Assuming no major new upstream incompatibility is uncovered, the remaining work 
 | Slice | Scope | Rough effort |
 |---|---|---|
 | Slice A | Top up missing upstream bundles into the vendored train and freeze the resolved baseline | **Completed on 2026-04-25** |
-| Slice B | Recut features/products to consume only the clean vendored train and remove historical fallbacks | 3–6 days |
+| Slice B | Recut features/products to consume only the clean vendored train and remove historical fallbacks | **Completed on 2026-04-26** |
 | Slice C | Finish the clean Apple Silicon product/runtime stack and packaging integrity work | 4–7 days |
 | Slice D | Complete validation, lock CI gates, and retire the hybrid path | 2–4 days |
 
-**Overall remaining work:** roughly **1–3 focused weeks** of engineering/validation across Slices B–D.
+**Overall remaining work:** roughly **1–2 focused weeks** of engineering/validation across Slices C–D.
 
 ## Active plan of record
 
@@ -203,6 +203,13 @@ Move feature definitions, product definitions, and aggregation metadata fully on
 - `AGGREGATOR/features/opensource`, `AGGREGATOR/doc`, and `AGGREGATOR/products` resolve against the vendored train without historical fallbacks.
 - Product definitions no longer need mixed old/new inputs to assemble.
 - Any remaining legacy inclusion is explicitly justified as temporary and tracked.
+
+#### Slice B completion note - completed on 2026-04-26
+- verified the active feature, documentation, and product path against the `eclipse-2026-03` vendored train with no live `eclipse/`, `eclipse-fr/`, or `jna/repository/` repository usage in the current proof-build trace,
+- confirmed the persisted background proof-build exit status was `0`,
+- verified the packaged Apple Silicon product still materialises and passes the existing `plutil` and `codesign --verify --deep --strict` checks,
+- updated non-historical build documentation to describe only the clean `eclipse-2026-03` path,
+- retired the obsolete `dev-platform/rcp-target/rcp-eclipse/eclipse/`, `eclipse-fr/`, and `jna/` directories from the working tree now that the supported path no longer consumes them.
 
 ---
 
