@@ -65,14 +65,14 @@ along with Modelio.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
          id="ch.qos.logback.classic"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+          version="1.2.7"
          unpack="false"/>
 
    <plugin
          id="ch.qos.logback.core"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+          version="1.2.7"
          unpack="false"/>
 
    <plugin
@@ -226,7 +226,7 @@ along with Modelio.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
          id="slf4j.api"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+          version="1.7.25"
          unpack="false"/>
 
 </feature>
