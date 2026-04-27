@@ -1,0 +1,1988 @@
+{
+  "generatedOn": "2026-04-25",
+  "baseline": {
+    "label": "eclipse-2026-03",
+    "path": "dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/content.xml",
+    "sourceUrl": "https://download.eclipse.org/releases/2026-03/202603111000/"
+  },
+  "repoInputsAudited": {
+    "eclipse-2026-03": "dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/content.xml"
+  },
+  "featureScope": "features/opensource/*/feature.xml",
+  "scopeRule": "all non-Modelio feature entries that exist in the active RCP baseline repository",
+  "summary": {
+    "entriesAudited": 151,
+    "baselineOnlyCount": 151,
+    "duplicateSourceCount": 0,
+    "fallbackOnlyCount": 0,
+    "unresolvedCount": 0
+  },
+  "baselineOnly": [
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.core.services",
+      "version": "2.5.300.v20251112-1253",
+      "sources": {
+        "eclipse-2026-03": [
+          "2.5.300.v20251112-1253"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.workbench.swt",
+      "version": "0.18.0.v20260119-0835",
+      "sources": {
+        "eclipse-2026-03": [
+          "0.18.0.v20260119-0835"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.core.commands",
+      "version": "1.1.700.v20250916-0927",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.1.700.v20250916-0927"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.bindings",
+      "version": "0.15.0.v20251216-1230",
+      "sources": {
+        "eclipse-2026-03": [
+          "0.15.0.v20251216-1230"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.model.workbench",
+      "version": "2.4.700.v20251029-0840",
+      "sources": {
+        "eclipse-2026-03": [
+          "2.4.700.v20251029-0840"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.services",
+      "version": "1.6.600.v20251023-1358",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.6.600.v20251023-1358"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.workbench.renderers.swt",
+      "version": "0.17.0.v20260131-0926",
+      "sources": {
+        "eclipse-2026-03": [
+          "0.17.0.v20260131-0926"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.workbench",
+      "version": "1.18.200.v20260124-1751",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.18.200.v20260124-1751"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.css.core",
+      "version": "0.14.600.v20251112-0859",
+      "sources": {
+        "eclipse-2026-03": [
+          "0.14.600.v20251112-0859"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.css.swt",
+      "version": "0.16.0.v20251216-1230",
+      "sources": {
+        "eclipse-2026-03": [
+          "0.16.0.v20251216-1230"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.apache.batik.css",
+      "version": "1.19.0.v20250506-1400",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.19.0.v20250506-1400"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.orbit.xml-apis-ext",
+      "version": "1.0.0.v20240917-0534",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.0.0.v20240917-0534"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.apache.batik.util",
+      "version": "1.19.0.v20250506-1400",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.19.0.v20250506-1400"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "jakarta.inject.jakarta.inject-api",
+      "version": "1.0.5",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.0.5"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "jakarta.annotation-api",
+      "version": "1.3.5",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.3.5"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.core.di",
+      "version": "1.9.700.v20250609-0907",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.9.700.v20250609-0907"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.core.contexts",
+      "version": "1.13.200.v20250609-0437",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.13.200.v20250609-0437"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.apache.batik.i18n",
+      "version": "1.19.0.v20250506-1400",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.19.0.v20250506-1400"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.apache.batik.constants",
+      "version": "1.19.0.v20250506-1400",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.19.0.v20250506-1400"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.apache.xmlgraphics",
+      "version": "2.11.0.v20250506-1400",
+      "sources": {
+        "eclipse-2026-03": [
+          "2.11.0.v20250506-1400"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.apache.commons.commons-io",
+      "version": "2.21.0",
+      "sources": {
+        "eclipse-2026-03": [
+          "2.21.0"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.apache.commons.commons-logging",
+      "version": "1.3.5",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.3.5"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.core.di.extensions",
+      "version": "0.18.300.v20240413-1529",
+      "sources": {
+        "eclipse-2026-03": [
+          "0.18.300.v20240413-1529"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.css.swt.theme",
+      "version": "0.15.0.v20251216-1230",
+      "sources": {
+        "eclipse-2026-03": [
+          "0.15.0.v20251216-1230"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.di",
+      "version": "1.5.700.v20250917-0901",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.5.700.v20250917-0901"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.widgets",
+      "version": "1.5.0.v20251217-1052",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.5.0.v20251217-1052"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.workbench.renderers.swt.cocoa",
+      "version": "0.14.600.v20260123-2255",
+      "sources": {
+        "eclipse-2026-03": [
+          "0.14.600.v20260123-2255"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.equinox.common",
+      "version": "3.20.300.v20251111-0312",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.20.300.v20251111-0312"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.apache.felix.scr",
+      "version": "2.2.14",
+      "sources": {
+        "eclipse-2026-03": [
+          "2.2.14"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.equinox.event",
+      "version": "1.7.300.v20250518-0609",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.7.300.v20250518-0609"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.core.commands",
+      "version": "3.12.500.v20251103-0733",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.12.500.v20251103-0733"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.core.contenttype",
+      "version": "3.9.800.v20251105-1620",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.9.800.v20251105-1620"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.core.databinding",
+      "version": "1.13.700.v20251023-1511",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.13.700.v20251023-1511"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.core.databinding.beans",
+      "version": "1.10.500.v20250916-0941",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.10.500.v20250916-0941"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.core.databinding.observable",
+      "version": "1.13.500.v20251103-0735",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.13.500.v20251103-0735"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.core.databinding.property",
+      "version": "1.10.500.v20250916-0931",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.10.500.v20250916-0931"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.core.expressions",
+      "version": "3.9.500.v20250608-0434",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.9.500.v20250608-0434"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.core.jobs",
+      "version": "3.15.700.v20250725-1147",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.15.700.v20250725-1147"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.core.runtime",
+      "version": "3.34.200.v20251220-0953",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.34.200.v20251220-0953"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.equinox.app",
+      "version": "1.7.600.v20251211-1038",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.7.600.v20251211-1038"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.equinox.launcher",
+      "version": "1.7.100.v20251111-0406",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.7.100.v20251111-0406"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "com.ibm.icu",
+      "version": "78.2.0",
+      "sources": {
+        "eclipse-2026-03": [
+          "78.2.0"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.equinox.preferences",
+      "version": "3.12.100.v20251111-0704",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.12.100.v20251111-0704"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.equinox.registry",
+      "version": "3.12.600.v20250906-0651",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.12.600.v20250906-0651"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.equinox.simpleconfigurator",
+      "version": "1.5.700.v20251111-1031",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.5.700.v20251111-1031"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.osgi",
+      "version": "3.24.100.v20251215-1416",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.24.100.v20251215-1416"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.osgi.compatibility.state",
+      "version": "1.3.0.v20251022-1724",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.3.0.v20251022-1724"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.osgi.services",
+      "version": "3.12.300.v20250707-1221",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.12.300.v20250707-1221"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.osgi.util",
+      "version": "3.7.400.v20250516-0916",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.7.400.v20250516-0916"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.equinox.launcher.cocoa.macosx.aarch64",
+      "version": "1.2.1400.v20250801-0854",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.2.1400.v20250801-0854"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.swt",
+      "version": "3.133.0.v20260225-1014",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.133.0.v20260225-1014"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.swt.cocoa.macosx.aarch64",
+      "version": "3.133.0.v20260225-1014",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.133.0.v20260225-1014"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.jface",
+      "version": "3.39.0.v20260122-1511",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.39.0.v20260122-1511"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.jface.databinding",
+      "version": "1.16.0.v20251216-1230",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.16.0.v20251216-1230"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.workbench3",
+      "version": "0.18.0.v20251216-1230",
+      "sources": {
+        "eclipse-2026-03": [
+          "0.18.0.v20251216-1230"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.apache.felix.gogo.command",
+      "version": "1.1.2",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.1.2"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.apache.felix.gogo.runtime",
+      "version": "1.1.6",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.1.6"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.apache.felix.gogo.shell",
+      "version": "1.1.4",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.1.4"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.equinox.console",
+      "version": "1.4.1100.v20250722-0745",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.4.1100.v20250722-0745"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.workbench.addons.swt",
+      "version": "1.6.0.v20251216-1230",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.6.0.v20251216-1230"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.equinox.bidi",
+      "version": "1.5.400.v20250715-0436",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.5.400.v20250715-0436"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.dialogs",
+      "version": "1.7.0.v20251222-0947",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.7.0.v20251222-0947"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.emf.xpath",
+      "version": "0.6.100.v20251103-0738",
+      "sources": {
+        "eclipse-2026-03": [
+          "0.6.100.v20251103-0738"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.core.di.annotations",
+      "version": "1.8.400.v20240413-1529",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.8.400.v20240413-1529"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.swt.gtk",
+      "version": "1.2.200.v20240416-0658",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.2.200.v20240416-0658"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.swt.win32",
+      "version": "1.2.300.v20240416-0658",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.2.300.v20240416-0658"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.core.di.extensions.supplier",
+      "version": "0.17.1000.v20260130-1147",
+      "sources": {
+        "eclipse-2026-03": [
+          "0.17.1000.v20260130-1147"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.urischeme",
+      "version": "1.3.600.v20251023-1158",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.3.600.v20251023-1158"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "org.eclipse.jface.notifications",
+      "version": "0.8.0.v20251217-0909",
+      "sources": {
+        "eclipse-2026-03": [
+          "0.8.0.v20251217-0909"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "com.sun.jna",
+      "version": "5.18.1.v20251001-0800",
+      "sources": {
+        "eclipse-2026-03": [
+          "5.18.1.v20251001-0800"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.e4.rcp",
+      "featurePath": "features/opensource/org.modelio.e4.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260225-1014",
+      "tag": "plugin",
+      "id": "com.sun.jna.platform",
+      "version": "5.18.1",
+      "sources": {
+        "eclipse-2026-03": [
+          "5.18.1"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "includes",
+      "id": "org.eclipse.equinox.p2.user.ui",
+      "version": "2.4.3100.v20260125-1012",
+      "sources": {
+        "eclipse-2026-03": [
+          "2.4.3100.v20260125-1012"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "includes",
+      "id": "org.eclipse.help",
+      "version": "2.3.2500.v20260226-0420",
+      "sources": {
+        "eclipse-2026-03": [
+          "2.3.2500.v20260226-0420"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.apache.ant",
+      "version": "1.10.15.v20240901-1000",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.10.15.v20240901-1000"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ant.core",
+      "version": "3.7.800.v20260130-1053",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.7.800.v20260130-1053"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "com.jcraft.jsch",
+      "version": "0.1.55.v20230916-1400",
+      "sources": {
+        "eclipse-2026-03": [
+          "0.1.55.v20230916-1400"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.compare.core",
+      "version": "3.8.800.v20250718-1505",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.8.800.v20250718-1505"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.compare",
+      "version": "3.12.0.v20260209-1220",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.12.0.v20260209-1220"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.compare.win32",
+      "version": "1.3.700.v20250905-1117",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.3.700.v20250905-1117"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.core.filebuffers",
+      "version": "3.8.500.v20251103-0746",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.8.500.v20251103-0746"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.core.filesystem",
+      "version": "1.11.400.v20251107-0507",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.11.400.v20251107-0507"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.core.net",
+      "version": "1.5.800.v20250613-1119",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.5.800.v20250613-1119"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.core.resources",
+      "version": "3.23.200.v20251217-0810",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.23.200.v20251217-0810"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.osgi.util",
+      "version": "3.7.400.v20250516-0916",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.7.400.v20250516-0916"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.debug.core",
+      "version": "3.23.200.v20251107-0507",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.23.200.v20251107-0507"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.debug.ui",
+      "version": "3.20.0.v20260209-1220",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.20.0.v20260209-1220"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.e4.ui.ide",
+      "version": "3.18.0.v20251217-1052",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.18.0.v20251217-1052"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.equinox.event",
+      "version": "1.7.300.v20250518-0609",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.7.300.v20250518-0609"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.equinox.p2.reconciler.dropins",
+      "version": "1.5.800.v20251111-0852",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.5.800.v20251111-0852"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ltk.core.refactoring",
+      "version": "3.15.100.v20251023-1358",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.15.100.v20251023-1358"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ltk.ui.refactoring",
+      "version": "3.14.0.v20251216-1634",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.14.0.v20251216-1634"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.platform",
+      "version": "4.39.0.v20260226-0420",
+      "sources": {
+        "eclipse-2026-03": [
+          "4.39.0.v20260226-0420"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.search",
+      "version": "3.18.0.v20260103-1533",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.18.0.v20260103-1533"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.text.quicksearch",
+      "version": "1.3.400.v20260117-1027",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.3.400.v20260117-1027"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.team.core",
+      "version": "3.10.1000.v20260112-1030",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.10.1000.v20260112-1030"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.team.ui",
+      "version": "3.12.0.v20260104-0919",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.12.0.v20260104-0919"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.text",
+      "version": "3.14.600.v20260112-1806",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.14.600.v20260112-1806"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.jface.text",
+      "version": "3.30.0.v20260203-0841",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.30.0.v20260203-0841"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.jsch.core",
+      "version": "1.5.700.v20250723-0831",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.5.700.v20250723-0831"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.jsch.ui",
+      "version": "1.6.0.v20251219-1227",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.6.0.v20251219-1227"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.console",
+      "version": "3.16.0.v20260123-1616",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.16.0.v20260123-1616"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.intro",
+      "version": "3.8.0.v20251219-1227",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.8.0.v20251219-1227"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.intro.universal",
+      "version": "3.6.0.v20251219-1227",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.6.0.v20251219-1227"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.cheatsheets",
+      "version": "3.9.0.v20260106-0853",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.9.0.v20260106-0853"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.browser",
+      "version": "3.9.0.v20251217-1052",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.9.0.v20251217-1052"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.genericeditor",
+      "version": "1.4.0.v20251217-1052",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.4.0.v20251217-1052"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.monitoring",
+      "version": "1.4.0.v20251218-1237",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.4.0.v20251218-1237"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.navigator",
+      "version": "3.14.0.v20260103-1533",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.14.0.v20260103-1533"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.navigator.resources",
+      "version": "3.10.0.v20251217-1052",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.10.0.v20251217-1052"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.net",
+      "version": "1.6.0.v20251219-1227",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.6.0.v20251219-1227"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.workbench.texteditor",
+      "version": "3.20.0.v20260127-1637",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.20.0.v20260127-1637"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.views",
+      "version": "3.13.0.v20251217-0909",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.13.0.v20251217-0909"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.editors",
+      "version": "3.21.0.v20260218-1452",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.21.0.v20260218-1452"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.externaltools",
+      "version": "3.7.0.v20260112-1030",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.7.0.v20260112-1030"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.ide",
+      "version": "3.23.0.v20260103-1639",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.23.0.v20260103-1639"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.ide.application",
+      "version": "1.6.0.v20251217-1052",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.6.0.v20251217-1052"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.win32",
+      "version": "3.5.400.v20250925-0610",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.5.400.v20250925-0610"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.core.filesystem.linux.x86_64",
+      "version": "1.2.400.v20220812-1420",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.2.400.v20220812-1420"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.core.filesystem.macosx",
+      "version": "1.3.400.v20220812-1420",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.3.400.v20220812-1420"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.core.filesystem.linux.ppc64le",
+      "version": "1.4.200.v20220812-1420",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.4.200.v20220812-1420"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.core.filesystem.linux.aarch64",
+      "version": "1.4.200.v20220812-1420",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.4.200.v20220812-1420"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.core.variables",
+      "version": "3.6.700.v20250913-1442",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.6.700.v20250913-1442"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.forms",
+      "version": "3.14.0.v20260109-1454",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.14.0.v20260109-1454"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.views.properties.tabbed",
+      "version": "3.11.0.v20251217-0909",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.11.0.v20251217-0909"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.equinox.security",
+      "version": "1.4.700.v20250622-1644",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.4.700.v20250622-1644"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.equinox.security.ui",
+      "version": "1.4.700.v20251111-0659",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.4.700.v20251111-0659"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.equinox.security.macosx",
+      "version": "1.102.500.v20250521-0414",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.102.500.v20250521-0414"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.core.externaltools",
+      "version": "1.3.500.v20250609-0415",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.3.500.v20250609-0415"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.themes",
+      "version": "1.2.2900.v20250806-1940",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.2.2900.v20250806-1940"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.core.runtime",
+      "version": "3.34.200.v20251220-0953",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.34.200.v20251220-0953"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.intro.quicklinks",
+      "version": "1.3.0.v20251219-1227",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.3.0.v20251219-1227"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.team.genericeditor.diff.extension",
+      "version": "1.3.0.v20251219-1227",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.3.0.v20251219-1227"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.urischeme",
+      "version": "1.3.600.v20251023-1158",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.3.600.v20251023-1158"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.feature",
+      "featurePath": "features/opensource/org.modelio.platform.feature/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.views.log",
+      "version": "1.5.0.v20251216-1634",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.5.0.v20251216-1634"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.libraries",
+      "featurePath": "features/opensource/org.modelio.platform.libraries/feature.xml",
+      "featureVersion": "5.4.1.qualifier",
+      "tag": "plugin",
+      "id": "ch.qos.logback.classic",
+      "version": "0.0.0",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.5.32"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.libraries",
+      "featurePath": "features/opensource/org.modelio.platform.libraries/feature.xml",
+      "featureVersion": "5.4.1.qualifier",
+      "tag": "plugin",
+      "id": "ch.qos.logback.core",
+      "version": "0.0.0",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.5.32"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.libraries",
+      "featurePath": "features/opensource/org.modelio.platform.libraries/feature.xml",
+      "featureVersion": "5.4.1.qualifier",
+      "tag": "plugin",
+      "id": "org.apache.commons.commons-compress",
+      "version": "0.0.0",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.28.0"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.libraries",
+      "featurePath": "features/opensource/org.modelio.platform.libraries/feature.xml",
+      "featureVersion": "5.4.1.qualifier",
+      "tag": "plugin",
+      "id": "org.apache.commons.commons-logging",
+      "version": "1.3.5",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.3.5"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.libraries",
+      "featurePath": "features/opensource/org.modelio.platform.libraries/feature.xml",
+      "featureVersion": "5.4.1.qualifier",
+      "tag": "plugin",
+      "id": "org.eclipse.emf.mapping.ecore2xml",
+      "version": "0.0.0",
+      "sources": {
+        "eclipse-2026-03": [
+          "2.13.0.v20250910-1205"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.libraries",
+      "featurePath": "features/opensource/org.modelio.platform.libraries/feature.xml",
+      "featureVersion": "5.4.1.qualifier",
+      "tag": "plugin",
+      "id": "org.eclipse.nebula.cwt",
+      "version": "0.0.0",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.1.0.202509131601"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.libraries",
+      "featurePath": "features/opensource/org.modelio.platform.libraries/feature.xml",
+      "featureVersion": "5.4.1.qualifier",
+      "tag": "plugin",
+      "id": "org.eclipse.nebula.widgets.cdatetime",
+      "version": "0.0.0",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.5.0.202509131601"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.libraries",
+      "featurePath": "features/opensource/org.modelio.platform.libraries/feature.xml",
+      "featureVersion": "5.4.1.qualifier",
+      "tag": "plugin",
+      "id": "org.eclipse.nebula.widgets.gallery",
+      "version": "0.0.0",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.0.0.202509131601"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.libraries",
+      "featurePath": "features/opensource/org.modelio.platform.libraries/feature.xml",
+      "featureVersion": "5.4.1.qualifier",
+      "tag": "plugin",
+      "id": "org.eclipse.nebula.widgets.opal.commons",
+      "version": "0.0.0",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.0.0.202509131601"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.libraries",
+      "featurePath": "features/opensource/org.modelio.platform.libraries/feature.xml",
+      "featureVersion": "5.4.1.qualifier",
+      "tag": "plugin",
+      "id": "org.eclipse.nebula.widgets.tablecombo",
+      "version": "0.0.0",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.2.0.202402011804"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.platform.libraries",
+      "featurePath": "features/opensource/org.modelio.platform.libraries/feature.xml",
+      "featureVersion": "5.4.1.qualifier",
+      "tag": "plugin",
+      "id": "slf4j.api",
+      "version": "0.0.0",
+      "sources": {
+        "eclipse-2026-03": [
+          "2.0.17"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.rcp",
+      "featurePath": "features/opensource/org.modelio.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.help",
+      "version": "3.11.0.v20251227-1159",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.11.0.v20251227-1159"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.rcp",
+      "featurePath": "features/opensource/org.modelio.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui",
+      "version": "3.208.0.v20251219-1043",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.208.0.v20251219-1043"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.rcp",
+      "featurePath": "features/opensource/org.modelio.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.workbench",
+      "version": "3.138.0.v20260204-1601",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.138.0.v20260204-1601"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.rcp",
+      "featurePath": "features/opensource/org.modelio.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.update.configurator",
+      "version": "3.5.1000.v20260130-1253",
+      "sources": {
+        "eclipse-2026-03": [
+          "3.5.1000.v20260130-1253"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.rcp",
+      "featurePath": "features/opensource/org.modelio.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.rcp",
+      "version": "4.39.0.v20260226-0420",
+      "sources": {
+        "eclipse-2026-03": [
+          "4.39.0.v20260226-0420"
+        ]
+      }
+    },
+    {
+      "featureId": "org.modelio.rcp",
+      "featurePath": "features/opensource/org.modelio.rcp/feature.xml",
+      "featureVersion": "4.39.0.v20260226-0420",
+      "tag": "plugin",
+      "id": "org.eclipse.ui.cocoa",
+      "version": "1.3.400.v20260123-2255",
+      "sources": {
+        "eclipse-2026-03": [
+          "1.3.400.v20260123-2255"
+        ]
+      }
+    }
+  ],
+  "duplicateSources": [],
+  "fallbackOnly": [],
+  "unresolved": []
+}

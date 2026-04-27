@@ -1,0 +1,1869 @@
+{
+  "source_url": "https://download.eclipse.org/releases/2026-03/202603111000/",
+  "staged_dir": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03",
+  "features": {
+    "org.modelio.e4.rcp": {
+      "current_feature_version": "4.18.0.v20201202-1103",
+      "proposed_feature_version": "4.39.0.v20260225-1014",
+      "replace": [
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.core.services",
+          "current_version": "2.2.500.v20200928-2213",
+          "proposed_version": "2.5.300.v20251112-1253",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.workbench.swt",
+          "current_version": "0.15.0.v20201103-0952",
+          "proposed_version": "0.18.0.v20260119-0835",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.core.commands",
+          "current_version": "0.13.0.v20201119-1132",
+          "proposed_version": "1.1.700.v20250916-0927",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.bindings",
+          "current_version": "0.13.0.v20201119-1132",
+          "proposed_version": "0.15.0.v20251216-1230",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.model.workbench",
+          "current_version": "2.1.900.v20201014-0742",
+          "proposed_version": "2.4.700.v20251029-0840",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.services",
+          "current_version": "1.4.0.v20201014-0944",
+          "proposed_version": "1.6.600.v20251023-1358",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.workbench.renderers.swt",
+          "current_version": "0.15.0.v20201125-0918",
+          "proposed_version": "0.17.0.v20260131-0926",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.workbench",
+          "current_version": "1.12.0.v20201119-1132",
+          "proposed_version": "1.18.200.v20260124-1751",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.css.core",
+          "current_version": "0.13.0.v20201015-0653",
+          "proposed_version": "0.14.600.v20251112-0859",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.css.swt",
+          "current_version": "0.14.0.v20201103-0952",
+          "proposed_version": "0.16.0.v20251216-1230",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.core.di",
+          "current_version": "1.7.600.v20200428-0912",
+          "proposed_version": "1.9.700.v20250609-0907",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.core.contexts",
+          "current_version": "1.8.400.v20191217-1710",
+          "proposed_version": "1.13.200.v20250609-0437",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.core.di.extensions",
+          "current_version": "0.16.0.v20200507-0938",
+          "proposed_version": "0.18.300.v20240413-1529",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.css.swt.theme",
+          "current_version": "0.13.0.v20201026-1147",
+          "proposed_version": "0.15.0.v20251216-1230",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.di",
+          "current_version": "1.2.900.v20201021-1339",
+          "proposed_version": "1.5.700.v20250917-0901",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.widgets",
+          "current_version": "1.2.800.v20201021-1339",
+          "proposed_version": "1.5.0.v20251217-1052",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.workbench.renderers.swt.cocoa",
+          "current_version": "0.12.600.v20200416-0656",
+          "proposed_version": "0.14.600.v20260123-2255",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.equinox.common",
+          "current_version": "3.14.0.v20201102-2053",
+          "proposed_version": "3.20.300.v20251111-0312",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.equinox.event",
+          "current_version": "1.5.500.v20200616-0800",
+          "proposed_version": "1.7.300.v20250518-0609",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.commands",
+          "current_version": "3.9.800.v20201021-1339",
+          "proposed_version": "3.12.500.v20251103-0733",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.contenttype",
+          "current_version": "3.7.800.v20200724-0804",
+          "proposed_version": "3.9.800.v20251105-1620",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.databinding",
+          "current_version": "1.10.100.v20200926-1123",
+          "proposed_version": "1.13.700.v20251023-1511",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.databinding.beans",
+          "current_version": "1.7.100.v20201021-1339",
+          "proposed_version": "1.10.500.v20250916-0941",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.databinding.observable",
+          "current_version": "1.10.0.v20200730-0848",
+          "proposed_version": "1.13.500.v20251103-0735",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.databinding.property",
+          "current_version": "1.8.100.v20200619-0651",
+          "proposed_version": "1.10.500.v20250916-0931",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.expressions",
+          "current_version": "3.7.0.v20200720-1126",
+          "proposed_version": "3.9.500.v20250608-0434",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.jobs",
+          "current_version": "3.10.1000.v20200909-1312",
+          "proposed_version": "3.15.700.v20250725-1147",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.runtime",
+          "current_version": "3.20.0.v20201027-1526",
+          "proposed_version": "3.34.200.v20251220-0953",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.equinox.app",
+          "current_version": "1.5.0.v20200717-0620",
+          "proposed_version": "1.7.600.v20251211-1038",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.equinox.launcher",
+          "current_version": "1.6.0.v20200915-1508",
+          "proposed_version": "1.7.100.v20251111-0406",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.equinox.preferences",
+          "current_version": "3.8.100.v20201102-2042",
+          "proposed_version": "3.12.100.v20251111-0704",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.equinox.registry",
+          "current_version": "3.10.0.v20201107-1818",
+          "proposed_version": "3.12.600.v20250906-0651",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.equinox.simpleconfigurator",
+          "current_version": "1.3.600.v20200721-1308",
+          "proposed_version": "1.5.700.v20251111-1031",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.osgi",
+          "current_version": "3.16.100.v20201030-1916",
+          "proposed_version": "3.24.100.v20251215-1416",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.osgi.compatibility.state",
+          "current_version": "1.2.200.v20200915-2015",
+          "proposed_version": "1.3.0.v20251022-1724",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.osgi.services",
+          "current_version": "3.9.0.v20200511-1725",
+          "proposed_version": "3.12.300.v20250707-1221",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.osgi.util",
+          "current_version": "3.5.300.v20190708-1141",
+          "proposed_version": "3.7.400.v20250516-0916",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.equinox.launcher.cocoa.macosx.aarch64",
+          "current_version": "1.2.200.v20210527-0259",
+          "proposed_version": "1.2.1400.v20250801-0854",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.swt.cocoa.macosx.aarch64",
+          "current_version": "3.120.0.v20220530-1036",
+          "proposed_version": "3.133.0.v20260225-1014",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.jface",
+          "current_version": "3.22.0.v20201106-0834",
+          "proposed_version": "3.39.0.v20260122-1511",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.jface.databinding",
+          "current_version": "1.12.100.v20201014-0742",
+          "proposed_version": "1.16.0.v20251216-1230",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.workbench3",
+          "current_version": "0.15.500.v20201021-1339",
+          "proposed_version": "0.18.0.v20251216-1230",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.equinox.console",
+          "current_version": "1.4.200.v20200828-1034",
+          "proposed_version": "1.4.1100.v20250722-0745",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.workbench.addons.swt",
+          "current_version": "1.4.0.v20201119-1132",
+          "proposed_version": "1.6.0.v20251216-1230",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.equinox.bidi",
+          "current_version": "1.3.0.v20200612-1624",
+          "proposed_version": "1.5.400.v20250715-0436",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.dialogs",
+          "current_version": "1.2.100.v20201109-2317",
+          "proposed_version": "1.7.0.v20251222-0947",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.emf.xpath",
+          "current_version": "0.2.800.v20200609-0849",
+          "proposed_version": "0.6.100.v20251103-0738",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.core.di.annotations",
+          "current_version": "1.6.600.v20191216-2352",
+          "proposed_version": "1.8.400.v20240413-1529",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.swt.gtk",
+          "current_version": "1.1.0.v20201119-1132",
+          "proposed_version": "1.2.200.v20240416-0658",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.swt.win32",
+          "current_version": "1.1.0.v20201119-1132",
+          "proposed_version": "1.2.300.v20240416-0658",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.core.di.extensions.supplier",
+          "current_version": "0.15.700.v20200622-1247",
+          "proposed_version": "0.17.1000.v20260130-1147",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.urischeme",
+          "current_version": "1.1.200.v20201104-0938",
+          "proposed_version": "1.3.600.v20251023-1158",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.jface.notifications",
+          "current_version": "0.2.100.v20201130-1828",
+          "proposed_version": "0.8.0.v20251217-0909",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "com.sun.jna",
+          "current_version": "5.18.1",
+          "proposed_version": "5.18.1.v20251001-0800",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "com.sun.jna.platform",
+          "current_version": "5.18.1",
+          "proposed_version": "5.18.1",
+          "classifier": "osgi.bundle"
+        }
+      ],
+      "remove": [
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.swt.browser.chromium.win32.win32.x86_64",
+          "version": "3.115.100.v20201202-1103"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.swt.browser.chromium.gtk.linux.x86_64",
+          "version": "3.115.100.v20201202-1103"
+        }
+      ]
+    },
+    "org.modelio.rcp": {
+      "current_feature_version": "4.18.0.v20201202-1800",
+      "proposed_feature_version": "4.39.0.v20260226-0420",
+      "replace": [
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.help",
+          "current_version": "3.8.800.v20200525-0755",
+          "proposed_version": "3.11.0.v20251227-1159",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui",
+          "current_version": "3.118.100.v20201123-0719",
+          "proposed_version": "3.208.0.v20251219-1043",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.workbench",
+          "current_version": "3.122.0.v20201122-1345",
+          "proposed_version": "3.138.0.v20260204-1601",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.update.configurator",
+          "current_version": "3.4.700.v20200907-1237",
+          "proposed_version": "3.5.1000.v20260130-1253",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.rcp",
+          "current_version": "4.18.0.v20201202-1800",
+          "proposed_version": "4.39.0.v20260226-0420",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.cocoa",
+          "current_version": "1.2.400.v20191217-1850",
+          "proposed_version": "1.3.400.v20260123-2255",
+          "classifier": "osgi.bundle"
+        }
+      ],
+      "remove": []
+    },
+    "org.modelio.platform.feature": {
+      "current_feature_version": "4.18.0.v20201202-1800",
+      "proposed_feature_version": "4.39.0.v20260226-0420",
+      "replace": [
+        {
+          "tag": "includes",
+          "id": "org.eclipse.equinox.p2.user.ui",
+          "current_version": "2.4.1000.v20201106-1246",
+          "proposed_version": "2.4.3100.v20260125-1012",
+          "classifier": "org.eclipse.update.feature"
+        },
+        {
+          "tag": "includes",
+          "id": "org.eclipse.help",
+          "current_version": "2.3.400.v20201202-1800",
+          "proposed_version": "2.3.2500.v20260226-0420",
+          "classifier": "org.eclipse.update.feature"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ant.core",
+          "current_version": "3.5.800.v20200608-1251",
+          "proposed_version": "3.7.800.v20260130-1053",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.compare.core",
+          "current_version": "3.6.1000.v20201020-1107",
+          "proposed_version": "3.8.800.v20250718-1505",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.compare",
+          "current_version": "3.7.1200.v20201020-1107",
+          "proposed_version": "3.12.0.v20260209-1220",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.compare.win32",
+          "current_version": "1.2.800.v20200127-1343",
+          "proposed_version": "1.3.700.v20250905-1117",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.filebuffers",
+          "current_version": "3.6.1100.v20201029-1159",
+          "proposed_version": "3.8.500.v20251103-0746",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.filesystem",
+          "current_version": "1.7.700.v20200110-1734",
+          "proposed_version": "1.11.400.v20251107-0507",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.net",
+          "current_version": "1.3.1000.v20200715-0827",
+          "proposed_version": "1.5.800.v20250613-1119",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.resources",
+          "current_version": "3.13.900.v20201105-1507",
+          "proposed_version": "3.23.200.v20251217-0810",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.osgi.util",
+          "current_version": "3.5.300.v20190708-1141",
+          "proposed_version": "3.7.400.v20250516-0916",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.debug.core",
+          "current_version": "3.17.0.v20201109-1948",
+          "proposed_version": "3.23.200.v20251107-0507",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.debug.ui",
+          "current_version": "3.14.700.v20201123-0650",
+          "proposed_version": "3.20.0.v20260209-1220",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.e4.ui.ide",
+          "current_version": "3.15.100.v20200323-2111",
+          "proposed_version": "3.18.0.v20251217-1052",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.equinox.event",
+          "current_version": "1.5.500.v20200616-0800",
+          "proposed_version": "1.7.300.v20250518-0609",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.equinox.p2.reconciler.dropins",
+          "current_version": "1.3.400.v20200511-1530",
+          "proposed_version": "1.5.800.v20251111-0852",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ltk.core.refactoring",
+          "current_version": "3.11.200.v20201027-1753",
+          "proposed_version": "3.15.100.v20251023-1358",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ltk.ui.refactoring",
+          "current_version": "3.11.200.v20201025-2022",
+          "proposed_version": "3.14.0.v20251216-1634",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.platform",
+          "current_version": "4.18.0.v20201202-1800",
+          "proposed_version": "4.39.0.v20260226-0420",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.search",
+          "current_version": "3.12.100.v20201116-1027",
+          "proposed_version": "3.18.0.v20260103-1533",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.text.quicksearch",
+          "current_version": "1.0.400.v20201026-1722",
+          "proposed_version": "1.3.400.v20260117-1027",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.team.core",
+          "current_version": "3.8.1100.v20200806-0621",
+          "proposed_version": "3.10.1000.v20260112-1030",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.team.ui",
+          "current_version": "3.8.1100.v20200916-0836",
+          "proposed_version": "3.12.0.v20260104-0919",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.text",
+          "current_version": "3.10.400.v20200925-0557",
+          "proposed_version": "3.14.600.v20260112-1806",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.jface.text",
+          "current_version": "3.16.500.v20201112-1545",
+          "proposed_version": "3.30.0.v20260203-0841",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.jsch.core",
+          "current_version": "1.3.900.v20200422-1935",
+          "proposed_version": "1.5.700.v20250723-0831",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.jsch.ui",
+          "current_version": "1.3.1100.v20200916-0731",
+          "proposed_version": "1.6.0.v20251219-1227",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.console",
+          "current_version": "3.10.0.v20201021-1231",
+          "proposed_version": "3.16.0.v20260123-1616",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.intro",
+          "current_version": "3.6.0.v20201120-1551",
+          "proposed_version": "3.8.0.v20251219-1227",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.intro.universal",
+          "current_version": "3.4.0.v20200805-1259",
+          "proposed_version": "3.6.0.v20251219-1227",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.cheatsheets",
+          "current_version": "3.7.100.v20200915-1059",
+          "proposed_version": "3.9.0.v20260106-0853",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.browser",
+          "current_version": "3.6.1000.v20200910-0548",
+          "proposed_version": "3.9.0.v20251217-1052",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.genericeditor",
+          "current_version": "1.1.900.v20200910-2030",
+          "proposed_version": "1.4.0.v20251217-1052",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.monitoring",
+          "current_version": "1.1.900.v20200907-0838",
+          "proposed_version": "1.4.0.v20251218-1237",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.navigator",
+          "current_version": "3.9.500.v20201021-1339",
+          "proposed_version": "3.14.0.v20260103-1533",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.navigator.resources",
+          "current_version": "3.7.500.v20201021-1339",
+          "proposed_version": "3.10.0.v20251217-1052",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.net",
+          "current_version": "1.3.800.v20200422-1935",
+          "proposed_version": "1.6.0.v20251219-1227",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.workbench.texteditor",
+          "current_version": "3.15.100.v20201116-1727",
+          "proposed_version": "3.20.0.v20260127-1637",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.views",
+          "current_version": "3.10.500.v20201021-1339",
+          "proposed_version": "3.13.0.v20251217-0909",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.editors",
+          "current_version": "3.13.400.v20200923-1238",
+          "proposed_version": "3.21.0.v20260218-1452",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.externaltools",
+          "current_version": "3.4.900.v20201105-0600",
+          "proposed_version": "3.7.0.v20260112-1030",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.ide",
+          "current_version": "3.18.0.v20201119-1132",
+          "proposed_version": "3.23.0.v20260103-1639",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.ide.application",
+          "current_version": "1.3.900.v20201102-2031",
+          "proposed_version": "1.6.0.v20251217-1052",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.win32",
+          "current_version": "3.4.400.v20200414-1247",
+          "proposed_version": "3.5.400.v20250925-0610",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.filesystem.linux.x86_64",
+          "current_version": "1.2.300.v20180828-0158",
+          "proposed_version": "1.2.400.v20220812-1420",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.filesystem.macosx",
+          "current_version": "1.3.400.v20220812-1420",
+          "proposed_version": "1.3.400.v20220812-1420",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.filesystem.linux.ppc64le",
+          "current_version": "1.4.100.v20180828-0158",
+          "proposed_version": "1.4.200.v20220812-1420",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.filesystem.linux.aarch64",
+          "current_version": "1.4.100.v20200805-0859",
+          "proposed_version": "1.4.200.v20220812-1420",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.variables",
+          "current_version": "3.4.800.v20200120-1101",
+          "proposed_version": "3.6.700.v20250913-1442",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.forms",
+          "current_version": "3.11.0.v20201025-0656",
+          "proposed_version": "3.14.0.v20260109-1454",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.views.properties.tabbed",
+          "current_version": "3.9.0.v20201026-0739",
+          "proposed_version": "3.11.0.v20251217-0909",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.equinox.security",
+          "current_version": "1.3.500.v20200114-1637",
+          "proposed_version": "1.4.700.v20250622-1644",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.equinox.security.ui",
+          "current_version": "1.2.700.v20200807-1518",
+          "proposed_version": "1.4.700.v20251111-0659",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.equinox.security.macosx",
+          "current_version": "1.101.400.v20210427-1958",
+          "proposed_version": "1.102.500.v20250521-0414",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.externaltools",
+          "current_version": "1.1.800.v20201105-0600",
+          "proposed_version": "1.3.500.v20250609-0415",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.themes",
+          "current_version": "1.2.1200.v20201112-1139",
+          "proposed_version": "1.2.2900.v20250806-1940",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.runtime",
+          "current_version": "3.20.0.v20201027-1526",
+          "proposed_version": "3.34.200.v20251220-0953",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.intro.quicklinks",
+          "current_version": "1.1.0.v20200724-0708",
+          "proposed_version": "1.3.0.v20251219-1227",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.team.genericeditor.diff.extension",
+          "current_version": "1.0.600.v20200212-1524",
+          "proposed_version": "1.3.0.v20251219-1227",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.urischeme",
+          "current_version": "1.1.200.v20201104-0938",
+          "proposed_version": "1.3.600.v20251023-1158",
+          "classifier": "osgi.bundle"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.ui.views.log",
+          "current_version": "1.2.1300.v20200926-2205",
+          "proposed_version": "1.5.0.v20251216-1634",
+          "classifier": "osgi.bundle"
+        }
+      ],
+      "remove": [
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.net.linux.x86_64",
+          "version": "1.2.400.v20190924-1023"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.net.win32.x86_64",
+          "version": "1.1.500.v20190925-1337"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.resources.win32.x86_64",
+          "version": "3.5.400.v20190812-0909"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.core.filesystem.win32.x86_64",
+          "version": "1.4.200.v20190812-0909"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.equinox.security.win32.x86_64",
+          "version": "1.1.200.v20190812-0919"
+        },
+        {
+          "tag": "plugin",
+          "id": "org.eclipse.equinox.security.linux.x86_64",
+          "version": "1.1.400.v20200915-1125"
+        }
+      ]
+    }
+  },
+  "cached_artifacts": [
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.core.services",
+      "version": "2.5.300.v20251112-1253",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.core.services_2.5.300.v20251112-1253.jar",
+      "size": 76246,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.core.services_2.5.300.v20251112-1253.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.workbench.swt",
+      "version": "0.18.0.v20260119-0835",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.workbench.swt_0.18.0.v20260119-0835.jar",
+      "size": 164187,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.workbench.swt_0.18.0.v20260119-0835.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.core.commands",
+      "version": "1.1.700.v20250916-0927",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.core.commands_1.1.700.v20250916-0927.jar",
+      "size": 31584,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.core.commands_1.1.700.v20250916-0927.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.bindings",
+      "version": "0.15.0.v20251216-1230",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.bindings_0.15.0.v20251216-1230.jar",
+      "size": 53029,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.bindings_0.15.0.v20251216-1230.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.model.workbench",
+      "version": "2.4.700.v20251029-0840",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.model.workbench_2.4.700.v20251029-0840.jar",
+      "size": 409746,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.model.workbench_2.4.700.v20251029-0840.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.services",
+      "version": "1.6.600.v20251023-1358",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.services_1.6.600.v20251023-1358.jar",
+      "size": 28637,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.services_1.6.600.v20251023-1358.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.workbench.renderers.swt",
+      "version": "0.17.0.v20260131-0926",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.workbench.renderers.swt_0.17.0.v20260131-0926.jar",
+      "size": 276997,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.workbench.renderers.swt_0.17.0.v20260131-0926.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.workbench",
+      "version": "1.18.200.v20260124-1751",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.workbench_1.18.200.v20260124-1751.jar",
+      "size": 280809,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.workbench_1.18.200.v20260124-1751.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.css.core",
+      "version": "0.14.600.v20251112-0859",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.css.core_0.14.600.v20251112-0859.jar",
+      "size": 226361,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.css.core_0.14.600.v20251112-0859.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.css.swt",
+      "version": "0.16.0.v20251216-1230",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.css.swt_0.16.0.v20251216-1230.jar",
+      "size": 211968,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.css.swt_0.16.0.v20251216-1230.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.core.di",
+      "version": "1.9.700.v20250609-0907",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.core.di_1.9.700.v20250609-0907.jar",
+      "size": 65877,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.core.di_1.9.700.v20250609-0907.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.core.contexts",
+      "version": "1.13.200.v20250609-0437",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.core.contexts_1.13.200.v20250609-0437.jar",
+      "size": 60302,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.core.contexts_1.13.200.v20250609-0437.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.core.di.extensions",
+      "version": "0.18.300.v20240413-1529",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.core.di.extensions_0.18.300.v20240413-1529.jar",
+      "size": 13271,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.core.di.extensions_0.18.300.v20240413-1529.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.css.swt.theme",
+      "version": "0.15.0.v20251216-1230",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.css.swt.theme_0.15.0.v20251216-1230.jar",
+      "size": 32260,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.css.swt.theme_0.15.0.v20251216-1230.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.di",
+      "version": "1.5.700.v20250917-0901",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.di_1.5.700.v20250917-0901.jar",
+      "size": 20045,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.di_1.5.700.v20250917-0901.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.widgets",
+      "version": "1.5.0.v20251217-1052",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.widgets_1.5.0.v20251217-1052.jar",
+      "size": 16976,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.widgets_1.5.0.v20251217-1052.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.workbench.renderers.swt.cocoa",
+      "version": "0.14.600.v20260123-2255",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.workbench.renderers.swt.cocoa_0.14.600.v20260123-2255.jar",
+      "size": 33749,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.workbench.renderers.swt.cocoa_0.14.600.v20260123-2255.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.equinox.common",
+      "version": "3.20.300.v20251111-0312",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.equinox.common_3.20.300.v20251111-0312.jar",
+      "size": 164845,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.equinox.common_3.20.300.v20251111-0312.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.equinox.event",
+      "version": "1.7.300.v20250518-0609",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.equinox.event_1.7.300.v20250518-0609.jar",
+      "size": 38033,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.equinox.event_1.7.300.v20250518-0609.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.commands",
+      "version": "3.12.500.v20251103-0733",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.commands_3.12.500.v20251103-0733.jar",
+      "size": 122155,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.commands_3.12.500.v20251103-0733.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.contenttype",
+      "version": "3.9.800.v20251105-1620",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.contenttype_3.9.800.v20251105-1620.jar",
+      "size": 108005,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.contenttype_3.9.800.v20251105-1620.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.databinding",
+      "version": "1.13.700.v20251023-1511",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.databinding_1.13.700.v20251023-1511.jar",
+      "size": 296780,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.databinding_1.13.700.v20251023-1511.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.databinding.beans",
+      "version": "1.10.500.v20250916-0941",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.databinding.beans_1.10.500.v20250916-0941.jar",
+      "size": 86880,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.databinding.beans_1.10.500.v20250916-0941.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.databinding.observable",
+      "version": "1.13.500.v20251103-0735",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.databinding.observable_1.13.500.v20251103-0735.jar",
+      "size": 324396,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.databinding.observable_1.13.500.v20251103-0735.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.databinding.property",
+      "version": "1.10.500.v20250916-0931",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.databinding.property_1.10.500.v20250916-0931.jar",
+      "size": 171506,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.databinding.property_1.10.500.v20250916-0931.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.expressions",
+      "version": "3.9.500.v20250608-0434",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.expressions_3.9.500.v20250608-0434.jar",
+      "size": 99192,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.expressions_3.9.500.v20250608-0434.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.jobs",
+      "version": "3.15.700.v20250725-1147",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.jobs_3.15.700.v20250725-1147.jar",
+      "size": 120879,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.jobs_3.15.700.v20250725-1147.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.runtime",
+      "version": "3.34.200.v20251220-0953",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.runtime_3.34.200.v20251220-0953.jar",
+      "size": 90520,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.runtime_3.34.200.v20251220-0953.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.equinox.app",
+      "version": "1.7.600.v20251211-1038",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.equinox.app_1.7.600.v20251211-1038.jar",
+      "size": 93212,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.equinox.app_1.7.600.v20251211-1038.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.equinox.launcher",
+      "version": "1.7.100.v20251111-0406",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.equinox.launcher_1.7.100.v20251111-0406.jar",
+      "size": 52574,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.equinox.launcher_1.7.100.v20251111-0406.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.equinox.preferences",
+      "version": "3.12.100.v20251111-0704",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.equinox.preferences_3.12.100.v20251111-0704.jar",
+      "size": 130382,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.equinox.preferences_3.12.100.v20251111-0704.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.equinox.registry",
+      "version": "3.12.600.v20250906-0651",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.equinox.registry_3.12.600.v20250906-0651.jar",
+      "size": 206425,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.equinox.registry_3.12.600.v20250906-0651.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.equinox.simpleconfigurator",
+      "version": "1.5.700.v20251111-1031",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.equinox.simpleconfigurator_1.5.700.v20251111-1031.jar",
+      "size": 57247,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.equinox.simpleconfigurator_1.5.700.v20251111-1031.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.osgi",
+      "version": "3.24.100.v20251215-1416",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.osgi_3.24.100.v20251215-1416.jar",
+      "size": 1615560,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.osgi_3.24.100.v20251215-1416.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.osgi.compatibility.state",
+      "version": "1.3.0.v20251022-1724",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.osgi.compatibility.state_1.3.0.v20251022-1724.jar",
+      "size": 260438,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.osgi.compatibility.state_1.3.0.v20251022-1724.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.osgi.services",
+      "version": "3.12.300.v20250707-1221",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.osgi.services_3.12.300.v20250707-1221.jar",
+      "size": 29793,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.osgi.services_3.12.300.v20250707-1221.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.osgi.util",
+      "version": "3.7.400.v20250516-0916",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.osgi.util_3.7.400.v20250516-0916.jar",
+      "size": 16156,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.osgi.util_3.7.400.v20250516-0916.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.equinox.launcher.cocoa.macosx.aarch64",
+      "version": "1.2.1400.v20250801-0854",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.equinox.launcher.cocoa.macosx.aarch64_1.2.1400.v20250801-0854.jar",
+      "size": 43405,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.equinox.launcher.cocoa.macosx.aarch64_1.2.1400.v20250801-0854.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.swt.cocoa.macosx.aarch64",
+      "version": "3.133.0.v20260225-1014",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.swt.cocoa.macosx.aarch64_3.133.0.v20260225-1014.jar",
+      "size": 2772403,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.swt.cocoa.macosx.aarch64_3.133.0.v20260225-1014.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.jface",
+      "version": "3.39.0.v20260122-1511",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.jface_3.39.0.v20260122-1511.jar",
+      "size": 1264609,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.jface_3.39.0.v20260122-1511.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.jface.databinding",
+      "version": "1.16.0.v20251216-1230",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.jface.databinding_1.16.0.v20251216-1230.jar",
+      "size": 301187,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.jface.databinding_1.16.0.v20251216-1230.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.workbench3",
+      "version": "0.18.0.v20251216-1230",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.workbench3_0.18.0.v20251216-1230.jar",
+      "size": 25259,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.workbench3_0.18.0.v20251216-1230.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.equinox.console",
+      "version": "1.4.1100.v20250722-0745",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.equinox.console_1.4.1100.v20250722-0745.jar",
+      "size": 141837,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.equinox.console_1.4.1100.v20250722-0745.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.workbench.addons.swt",
+      "version": "1.6.0.v20251216-1230",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.workbench.addons.swt_1.6.0.v20251216-1230.jar",
+      "size": 132134,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.workbench.addons.swt_1.6.0.v20251216-1230.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.equinox.bidi",
+      "version": "1.5.400.v20250715-0436",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.equinox.bidi_1.5.400.v20250715-0436.jar",
+      "size": 55787,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.equinox.bidi_1.5.400.v20250715-0436.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.dialogs",
+      "version": "1.7.0.v20251222-0947",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.dialogs_1.7.0.v20251222-0947.jar",
+      "size": 70717,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.dialogs_1.7.0.v20251222-0947.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.emf.xpath",
+      "version": "0.6.100.v20251103-0738",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.emf.xpath_0.6.100.v20251103-0738.jar",
+      "size": 26580,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.emf.xpath_0.6.100.v20251103-0738.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.core.di.annotations",
+      "version": "1.8.400.v20240413-1529",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.core.di.annotations_1.8.400.v20240413-1529.jar",
+      "size": 14150,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.core.di.annotations_1.8.400.v20240413-1529.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.swt.gtk",
+      "version": "1.2.200.v20240416-0658",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.swt.gtk_1.2.200.v20240416-0658.jar",
+      "size": 12956,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.swt.gtk_1.2.200.v20240416-0658.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.swt.win32",
+      "version": "1.2.300.v20240416-0658",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.swt.win32_1.2.300.v20240416-0658.jar",
+      "size": 12456,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.swt.win32_1.2.300.v20240416-0658.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.core.di.extensions.supplier",
+      "version": "0.17.1000.v20260130-1147",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.core.di.extensions.supplier_0.17.1000.v20260130-1147.jar",
+      "size": 44003,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.core.di.extensions.supplier_0.17.1000.v20260130-1147.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.urischeme",
+      "version": "1.3.600.v20251023-1158",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.urischeme_1.3.600.v20251023-1158.jar",
+      "size": 58267,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.urischeme_1.3.600.v20251023-1158.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.jface.notifications",
+      "version": "0.8.0.v20251217-0909",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.jface.notifications_0.8.0.v20251217-0909.jar",
+      "size": 37506,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.jface.notifications_0.8.0.v20251217-0909.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "com.sun.jna",
+      "version": "5.18.1.v20251001-0800",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/com.sun.jna_5.18.1.v20251001-0800.jar",
+      "size": 2017745,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/com.sun.jna_5.18.1.v20251001-0800.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "com.sun.jna.platform",
+      "version": "5.18.1",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/com.sun.jna.platform_5.18.1.jar",
+      "size": 1380744,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/com.sun.jna.platform_5.18.1.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.help",
+      "version": "3.11.0.v20251227-1159",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.help_3.11.0.v20251227-1159.jar",
+      "size": 283869,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.help_3.11.0.v20251227-1159.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui",
+      "version": "3.208.0.v20251219-1043",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui_3.208.0.v20251219-1043.jar",
+      "size": 847606,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui_3.208.0.v20251219-1043.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.workbench",
+      "version": "3.138.0.v20260204-1601",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.workbench_3.138.0.v20260204-1601.jar",
+      "size": 3666368,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.workbench_3.138.0.v20260204-1601.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.update.configurator",
+      "version": "3.5.1000.v20260130-1253",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.update.configurator_3.5.1000.v20260130-1253.jar",
+      "size": 103333,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.update.configurator_3.5.1000.v20260130-1253.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.rcp",
+      "version": "4.39.0.v20260226-0420",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.rcp_4.39.0.v20260226-0420.jar",
+      "size": 15409,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.rcp_4.39.0.v20260226-0420.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.cocoa",
+      "version": "1.3.400.v20260123-2255",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.cocoa_1.3.400.v20260123-2255.jar",
+      "size": 13044,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.cocoa_1.3.400.v20260123-2255.jar"
+    },
+    {
+      "classifier": "org.eclipse.update.feature",
+      "id": "org.eclipse.equinox.p2.user.ui",
+      "version": "2.4.3100.v20260125-1012",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/features/org.eclipse.equinox.p2.user.ui_2.4.3100.v20260125-1012.jar",
+      "size": 22578,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/features/org.eclipse.equinox.p2.user.ui_2.4.3100.v20260125-1012.jar"
+    },
+    {
+      "classifier": "org.eclipse.update.feature",
+      "id": "org.eclipse.help",
+      "version": "2.3.2500.v20260226-0420",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/features/org.eclipse.help_2.3.2500.v20260226-0420.jar",
+      "size": 22797,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/features/org.eclipse.help_2.3.2500.v20260226-0420.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ant.core",
+      "version": "3.7.800.v20260130-1053",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ant.core_3.7.800.v20260130-1053.jar",
+      "size": 112106,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ant.core_3.7.800.v20260130-1053.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.compare.core",
+      "version": "3.8.800.v20250718-1505",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.compare.core_3.8.800.v20250718-1505.jar",
+      "size": 72895,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.compare.core_3.8.800.v20250718-1505.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.compare",
+      "version": "3.12.0.v20260209-1220",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.compare_3.12.0.v20260209-1220.jar",
+      "size": 962584,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.compare_3.12.0.v20260209-1220.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.compare.win32",
+      "version": "1.3.700.v20250905-1117",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.compare.win32_1.3.700.v20250905-1117.jar",
+      "size": 51902,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.compare.win32_1.3.700.v20250905-1117.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.filebuffers",
+      "version": "3.8.500.v20251103-0746",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.filebuffers_3.8.500.v20251103-0746.jar",
+      "size": 122333,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.filebuffers_3.8.500.v20251103-0746.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.filesystem",
+      "version": "1.11.400.v20251107-0507",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.filesystem_1.11.400.v20251107-0507.jar",
+      "size": 79139,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.filesystem_1.11.400.v20251107-0507.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.net",
+      "version": "1.5.800.v20250613-1119",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.net_1.5.800.v20250613-1119.jar",
+      "size": 77845,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.net_1.5.800.v20250613-1119.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.resources",
+      "version": "3.23.200.v20251217-0810",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.resources_3.23.200.v20251217-0810.jar",
+      "size": 962697,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.resources_3.23.200.v20251217-0810.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.debug.core",
+      "version": "3.23.200.v20251107-0507",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.debug.core_3.23.200.v20251107-0507.jar",
+      "size": 418909,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.debug.core_3.23.200.v20251107-0507.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.debug.ui",
+      "version": "3.20.0.v20260209-1220",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.debug.ui_3.20.0.v20260209-1220.jar",
+      "size": 3733890,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.debug.ui_3.20.0.v20260209-1220.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.e4.ui.ide",
+      "version": "3.18.0.v20251217-1052",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.e4.ui.ide_3.18.0.v20251217-1052.jar",
+      "size": 14969,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.e4.ui.ide_3.18.0.v20251217-1052.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.equinox.p2.reconciler.dropins",
+      "version": "1.5.800.v20251111-0852",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.equinox.p2.reconciler.dropins_1.5.800.v20251111-0852.jar",
+      "size": 54916,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.equinox.p2.reconciler.dropins_1.5.800.v20251111-0852.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ltk.core.refactoring",
+      "version": "3.15.100.v20251023-1358",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ltk.core.refactoring_3.15.100.v20251023-1358.jar",
+      "size": 368669,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ltk.core.refactoring_3.15.100.v20251023-1358.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ltk.ui.refactoring",
+      "version": "3.14.0.v20251216-1634",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ltk.ui.refactoring_3.14.0.v20251216-1634.jar",
+      "size": 646741,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ltk.ui.refactoring_3.14.0.v20251216-1634.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.platform",
+      "version": "4.39.0.v20260226-0420",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.platform_4.39.0.v20260226-0420.jar",
+      "size": 615747,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.platform_4.39.0.v20260226-0420.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.search",
+      "version": "3.18.0.v20260103-1533",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.search_3.18.0.v20260103-1533.jar",
+      "size": 561634,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.search_3.18.0.v20260103-1533.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.text.quicksearch",
+      "version": "1.3.400.v20260117-1027",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.text.quicksearch_1.3.400.v20260117-1027.jar",
+      "size": 113884,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.text.quicksearch_1.3.400.v20260117-1027.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.team.core",
+      "version": "3.10.1000.v20260112-1030",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.team.core_3.10.1000.v20260112-1030.jar",
+      "size": 417881,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.team.core_3.10.1000.v20260112-1030.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.team.ui",
+      "version": "3.12.0.v20260104-0919",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.team.ui_3.12.0.v20260104-0919.jar",
+      "size": 1871074,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.team.ui_3.12.0.v20260104-0919.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.text",
+      "version": "3.14.600.v20260112-1806",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.text_3.14.600.v20260112-1806.jar",
+      "size": 361800,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.text_3.14.600.v20260112-1806.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.jface.text",
+      "version": "3.30.0.v20260203-0841",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.jface.text_3.30.0.v20260203-0841.jar",
+      "size": 1093531,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.jface.text_3.30.0.v20260203-0841.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.jsch.core",
+      "version": "1.5.700.v20250723-0831",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.jsch.core_1.5.700.v20250723-0831.jar",
+      "size": 46055,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.jsch.core_1.5.700.v20250723-0831.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.jsch.ui",
+      "version": "1.6.0.v20251219-1227",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.jsch.ui_1.6.0.v20251219-1227.jar",
+      "size": 100914,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.jsch.ui_1.6.0.v20251219-1227.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.console",
+      "version": "3.16.0.v20260123-1616",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.console_3.16.0.v20260123-1616.jar",
+      "size": 283726,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.console_3.16.0.v20260123-1616.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.intro",
+      "version": "3.8.0.v20251219-1227",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.intro_3.8.0.v20251219-1227.jar",
+      "size": 405657,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.intro_3.8.0.v20251219-1227.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.intro.universal",
+      "version": "3.6.0.v20251219-1227",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.intro.universal_3.6.0.v20251219-1227.jar",
+      "size": 2345559,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.intro.universal_3.6.0.v20251219-1227.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.cheatsheets",
+      "version": "3.9.0.v20260106-0853",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.cheatsheets_3.9.0.v20260106-0853.jar",
+      "size": 483114,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.cheatsheets_3.9.0.v20260106-0853.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.browser",
+      "version": "3.9.0.v20251217-1052",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.browser_3.9.0.v20251217-1052.jar",
+      "size": 267101,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.browser_3.9.0.v20251217-1052.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.genericeditor",
+      "version": "1.4.0.v20251217-1052",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.genericeditor_1.4.0.v20251217-1052.jar",
+      "size": 197449,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.genericeditor_1.4.0.v20251217-1052.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.monitoring",
+      "version": "1.4.0.v20251218-1237",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.monitoring_1.4.0.v20251218-1237.jar",
+      "size": 66556,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.monitoring_1.4.0.v20251218-1237.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.navigator",
+      "version": "3.14.0.v20260103-1533",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.navigator_3.14.0.v20260103-1533.jar",
+      "size": 460699,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.navigator_3.14.0.v20260103-1533.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.navigator.resources",
+      "version": "3.10.0.v20251217-1052",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.navigator.resources_3.10.0.v20251217-1052.jar",
+      "size": 214108,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.navigator.resources_3.10.0.v20251217-1052.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.net",
+      "version": "1.6.0.v20251219-1227",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.net_1.6.0.v20251219-1227.jar",
+      "size": 50409,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.net_1.6.0.v20251219-1227.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.workbench.texteditor",
+      "version": "3.20.0.v20260127-1637",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.workbench.texteditor_3.20.0.v20260127-1637.jar",
+      "size": 870185,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.workbench.texteditor_3.20.0.v20260127-1637.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.views",
+      "version": "3.13.0.v20251217-0909",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.views_3.13.0.v20251217-0909.jar",
+      "size": 126698,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.views_3.13.0.v20251217-0909.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.editors",
+      "version": "3.21.0.v20260218-1452",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.editors_3.21.0.v20260218-1452.jar",
+      "size": 700524,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.editors_3.21.0.v20260218-1452.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.externaltools",
+      "version": "3.7.0.v20260112-1030",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.externaltools_3.7.0.v20260112-1030.jar",
+      "size": 178422,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.externaltools_3.7.0.v20260112-1030.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.ide",
+      "version": "3.23.0.v20260103-1639",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.ide_3.23.0.v20260103-1639.jar",
+      "size": 2756954,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.ide_3.23.0.v20260103-1639.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.ide.application",
+      "version": "1.6.0.v20251217-1052",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.ide.application_1.6.0.v20251217-1052.jar",
+      "size": 158390,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.ide.application_1.6.0.v20251217-1052.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.win32",
+      "version": "3.5.400.v20250925-0610",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.win32_3.5.400.v20250925-0610.jar",
+      "size": 26425,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.win32_3.5.400.v20250925-0610.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.filesystem.linux.x86_64",
+      "version": "1.2.400.v20220812-1420",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.filesystem.linux.x86_64_1.2.400.v20220812-1420.jar",
+      "size": 13450,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.filesystem.linux.x86_64_1.2.400.v20220812-1420.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.filesystem.macosx",
+      "version": "1.3.400.v20220812-1420",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.filesystem.macosx_1.3.400.v20220812-1420.jar",
+      "size": 28071,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.filesystem.macosx_1.3.400.v20220812-1420.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.filesystem.linux.ppc64le",
+      "version": "1.4.200.v20220812-1420",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.filesystem.linux.ppc64le_1.4.200.v20220812-1420.jar",
+      "size": 13251,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.filesystem.linux.ppc64le_1.4.200.v20220812-1420.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.filesystem.linux.aarch64",
+      "version": "1.4.200.v20220812-1420",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.filesystem.linux.aarch64_1.4.200.v20220812-1420.jar",
+      "size": 13311,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.filesystem.linux.aarch64_1.4.200.v20220812-1420.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.variables",
+      "version": "3.6.700.v20250913-1442",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.variables_3.6.700.v20250913-1442.jar",
+      "size": 40273,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.variables_3.6.700.v20250913-1442.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.forms",
+      "version": "3.14.0.v20260109-1454",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.forms_3.14.0.v20260109-1454.jar",
+      "size": 363543,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.forms_3.14.0.v20260109-1454.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.views.properties.tabbed",
+      "version": "3.11.0.v20251217-0909",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.views.properties.tabbed_3.11.0.v20251217-0909.jar",
+      "size": 114970,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.views.properties.tabbed_3.11.0.v20251217-0909.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.equinox.security",
+      "version": "1.4.700.v20250622-1644",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.equinox.security_1.4.700.v20250622-1644.jar",
+      "size": 120654,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.equinox.security_1.4.700.v20250622-1644.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.equinox.security.ui",
+      "version": "1.4.700.v20251111-0659",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.equinox.security.ui_1.4.700.v20251111-0659.jar",
+      "size": 179515,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.equinox.security.ui_1.4.700.v20251111-0659.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.equinox.security.macosx",
+      "version": "1.102.500.v20250521-0414",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.equinox.security.macosx_1.102.500.v20250521-0414.jar",
+      "size": 31714,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.equinox.security.macosx_1.102.500.v20250521-0414.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.core.externaltools",
+      "version": "1.3.500.v20250609-0415",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.core.externaltools_1.3.500.v20250609-0415.jar",
+      "size": 45355,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.core.externaltools_1.3.500.v20250609-0415.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.themes",
+      "version": "1.2.2900.v20250806-1940",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.themes_1.2.2900.v20250806-1940.jar",
+      "size": 38609,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.themes_1.2.2900.v20250806-1940.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.intro.quicklinks",
+      "version": "1.3.0.v20251219-1227",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.intro.quicklinks_1.3.0.v20251219-1227.jar",
+      "size": 27831,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.intro.quicklinks_1.3.0.v20251219-1227.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.team.genericeditor.diff.extension",
+      "version": "1.3.0.v20251219-1227",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.team.genericeditor.diff.extension_1.3.0.v20251219-1227.jar",
+      "size": 19991,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.team.genericeditor.diff.extension_1.3.0.v20251219-1227.jar"
+    },
+    {
+      "classifier": "osgi.bundle",
+      "id": "org.eclipse.ui.views.log",
+      "version": "1.5.0.v20251216-1634",
+      "path": "/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/plugins/org.eclipse.ui.views.log_1.5.0.v20251216-1634.jar",
+      "size": 235365,
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/plugins/org.eclipse.ui.views.log_1.5.0.v20251216-1634.jar"
+    }
+  ]
+}

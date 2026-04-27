@@ -1,0 +1,23 @@
+{
+  "source_url": "https://download.eclipse.org/releases/2026-03/202603111000/",
+  "files": [
+    {
+      "file": "content.jar",
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/content.jar",
+      "size": 2416648,
+      "etag": null,
+      "last_modified": null
+    },
+    {
+      "file": "artifacts.jar",
+      "source": "https://download.eclipse.org/releases/2026-03/202603111000/artifacts.jar",
+      "size": 2297786,
+      "etag": null,
+      "last_modified": null
+    }
+  ],
+  "extracted_xml": [
+    "content.xml",
+    "artifacts.xml"
+  ]
+}
