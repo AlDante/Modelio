@@ -1,0 +1,1 @@
+/Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio 5.4.1.app/Contents/MacOS/modelio: Mach-O 64-bit executable arm64

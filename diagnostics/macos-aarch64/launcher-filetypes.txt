@@ -1,0 +1,8 @@
+/Users/david/IdeaProjects/Modelio/products/preserved-macos/Modelio 5.4.1 x86_64.app/Contents/MacOS/modelio
+/Users/david/IdeaProjects/Modelio/products/preserved-macos/Modelio 5.4.1 x86_64.app/Contents/MacOS/modelio: Mach-O 64-bit executable x86_64
+/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse/features/org.eclipse.equinox.executable_3.8.1000.v20200915-1508/bin/cocoa/macosx/x86_64/Eclipse.app/Contents/MacOS/launcher
+/Users/david/IdeaProjects/Modelio/dev-platform/rcp-target/rcp-eclipse/eclipse/features/org.eclipse.equinox.executable_3.8.1000.v20200915-1508/bin/cocoa/macosx/x86_64/Eclipse.app/Contents/MacOS/launcher: Mach-O 64-bit executable x86_64
+/Users/david/IdeaProjects/Modelio/products/preserved-macos/Modelio 5.4.1 x86_64.app/Contents/Eclipse/plugins/org.eclipse.equinox.launcher.cocoa.macosx.x86_64_1.2.0.v20200915-1442/eclipse_11103.so
+/Users/david/IdeaProjects/Modelio/products/preserved-macos/Modelio 5.4.1 x86_64.app/Contents/Eclipse/plugins/org.eclipse.equinox.launcher.cocoa.macosx.x86_64_1.2.0.v20200915-1442/eclipse_11103.so: Mach-O 64-bit bundle x86_64
+/Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio 5.4.1.app/Contents/Eclipse/plugins/org.eclipse.equinox.launcher.cocoa.macosx_1.2.200.v20210527-0259/eclipse_11408.so
+/Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio 5.4.1.app/Contents/Eclipse/plugins/org.eclipse.equinox.launcher.cocoa.macosx_1.2.200.v20210527-0259/eclipse_11408.so: Mach-O 64-bit bundle arm64

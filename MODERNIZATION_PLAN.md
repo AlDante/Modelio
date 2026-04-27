@@ -303,7 +303,7 @@ Any roadmap sections below this point are retained only for historical relevance
 - The headless target-definition cleanup has now started and its first pass is complete.
 - `dev-platform/rcp-target/rcp.target` and `dev-platform/rcp-target/rcp_debug.target` were changed from `${project_loc:/...}` paths to workspace-relative paths.
 - The stale missing `test-resources/files` target entry was removed from both target definitions.
-- Revalidation of `AGGREGATOR/prebuild/pom.xml` on `platform.mac.aarch64` is green, and the previous `${project_loc:/rcp-target}`, `${project_loc:/pack-resources}`, `${project_loc:/test-resources}`, and `target resoloution might be incomplete` warnings are no longer present in the new log `diagnostics/macos-aarch64/prebuild-verify-after-target-path-cleanup.log`.
+- Revalidation of `AGGREGATOR/prebuild/pom.xml` on `platform.mac.aarch64` is green, and the previous `${project_loc:/rcp-target}`, `${project_loc:/pack-resources}`, `${project_loc:/test-resources}`, and `target resoloution might be incomplete` warnings are no longer present after the target-path cleanup.
 - The Apple Silicon JNA overlay can now be generated headlessly from Maven alone against a fresh local repository; the old external JNA source checkout is no longer required to create the overlay.
 - The build now uses a stable repo-owned JNA p2 path at `dev-platform/rcp-target/rcp-eclipse/jna/repository/`, and the JNA generator now refreshes that stable path while deleting the transient staged `target/repository` output before the build completes.
 - `AGGREGATOR/prebuild/pom.xml` now includes the JNA overlay generator module so the overlay can be refreshed inside the staged build flow, while the stable checked-in repository remains available before reactor resolution starts.
@@ -580,11 +580,7 @@ Practical implication:
   2. install opensource features: `AGGREGATOR/features/opensource/pom.xml -Pplatform.mac.aarch64 install`
   3. install docs separately: `doc/aggregator/pom.xml install`
   4. package product: `products/pom.xml -Pproduct.org,platform.mac.aarch64 package`
-- Recorded diagnostics:
-  - `diagnostics/macos-aarch64/plugins-install.log`
-  - `diagnostics/macos-aarch64/features-opensource-install.log`
-  - `diagnostics/macos-aarch64/doc-aggregator-install.log`
-  - `diagnostics/macos-aarch64/products-package-final.log`
+- The staged install/package sequence completed successfully in that scoped run.
 - The final product package step succeeded after that scoped install path.
 
 Post-rebuild packaged-app audit:
@@ -610,8 +606,7 @@ Interpretation after rebuild:
 
 #### Full staged build status after Tycho alignment - 2026-04-16
 - `AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org package` now succeeds again on `Java 11`.
-- Recorded build artifacts:
-  - `diagnostics/macos-aarch64/aggregator-package-after-tycho-fix.log`
+- Retained repo-owned evidence:
   - `diagnostics/macos-aarch64/aggregator-package-after-tycho-fix.exit`
 - Summary tail captured in:
   - `diagnostics/macos-aarch64/aggregator-package-after-tycho-fix.tail.txt`
@@ -1228,7 +1223,7 @@ Initial version-diff audit against the still-active overlay set:
 | Mac security fragment | `org.eclipse.equinox.security.macosx` `1.101.200.v20190903-0934` | `1.101.400.v20210427-1958` | `rcp-eclipse/macos-arm64` | Same rule as the filesystem fragment: the first slice should measure the new train before deciding whether the overlay still adds value. |
 | JNA | `com.sun.jna` / `com.sun.jna.platform` `4.5.1.v20190425-1842` | `5.18.1` | `rcp-eclipse/jna/repository` | JNA remains a version skew even after the Apple Silicon cleanup; the first slice must verify whether the new train removes or reduces that gap. |
 
-Repo-owned feature-layer impact, refreshed with the historical audit helper `diagnostics/macos-aarch64/historical/feature_pin_audit.py`:
+Repo-owned feature-layer impact at that point in the investigation:
 - `features/opensource/org.modelio.e4.rcp/feature.xml`
   - still resolves the large majority of its `org.eclipse.*` pins from the old baseline repo,
   - still carries the active overlay/backfill pins for:

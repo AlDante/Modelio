@@ -513,10 +513,7 @@ cd "/Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.produ
   -data /Users/david/IdeaProjects/Modelio/.runtime-jar-data
 ```
 
-This was verified by the smoke-launch log in:
-- `diagnostics/macos-aarch64/runtime-jar-smoke.log`
-
-That log shows:
+This was also verified in a local smoke-launch run. The observed results were:
 - `BootLoader constants: OS=macosx, ARCH=aarch64, WS=cocoa`
 - Modelio startup messages
 - no `com.sun.jna` / `org.eclipse.urischeme` unresolved-bundle failure
@@ -661,18 +658,17 @@ When debugging or locating outputs, use this order.
 ### Manual launch/debug of the current generated payload
 10. `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Eclipse/modelio.ini`
 11. `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Eclipse/configuration/config.ini`
-12. `diagnostics/macos-aarch64/runtime-jar-smoke.log`
-13. `~/.modelio/5.4/opensource-cache/conf`
-14. `~/.modelio/5.4/opensource-cache/data/.metadata/.log`
+12. `~/.modelio/5.4/opensource-cache/conf`
+13. `~/.modelio/5.4/opensource-cache/data/.metadata/.log`
 
 ### Wrapper/signature verification
-15. `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Info.plist`
-16. `codesign --verify --deep --strict --verbose=4 .../Modelio.app`
-17. `xattr -lr .../Modelio.app`
+14. `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Info.plist`
+15. `codesign --verify --deep --strict --verbose=4 .../Modelio.app`
+16. `xattr -lr .../Modelio.app`
 
 ### Only after that, inspect intermediates
-18. `products/target/org.eclipse.equinox.executable-*`
-19. `products/target/repository/`
+17. `products/target/org.eclipse.equinox.executable-*`
+18. `products/target/repository/`
 20. `products/target/targetPlatformRepository/`
 21. `products/target/p2agent/`
 

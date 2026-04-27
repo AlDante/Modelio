@@ -1,0 +1,30 @@
+[INFO] org.modelio.formalism.uml 5.4.1-SNAPSHOT ........... SUCCESS [  0.196 s]
+[INFO] org.modelio.functions.admintool 5.4.1-SNAPSHOT ..... SUCCESS [  0.085 s]
+[INFO] org.modelio.functions.audit 5.4.1-SNAPSHOT ......... SUCCESS [  0.108 s]
+[INFO] org.modelio.functions.bundlefiles 5.4.1 ............ SUCCESS [  0.938 s]
+[INFO] org.modelio.functions.editors 5.4.1-SNAPSHOT ....... SUCCESS [  0.101 s]
+[INFO] org.modelio.functions.elementedition 5.4.1-SNAPSHOT  SUCCESS [  0.200 s]
+[INFO] org.modelio.functions.fle 5.4.1-SNAPSHOT ........... SUCCESS [  0.085 s]
+[INFO] org.modelio.functions.modelbrowser 5.4.1-SNAPSHOT .. SUCCESS [  0.090 s]
+[INFO] org.modelio.functions.modelimport 5.4.1-SNAPSHOT ... SUCCESS [  0.087 s]
+[INFO] org.modelio.functions.modelviewtemplate 5.4.1-SNAPSHOT SUCCESS [  0.095 s]
+[INFO] org.modelio.functions.modules 5.4.1-SNAPSHOT ....... SUCCESS [  0.085 s]
+[INFO] org.modelio.functions.patterns 5.4.1-SNAPSHOT ...... SUCCESS [  0.072 s]
+[INFO] org.modelio.functions.script 5.4.1-SNAPSHOT ........ SUCCESS [  0.060 s]
+[INFO] org.modelio.functions.search 5.4.1-SNAPSHOT ........ SUCCESS [  0.074 s]
+[INFO] org.modelio.functions.update 5.4.1-SNAPSHOT ........ SUCCESS [  0.061 s]
+[INFO] org.modelio.functions.xmi 5.4.1-SNAPSHOT ........... SUCCESS [  0.065 s]
+[INFO] org.modelio.rcp 4.18.0.v20201202-1800 .............. SUCCESS [  0.119 s]
+[INFO] org.modelio.platform.feature 4.18.0.v20201202-1800 . SUCCESS [  0.521 s]
+[INFO] org.modelio.platform.libraries 5.4.1-SNAPSHOT ...... SUCCESS [  0.234 s]
+[INFO] aggregator-feature-opensource 5.4.1-SNAPSHOT ....... SUCCESS [  0.001 s]
+[INFO] aggregator-features 5.4.1-SNAPSHOT ................. SUCCESS [  0.001 s]
+[INFO] products 5.4.1-SNAPSHOT ............................ SUCCESS [ 31.305 s]
+[INFO] aggregator-products 5.4.1-SNAPSHOT ................. SUCCESS [  0.003 s]
+[INFO] Modelio541 5.4.1-SNAPSHOT .......................... SUCCESS [  0.001 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:49 min
+[INFO] Finished at: 2026-04-16T09:55:39+01:00
+[INFO] ------------------------------------------------------------------------
