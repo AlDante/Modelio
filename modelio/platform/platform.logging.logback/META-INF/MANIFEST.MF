@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Modelio Logback backend
+Bundle-SymbolicName: org.modelio.platform.logging.logback;singleton:=true
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-Version: 5.4.1.qualifier
+Bundle-Vendor: modelio.org
+Require-Bundle: org.eclipse.core.runtime,
+ org.modelio.platform.utils,
+ ch.qos.logback.classic;bundle-version="[1.5.0,2.0.0)",
+ ch.qos.logback.core;bundle-version="[1.5.0,2.0.0)",
+ org.modelio.version
+Bundle-Activator: org.modelio.platform.logging.logback.LogbackBackendPlugin
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .,
+ config/
+Import-Package: org.slf4j;version="[2.0.0,3.0.0)"
+

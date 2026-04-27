@@ -241,7 +241,7 @@ public class PluginLogger {
     }
 
     /**
-     * Find the current Modelio log file from the logback current configuration.
+     * Find the current Modelio log file from the active logging backend.
      * @return the current Modelio log file, null if unable to find it.
      */
     @objid ("1ff3ef68-3b26-4aeb-836f-3079fe4e7b2a")

@@ -7,8 +7,6 @@ Bundle-Version: 5.4.1.qualifier
 Bundle-Vendor: modelio.org
 Require-Bundle: org.modelio.core.utils,
  org.eclipse.core.runtime,
- ch.qos.logback.classic;bundle-version="[1.5.0,2.0.0)",
- ch.qos.logback.core;bundle-version="[1.5.0,2.0.0)",
  org.modelio.version
 Bundle-Activator: org.modelio.platform.utils.plugin.Utils
 Export-Package: org.modelio.platform.utils.plugin;uses:="org.osgi.framework",
@@ -16,7 +14,6 @@ Export-Package: org.modelio.platform.utils.plugin;uses:="org.osgi.framework",
  org.modelio.platform.utils.log.writers,
  org.modelio.platform.utils.plugin
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: .,
- config/
-Import-Package: org.slf4j;version="[1.7.36,2.0.0)"
+Bundle-ClassPath: .
+Import-Package: org.slf4j;version="[2.0.0,3.0.0)"
 

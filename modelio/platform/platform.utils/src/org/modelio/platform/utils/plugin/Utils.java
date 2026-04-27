@@ -20,90 +20,100 @@
 package org.modelio.platform.utils.plugin;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.Iterator;
-import ch.qos.logback.classic.Logger;
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.Appender;
-import ch.qos.logback.core.FileAppender;
-import ch.qos.logback.core.joran.spi.JoranException;
 import com.modeliosoft.modelio.javadesigner.annotations.objid;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
-import org.modelio.version.ModelioVersion;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.slf4j.ILoggerFactory;
-import org.slf4j.LoggerFactory;
+import org.osgi.framework.BundleException;
+import org.osgi.framework.ServiceReference;
 
 @objid ("0049aab6-4382-1fe3-9845-001ec947cd2a")
 public class Utils implements BundleActivator {
     @objid ("0055b0ea-4447-1fe3-9845-001ec947cd2a")
     public static final String PLUGIN_ID = "org.modelio.platform.utils";
 
+    private static final String DEFAULT_LOGGING_BACKEND_BUNDLE = "org.modelio.platform.logging.logback";
+
+    private static LoggingBackend loggingBackend;
+
+    private static ServiceReference<LoggingBackend> loggingBackendReference;
+
     @objid ("004ffcae-4447-1fe3-9845-001ec947cd2a")
     @Override
     public void start(BundleContext bundleContext) {
-        try {
-            configureLogbackInBundle(bundleContext.getBundle());
-        } catch (JoranException | IOException | IllegalStateException e) {
-            e.printStackTrace();
+        bindLoggingBackend(bundleContext);
+        if (Utils.loggingBackend != null) {
+            try {
+                Utils.loggingBackend.configure();
+            } catch (IOException | IllegalStateException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.err.println("No logging backend service available for " + Utils.PLUGIN_ID);
         }
         plugKernelLogToEclipseLog();
         
     }
 
-    @objid ("f7d6e294-28b7-4056-86c0-197f5ccb3f52")
-    private void configureLogbackInBundle(Bundle bundle) throws IOException, JoranException {
-        LoggerContext context = getRequiredLoggerContext();
-        JoranConfigurator jc = new JoranConfigurator();
-        jc.setContext(context);
-        context.reset();
-        
-        // overriding the log directory property programmatically
-        context.putProperty("MODELIO_VERSION_SUBDIR", ModelioVersion.VERSION.toString("V.R"));
-        
-        // this assumes that the logback.xml file is in the root of the bundle.
-        URL logbackConfigFileUrl = FileLocator.find(bundle, new Path("config/logback.xml"), null);
-        if (logbackConfigFileUrl == null) {
-            throw new IOException("Unable to locate config/logback.xml in bundle " + bundle.getSymbolicName());
-        }
-        try (var logbackConfigStream = logbackConfigFileUrl.openStream()) {
-            jc.doConfigure(logbackConfigStream);
-        }
-
-    }
-
     @objid ("005028aa-4447-1fe3-9845-001ec947cd2a")
     @Override
     public void stop(BundleContext bundleContext) {
-        LoggerContext loggerContext = getLoggerContext();
-        if (loggerContext != null) {
-            loggerContext.stop();
+        if (Utils.loggingBackend != null) {
+            Utils.loggingBackend.stop();
         }
+        releaseLoggingBackend(bundleContext);
 
     }
 
-    private static LoggerContext getRequiredLoggerContext() {
-        LoggerContext loggerContext = getLoggerContext();
-        if (loggerContext != null) {
-            return loggerContext;
+    private static void bindLoggingBackend(BundleContext bundleContext) {
+        ServiceReference<LoggingBackend> reference = bundleContext.getServiceReference(LoggingBackend.class);
+        if (reference == null) {
+            startDefaultLoggingBackend(bundleContext);
+            reference = bundleContext.getServiceReference(LoggingBackend.class);
+        }
+        if (reference == null) {
+            return;
         }
 
-        ILoggerFactory loggerFactory = LoggerFactory.getILoggerFactory();
-        String actualFactory = loggerFactory == null ? "null" : loggerFactory.getClass().getName();
-        throw new IllegalStateException("Expected Logback LoggerContext for " + PLUGIN_ID + " but got " + actualFactory);
+        LoggingBackend backend = bundleContext.getService(reference);
+        if (backend == null) {
+            return;
+        }
+
+        Utils.loggingBackendReference = reference;
+        Utils.loggingBackend = backend;
     }
 
-    private static LoggerContext getLoggerContext() {
-        ILoggerFactory loggerFactory = LoggerFactory.getILoggerFactory();
-        if (loggerFactory instanceof LoggerContext) {
-            return (LoggerContext) loggerFactory;
+    private static void startDefaultLoggingBackend(BundleContext bundleContext) {
+        Bundle backendBundle = findBundle(bundleContext, DEFAULT_LOGGING_BACKEND_BUNDLE);
+        if (backendBundle == null || backendBundle.getState() == Bundle.UNINSTALLED) {
+            return;
+        }
+        try {
+            if (backendBundle.getState() != Bundle.ACTIVE) {
+                backendBundle.start(Bundle.START_TRANSIENT);
+            }
+        } catch (BundleException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static Bundle findBundle(BundleContext bundleContext, String symbolicName) {
+        for (Bundle installedBundle : bundleContext.getBundles()) {
+            if (symbolicName.equals(installedBundle.getSymbolicName())) {
+                return installedBundle;
+            }
         }
         return null;
+    }
+
+    private static void releaseLoggingBackend(BundleContext bundleContext) {
+        ServiceReference<LoggingBackend> reference = Utils.loggingBackendReference;
+        Utils.loggingBackend = null;
+        Utils.loggingBackendReference = null;
+        if (reference != null) {
+            bundleContext.ungetService(reference);
+        }
     }
 
     @objid ("5d0016a8-64f0-493c-9f8f-0158238c4637")
@@ -114,35 +124,15 @@ public class Utils implements BundleActivator {
     }
 
     /**
-     * Find the current Modelio log file from the logback current configuration.
+     * Find the current Modelio log file from the active logging backend.
      * @return the current Modelio log file, null if unable to find it.
      */
     @objid ("2ba8983e-a272-477b-811d-dc94502b0907")
     public static String getLogFile() {
-        LoggerContext lc = getLoggerContext();
-        if (lc == null) {
+        if (Utils.loggingBackend == null) {
             return null;
         }
-
-        // Look for default FILE appender on the root logger.
-        Logger rootLogger = lc.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
-        
-        Appender<ILoggingEvent> appender = rootLogger.getAppender("LOGFILE");
-        if (appender instanceof FileAppender<?>) {
-            return ((FileAppender<?>) appender).getFile();
-        }
-        
-        // Configuration file hacked, return the first file appender.
-        Iterator<Appender<ILoggingEvent>> it = rootLogger.iteratorForAppenders();
-        while (it.hasNext()) {
-            Appender<ILoggingEvent> append = it.next();
-            if (append instanceof FileAppender<?>) {
-                return ((FileAppender<?>) append).getFile();
-            }
-        }
-        
-        // don't know what to do
-        return null;
+        return Utils.loggingBackend.getLogFile();
     }
 
 }

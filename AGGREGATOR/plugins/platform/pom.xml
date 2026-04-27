@@ -28,6 +28,7 @@
 		<module>../../../modelio/platform/platform.search.engine</module>
 		<module>../../../modelio/platform/platform.ui</module>
 		<module>../../../modelio/platform/platform.update.repo</module>
+		<module>../../../modelio/platform/platform.logging.logback</module>
 		<module>../../../modelio/platform/platform.utils</module>
 	</modules>
 </project>

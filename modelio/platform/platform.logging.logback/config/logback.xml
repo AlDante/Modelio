@@ -1,5 +1,5 @@
 <configuration debug="true">
-	<!-- property name="MODELIO_VERSION_SUBDIR" value= ??? Value is set programmatically in Utils.java / -->
+	<!-- property name="MODELIO_VERSION_SUBDIR" value= ??? Value is set programmatically in the Logback backend / -->
 
 	<appender name="LOGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
@@ -46,3 +46,4 @@
 	</root>
 
 </configuration>
+
