@@ -21,6 +21,7 @@
 		<module>../../../modelio/platform/platform.module.browser.commands</module>
 		<module>../../../modelio/platform/platform.module.commands</module>
 		<module>../../../modelio/platform/platform.preferences</module>
+		<module>../../../modelio/plugdule/modelermodule</module>
 		<module>../../../modelio/platform/platform.project</module>
 		<module>../../../modelio/platform/platform.project.ext_org</module>
 		<module>../../../modelio/platform/platform.rcp</module>

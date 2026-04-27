@@ -23,22 +23,23 @@ import java.util.Iterator;
 import com.modeliosoft.modelio.javadesigner.annotations.objid;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformFigure;
+import org.eclipse.draw2d.FreeformLayeredPane;
 import org.eclipse.draw2d.FreeformListener;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.LayeredPane;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 
 /**
  * A LayeredPane that contains {@link org.eclipse.draw2d.FreeformLayer FreeformLayers}.
  * <p>
- * This is a copy of {@link org.eclipse.draw2d.FreeformLayeredPane} to use the fixed {@link FreeformHelper2}.
- * 
+ * This subclasses {@link org.eclipse.draw2d.FreeformLayeredPane} to keep compatibility with modern GEF field types
+ * while still using the fixed {@link FreeformHelper2} implementation.
+ *
  * @since 3.7
  */
 @objid ("bf752923-e97b-4757-9f9e-6b984ff1c404")
-public class FreeformLayeredPane2 extends LayeredPane implements IFreeformFigure2 {
+public class FreeformLayeredPane2 extends FreeformLayeredPane implements IFreeformFigure2 {
     @objid ("2ea3e916-ce3b-4f5a-afef-4752cf1a86f1")
     private FreeformHelper2 helper = new FreeformHelper2(this);
 
@@ -133,14 +134,6 @@ public class FreeformLayeredPane2 extends LayeredPane implements IFreeformFigure
         
     }
 
-    /**
-     * Returns the FreeformHelper.
-     * @return the FreeformHelper
-     */
-    @objid ("2e57e082-5840-4878-9898-b7d8bafdcb59")
-    protected FreeformHelper2 getFreeformHelper() {
-        return this.helper;
-    }
 
     /**
      * @see FreeformFigure#getFreeformExtent()

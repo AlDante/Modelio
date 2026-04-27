@@ -20,15 +20,14 @@
 package org.modelio.diagram.elements.core.figures.freeform;
 
 import com.modeliosoft.modelio.javadesigner.annotations.objid;
-import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.ScalableFreeformLayeredPane;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * Same as {@link ScalableFreeformLayeredPane} but don't use a ScaledGraphics
- * to paint the area, this class sucks at zooming texts.
- * 
+ * Same as {@link ScalableFreeformLayeredPane} but still using {@link FreeformHelper2}
+ * to compute extents.
+ *
  * @author cmarin
  */
 @objid ("e693d18f-7c7a-470a-b770-d77888ee9e1e")
@@ -36,28 +35,6 @@ public class ScalableFreeformLayeredPane2 extends ScalableFreeformLayeredPane im
     @objid ("31b8c246-445e-491b-8819-5fafba391239")
     private final FreeformHelper2 helper = new FreeformHelper2(this);
 
-    @objid ("f17e9bdc-a044-46c4-9bdb-702ee870fbe8")
-    @Override
-    protected void paintClientArea(Graphics graphics) {
-        if (getChildren().isEmpty()) {
-            return;
-        } else if (getScale() == 1.0) {
-            super.paintClientArea(graphics);
-        } else {
-            boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
-            if (!optimizeClip) {
-                graphics.clipRect(getBounds().getShrinked(getInsets()));
-            }
-            
-            graphics.scale(getScale());
-        
-            graphics.pushState();
-            paintChildren(graphics);
-            graphics.popState();
-            graphics.restoreState();
-        }
-        
-    }
 
     @objid ("f9303804-3537-4421-bd80-79786e1f70e3")
     @Override

@@ -1228,7 +1228,7 @@ Initial version-diff audit against the still-active overlay set:
 | Mac security fragment | `org.eclipse.equinox.security.macosx` `1.101.200.v20190903-0934` | `1.101.400.v20210427-1958` | `rcp-eclipse/macos-arm64` | Same rule as the filesystem fragment: the first slice should measure the new train before deciding whether the overlay still adds value. |
 | JNA | `com.sun.jna` / `com.sun.jna.platform` `4.5.1.v20190425-1842` | `5.18.1` | `rcp-eclipse/jna/repository` | JNA remains a version skew even after the Apple Silicon cleanup; the first slice must verify whether the new train removes or reduces that gap. |
 
-Repo-owned feature-layer impact, refreshed with the temporary audit helper `tmp/feature_pin_audit.py`:
+Repo-owned feature-layer impact, refreshed with the historical audit helper `diagnostics/macos-aarch64/historical/feature_pin_audit.py`:
 - `features/opensource/org.modelio.e4.rcp/feature.xml`
   - still resolves the large majority of its `org.eclipse.*` pins from the old baseline repo,
   - still carries the active overlay/backfill pins for:
@@ -1384,7 +1384,7 @@ Resulting feature versions after the grouped patch:
 
 Validation completed for this slice:
 - direct XML/error validation on the three edited feature files found no problems,
-- a metadata-level consistency check using `tmp/validate_feature_repin.py` completed successfully and confirmed that every repinned `org.eclipse.*` and `com.sun.jna*` entry in:
+- a metadata-level consistency check using `diagnostics/macos-aarch64/validate_feature_repin.py` completed successfully and confirmed that every repinned `org.eclipse.*` and `com.sun.jna*` entry in:
   - `features/opensource/org.modelio.e4.rcp/feature.xml`,
   - `features/opensource/org.modelio.rcp/feature.xml`,
   - `features/opensource/org.modelio.platform.feature/feature.xml`

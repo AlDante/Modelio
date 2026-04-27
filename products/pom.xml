@@ -130,6 +130,22 @@
 								</target>
 							</configuration>
 						</execution>
+						<execution>
+							<id>verify-macos-aarch64-diagram-editor-smoke</id>
+							<phase>package</phase>
+							<goals>
+								<goal>run</goal>
+							</goals>
+							<configuration>
+								<target>
+									<exec executable="python3" failonerror="true">
+										<arg value="${project.basedir}/../diagnostics/macos-aarch64/verify_diagram_editor_smoke.py"/>
+										<arg value="--app"/>
+										<arg value="${project.build.directory}/products/org.modelio.product/macosx/cocoa/aarch64/${modelio.rootFolder}.app"/>
+									</exec>
+								</target>
+							</configuration>
+						</execution>
 					</executions>
 				</plugin>
 			</plugins>

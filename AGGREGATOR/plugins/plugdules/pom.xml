@@ -11,7 +11,4 @@
 	<artifactId>aggregator-plugdule</artifactId>
 	<packaging>pom</packaging>
 
-	<modules>
-		<module>../../../modelio/plugdule/modelermodule</module>
-	</modules>
 </project>
