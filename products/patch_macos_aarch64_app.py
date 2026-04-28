@@ -42,6 +42,10 @@ def patch_info_plist(info_dst: Path, app_name: str, short_version: str, bundle_v
     plist['CFBundleDisplayName'] = app_name
     plist['CFBundleShortVersionString'] = short_version
     plist['CFBundleVersion'] = bundle_version
+    plist['CFBundleGetInfoString'] = (
+        f'{app_name} {short_version}, '
+        'Copyright Modeliosoft and others 2013, 2026. All rights reserved.'
+    )
 
     with info_dst.open('wb') as handle:
         plistlib.dump(plist, handle, sort_keys=False)
