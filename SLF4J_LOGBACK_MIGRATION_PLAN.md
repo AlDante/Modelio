@@ -180,6 +180,16 @@ Option B:
 - kept the runtime pinned to `slf4j.api 2.0.17` and `ch.qos.logback.* 1.5.32`,
 - validated the slice with fresh-scratch `prebuild`, `plugins`, `features/opensource`, `doc`, and `products` builds on the macOS Apple Silicon profile.
 
+## Early investigation scheduled
+
+This migration has been scheduled for early investigation as part of **Slice E1** in `MODERNIZATION_PLAN.md`. The investigation scope covers:
+- confirming the new backend plugin starts and registers its service before consumers attempt logging,
+- verifying no stale `slf4j.api 1.7.x` or `ch.qos.logback.* 1.2.x` bundles remain in the packaged product,
+- smoke-testing the full application lifecycle including logging output,
+- checking `bundles.info` for correct version resolution.
+
+This is prioritised for early investigation because the logging stack touches runtime bootstrap and was recently changed (Slice 2 completed on 2026-04-27).
+
 ## Decision rule
 Choose Option A if the immediate goal is to stop relying on the legacy logging runtime.
 

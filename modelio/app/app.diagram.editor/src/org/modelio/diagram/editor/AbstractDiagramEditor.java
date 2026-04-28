@@ -85,6 +85,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.modelio.api.modelio.picking.IPickingProvider;
 import org.modelio.diagram.editor.plugin.DiagramEditor;
 import org.modelio.diagram.editor.plugin.DiagramEditorsManager;
+import org.modelio.diagram.editor.plugin.GefWorkbenchBridge;
 import org.modelio.diagram.editor.plugin.IDiagramConfigurer;
 import org.modelio.diagram.editor.plugin.IDiagramConfigurerRegistry;
 import org.modelio.diagram.editor.plugin.ModuleDiagramCustomizer;
@@ -439,10 +440,15 @@ public abstract class AbstractDiagramEditor implements IDiagramEditor {
             // First create an edit domain instance
             this.editDomain = new EditDomain();
         
-            this.paletteRoot = new PaletteRoot();
-        
-            // CreatePartControl
-            createPartControl(composite);
+             this.paletteRoot = new PaletteRoot();
+
+             // GEF 3.25 PaletteColorProvider requires PlatformUI.getWorkbench()
+             // which is not available in pure E4 applications. Install a minimal
+             // compatibility shim before the palette viewer is first created.
+             GefWorkbenchBridge.ensureWorkbench(this.part.getContext());
+
+             // CreatePartControl
+             createPartControl(composite);
             this.graphicalViewer.setEditDomain(this.editDomain);
         
             // Use applicable configurer to configure the diagram

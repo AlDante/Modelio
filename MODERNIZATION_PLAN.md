@@ -44,8 +44,9 @@ Assuming no major new upstream incompatibility is uncovered, the remaining work 
 | Slice B | Recut features/products to consume only the clean vendored train and remove historical fallbacks | **Completed on 2026-04-26** |
 | Slice C | Finish the clean Apple Silicon product/runtime stack and packaging integrity work | 4–7 days |
 | Slice D | Complete validation, lock CI gates, and retire the hybrid path | 2–4 days |
+| Slice E | Early investigation: SLF4J 2.0/Logback 1.5 migration and GEF Classic/E4 compatibility hardening | 2–3 days |
 
-**Overall remaining work:** roughly **1–2 focused weeks** of engineering/validation across Slices C–D.
+**Overall remaining work:** roughly **2–3 focused weeks** of engineering/validation across Slices C–E.
 
 ## Active plan of record
 
@@ -256,6 +257,111 @@ Turn the now-cleaned build path into the normal path and demote the mixed/histor
 - Product and artefact checks are green.
 - CI protects the repository from regressing back into a mixed stack.
 - This document’s active plan is complete.
+
+---
+
+## Slice E — Early investigation: SLF4J 2.0/Logback 1.5 migration and GEF Classic/E4 compatibility hardening
+
+### Objective
+Validate and harden two cross-cutting areas that have already been touched during the 2026-03 migration and are at risk of latent runtime issues: the logging stack upgrade and the GEF Classic palette/editor surface.
+
+### E1 — SLF4J 2.0 / Logback 1.5 migration (early investigation)
+
+#### Motivation
+The SLF4J/Logback migration was recently completed (see `SLF4J_LOGBACK_MIGRATION_PLAN.md`, Slice 2 completed on 2026-04-27). Because those changes touched runtime bootstrap, backend service registration, and bundle wiring, this is one of the highest-value areas to investigate early for latent regressions.
+
+#### Scope
+- Confirm `org.modelio.platform.logging.logback` starts and registers its `LoggingBackend` service before consumers attempt logging.
+- Confirm the application log file is created and populated during a normal session.
+- Confirm the feature-level pin to `slf4j.api 2.0.17`, `ch.qos.logback.classic 1.5.32`, and `ch.qos.logback.core 1.5.32` is resolved correctly by the product assembly.
+- Verify no stale `slf4j.api 1.7.x` or `ch.qos.logback.* 1.2.x` bundles remain in the packaged product.
+- Run a targeted smoke test: open a project, create a diagram, and verify logging output.
+
+#### Definition of done
+- Product starts without SLF4J/Logback-related errors in the console or OSGi log.
+- Application log file is created and contains expected entries.
+- No legacy logging bundle versions appear in `bundles.info`.
+
+### E2 — GEF Classic / E4 compatibility assessment and hardening
+
+#### Current GEF version
+The vendored `eclipse-2026-03` train ships:
+- **GEF Classic 3.25.0** (`org.eclipse.gef_3.25.0.202602162234.jar`)
+- **Draw2d 3.22.0** (`org.eclipse.draw2d_3.22.0.202602231721.jar`)
+- GEF documentation ISV 3.13.1200
+
+The legacy `dev-platform/rcp-target/org.eclipse/gef-draw2d` repository (GEF 3.11.0 / Draw2d 3.10.100 from 2017) has been removed from the working tree. It was not referenced by any active target, POM, or product definition. The active target now resolves GEF Classic 3.25.0 and Draw2d 3.22.0 from Eclipse 2026-03 only.
+
+#### GEF Classic (SWT) vs GEF 5 — should we migrate?
+
+**Recommendation: stay on GEF Classic 3.25 for this modernisation cycle. Do not attempt a GEF 5 migration now.**
+
+Rationale:
+1. **GEF Classic 3.25 is not the same as the old GEF 3.x line.** "GEF Classic" is the Eclipse project's maintained continuation of the original GEF (Draw2d + GEF + Zest) SWT-based framework. It is actively maintained, receives regular releases as part of the Eclipse simultaneous release train, and ships in Eclipse 2026-03. The project was renamed to "GEF Classic" after the original "GEF" namespace was reassigned to the JavaFX-based framework (now called "GEF 5" or simply "GEF").
+
+2. **GEF 5 is fundamentally different.** GEF 5 (the JavaFX-based framework at `org.eclipse.gef` with packages like `org.eclipse.gef.mvc.fx`, `org.eclipse.gef.graph`, `org.eclipse.gef.zest.fx`) is a complete rewrite targeting JavaFX rather than SWT/Draw2d. Migrating from GEF Classic to GEF 5 would effectively mean rewriting the entire diagram editor stack: edit parts, figures, layout managers, palette, selection, drag-and-drop, connection routing, and all custom widgets.
+
+3. **Scale of the migration.** Modelio's diagram subsystem is one of the largest code areas in the repository. A rough estimate:
+   - ~45+ diagram-related plugins under `modelio/app/app.diagram.*`, `modelio/uml/uml.*diagram*`, `modelio/bpmn/bpmn.*diagram*`
+   - Custom `FlyoutPaletteComposite2` (1,775 lines), custom `ScalableFreeformRootEditPart2`, custom edit part factories, connection routing services
+   - Extensive use of GEF Classic internals (`EditDomain`, `PaletteRoot`, `PaletteViewer`, `EditPart` trees, `CommandStack`, `SelectionSynchronizer`, `DragTracker`, `ToolEntry`)
+   - This would be a multi-month, high-risk rewrite with no incremental delivery path.
+
+4. **JavaFX dependency.** GEF 5 requires JavaFX, which is no longer bundled with the JDK since Java 11. Adding JavaFX to an Eclipse RCP product introduces significant packaging and platform-specific complexity that is orthogonal to our current modernisation goals.
+
+5. **GEF Classic is the right choice for Eclipse RCP applications.** The Eclipse project explicitly maintains GEF Classic for existing RCP applications. It is the recommended path for projects already using the Draw2d/GEF SWT stack.
+
+#### Known E4/GEF 3.25 compatibility issues
+
+The migration to Eclipse 2026-03 already exposed several compatibility issues between GEF 3.25 and the pure E4 application model used by Modelio:
+
+1. **`PaletteColorProvider` static initialiser (fixed).** GEF 3.25 introduced `PaletteColorProvider` which calls `PlatformUI.getWorkbench().getThemeManager()` in its static initialiser. In a pure E4 application, the compatibility `Workbench` singleton is never created, causing `IllegalStateException` at class load time that permanently prevents palette viewer construction. This was fixed by `GefWorkbenchBridge.java`, which reflectively pre-populates the `Workbench.instance` field with a minimal shim. **This fix is fragile** — it depends on internal field names in `org.eclipse.ui.internal.Workbench` and `org.eclipse.ui.internal.services.ServiceLocator`, and uses `sun.misc.Unsafe` to allocate instances without constructors.
+
+2. **`PaletteColorUtil` removal (fixed).** GEF 3.25 removed the internal `PaletteColorUtil` class. `FlyoutPaletteComposite2.java` was updated to use SWT system colours directly as replacements.
+
+3. **`PaletteRoot.setChildren()` defensive copy (fixed).** GEF 3.25 changed child-list ownership semantics; `changePaletteContents()` was updated to make a defensive `ArrayList` copy before calling `setChildren()`.
+
+#### Potential further E4/GEF 3.25 issues to investigate
+
+The following are known risk areas that should be checked during this slice:
+
+- **Theme manager integration.** The `GefWorkbenchBridge` shim wires a `ServiceLocator` to the E4 context, but `WorkbenchThemeManager` may still fail to find themes or colour registries if the E4 CSS engine does not expose them through the expected compat-layer interfaces. This could cause visual glitches in palette rendering or silent fallbacks to default colours.
+
+- **Workbench adapter services.** Other GEF 3.25 code paths (not just `PaletteColorProvider`) may call `PlatformUI.getWorkbench()` for services like `ISharedImages`, `IDecoratorManager`, or progress monitoring. If those code paths are hit during diagram editing, additional shim work may be needed.
+
+- **Property sheet / selection integration.** GEF Classic's property-sheet integration traditionally relies on `IWorkbenchPart` and the workbench selection service. Modelio's E4-based selection uses `ESelectionService` instead. Verify that property editing, symbol view updates, and selection synchronisation work correctly after the upgrade.
+
+- **Context menu contributions.** GEF Classic's context menu manager may expect `IWorkbenchPartSite` for menu registration. Modelio uses `EMenuService.registerContextMenu()` instead. Verify that right-click menus on diagram elements still populate correctly.
+
+- **Undo/redo integration.** The `DiagramCommandStack` bridges GEF's `CommandStack` to Modelio's transaction manager. GEF 3.25 may have changed command stack notification patterns. Verify that undo/redo works reliably.
+
+#### Scope of this investigation
+- Smoke-test diagram creation and editing: create a class diagram, add classes via the palette, create associations, undo/redo, use the symbol view.
+- Check the OSGi console for any `NoClassDefFoundError`, `NoSuchMethodError`, or `IllegalStateException` related to GEF or Workbench compat-layer classes.
+- Review the `GefWorkbenchBridge` shim for robustness and document its failure modes.
+- If issues are found, fix them in bounded slices rather than attempting a broad rewrite.
+
+#### Definition of done
+- Diagram palette is visible and functional.
+- Palette tools create the expected diagram elements.
+- No GEF/E4 compatibility errors in the runtime log.
+- Known fragility points (especially `GefWorkbenchBridge`) are documented with fallback strategies.
+
+#### E2 runtime verification — completed on 2026-04-28
+All ten GEF Classic / E4 compatibility areas were manually verified against the built product:
+
+1. **Palette visibility** ✓ — palette is visible and populated with correct tool groups.
+2. **Element creation from palette** ✓ — Class, Package, Association tools all create elements correctly.
+3. **Undo/redo** ✓ — ⌘Z/⇧⌘Z work correctly with diagram operations.
+4. **Right-click context menu** ✓ — context menu appears on background and elements; the menu structure is the same for both because `visibleWhen` guards in the e4 fragment only distinguish composition links, not background vs. element.
+5. **Symbol view / property editing** ✓ — selecting a diagram element updates the Symbol side panel.
+6. **Drag and drop from model explorer** ✓ — dragging model elements onto a diagram unmasks them.
+7. **Zoom** ✓ — ⌘+scroll wheel zooms smoothly.
+8. **Outline view** ✓ — miniature overview displays and panning works.
+9. **Multiple diagram types** ✓ — palettes populate correctly for different diagram types.
+10. **Diagram tab lifecycle** ✓ — switching between diagrams updates the palette; closing tabs produces no errors.
+
+No GEF/E4 compatibility regressions were found. The `GefWorkbenchBridge` shim is working as expected for the current Eclipse 2026-03 baseline.
 
 ---
 
@@ -493,10 +599,6 @@ Explicit unresolved exception carried forward from Step 2:
 - `org.eclipse.swt.browser.chromium.cocoa.macosx.x86_64` remains unresolved.
 - The vendored inputs currently provide only the Intel mac Chromium fragment in the baseline `eclipse/` repo.
 - Therefore Phase 1 can normalize the surrounding platform composition, but it cannot yet make the mac browser story fully native from existing vendored inputs alone.
-
-Immediate consequence for Phase 1 Step 3:
-- Re-pinning should aim for a **deliberate hybrid** rather than an accidental one: baseline `4.18 / 2020-12`, plus only the four explicitly retained overlays above.
-- Any bundle pin that still falls outside that rule after re-checking should be treated as new skew and either justified or removed.
 
 #### [Historical] Phase 1 Step 3 findings - `org.modelio.e4.rcp` audit completed on 2026-04-15
 - A repo-to-feature audit of `features/opensource/org.modelio.e4.rcp/feature.xml` found **86** pinned plugins.
@@ -896,36 +998,6 @@ Interpretation:
 - The manifest normalization is complete, and the originally suspected runtime `build.properties` drift was a false lead.
 - The owned-runtime Eclipse metadata is now aligned to the Java 11 baseline, including explicit `.classpath` JRE containers, so the remaining Java-baseline skew is concentrated in doc/tooling-only metadata and in the eventual runtime-JDK uplift decision.
 
-#### Runtime baseline audit before any packaged-Java uplift - 2026-04-18
-Scope of this audit:
-- distinguish true packaged-runtime constraints from build-only or IDE-only leftovers,
-- keep the current `Tycho 5.0.2` / `Java 21` build contract fixed,
-- inspect only the Java baseline actually required by the shipped product path on macOS `aarch64`.
-
-Runtime-significant findings from inspected control points:
-
-| Evidence | Files inspected | Classification | Practical meaning |
-| --- | --- | --- | --- |
-| The shared build and target wiring originally still referenced a vendored Java 11 p2 repository. | `pom.xml`, `maven/modelio-parent/pom.xml`, `dev-platform/rcp-target/rcp.target`, `dev-platform/pack-resources/openjdk-jre11/` | runtime-significant at audit time | This was the remaining shared Java 11 runtime signal that needed to be tested and then either removed or retargeted for the supported path. |
-| The product originally still hard-coded Java 11 as the required runtime baseline. | `products/modelio-os.product` | runtime-significant at audit time | `-Dosgi.requiredJavaVersion=11` and `JavaSE-11` VM entries were the main owned product metadata blockers before the Java 21 runtime spike. |
-| Owned OSGi runtime bundles originally still declared Java 11 as their required execution environment. | `modelio/**/META-INF/MANIFEST.MF` | runtime-significant at audit time | A full rescan on `2026-04-18` found **99** `Bundle-RequiredExecutionEnvironment` declarations, all set to `JavaSE-11` before the later Java 21 runtime spike. |
-| JAXB is no longer expected from the JDK itself; it is shipped as vendored runtime content. | `dev-platform/rcp-target/jakarta/jaxb/pom.xml`, `products/modelio-os.product`, `modelio/bpmn/bpmn.xml/**/*.java` | runtime-significant | Runtime code now imports `jakarta.xml.bind`, and the product includes `org.modelio.jaxb.feature`, so any future runtime uplift must preserve the vendored JAXB/Jakarta feature path rather than assuming JDK-provided JAXB. |
-| SWT browser usage is still part of the runtime surface, but not through Chromium-specific code. | `features/opensource/org.modelio.e4.rcp/feature.xml`, `features/opensource/org.modelio.platform.feature/feature.xml`, `modelio/**/*.java` searches for `Browser` and `SWT.CHROMIUM` | runtime-significant | SWT `Browser` widgets are still used in owned UI code, but no `SWT.CHROMIUM` usage was found; browser behaviour remains a runtime compatibility concern, just not a Chromium-specific API blocker. |
-| Native loading remains in the runtime surface, but the known macOS AStyle path is already optional. | `modelio/platform/platform.api/src/org/modelio/api/astyle/AStyleInterface.java`, `features/opensource/org.modelio.platform.libraries/feature.xml` | runtime-significant | Native AStyle loading still exists in code, but failure is handled and the Intel-only mac fragment is already removed, so it is not the primary blocker for a later Java uplift. |
-
-Tooling-only / lower-priority findings from the same audit:
-- `doc/parent/pom.xml` had remained on Java 8 compiler metadata and was the main owned doc/tooling drift still left after the runtime audit.
-- `maven/toolchains.macos.macports.xml` and `AGGREGATOR/toolchains.xml` had still carried `JavaSE-1.8` template entries; these were tooling templates, not packaged-runtime declarations.
-- `modelio/core/core.utils/lib/build_deps/pom.xml` still contains commented Java 8 compiler settings inside a disabled helper-build block.
-- The repo-owned `modelio/**/.classpath` JRE containers are now aligned to `JavaSE-11`, so they are no longer the main source of ambiguity for this phase.
-
-Audit interpretation:
-- The next runtime uplift was clearly blocked by **explicit product and manifest Java 11 declarations**, not by stale IDE metadata.
-- The build-layer split is now well defined:
-  - build JDK = `Java 21` for Maven/Tycho,
-  - packaged runtime baseline at audit time = vendored `Java 11` content plus `JavaSE-11` bundle declarations.
-- The repo has already removed the old JDK-provided JAXB assumption by moving runtime JAXB usage to vendored Jakarta/JAXB p2 content, which reduces one common Java 11+ migration risk.
-
 Go / no-go rule before any packaged-runtime uplift:
 - **No-go** for a Java runtime uplift while all three of the following remain true:
   1. `products/modelio-os.product` still injects `-Dosgi.requiredJavaVersion=11`,
@@ -1005,7 +1077,7 @@ Interpretation after this cleanup:
 Audit refresh findings from the current repo state:
 - the active RCP target is still a deliberate hybrid made from `dev-platform/rcp-target/rcp-eclipse/eclipse`, `eclipse-fr`, `swt`, `launcher-arm64`, `macos-arm64`, and `jna/repository`,
 - `eclipse-fr` is still a live input rather than removable baggage because `features/opensource/org.modelio.platform.libraries/feature.xml` still includes `org.eclipse.jface.nl_fr`,
-- the broad SWT overlay remains the least-minimal mixed-train input because `features/opensource/org.modelio.e4.rcp/feature.xml` still explicitly pins `org.eclipse.swt.win32.win32.x86_64`, `org.eclipse.swt.gtk.linux.x86_64`, `org.eclipse.swt.cocoa.macosx.x86_64`, and `org.eclipse.swt.cocoa.macosx.aarch64` at `3.120.0.v20220530-1036`,
+- the broad SWT overlay remains the least-minimal mixed-train exception because `features/opensource/org.modelio.e4.rcp/feature.xml` still explicitly pins `org.eclipse.swt.win32.win32.x86_64`, `org.eclipse.swt.gtk.linux.x86_64`, `org.eclipse.swt.cocoa.macosx.x86_64`, and `org.eclipse.swt.cocoa.macosx.aarch64` at `3.120.0.v20220530-1036`,
 - that means the first coherent-target slice should not yet try to remove `eclipse-fr` or prune non-mac SWT fragments directly, because those would now broaden into feature-composition changes rather than target hygiene.
 
 Chosen first cleanup slice:
@@ -1130,64 +1202,8 @@ Chosen first coherent re-vendoring slice to prepare next:
 
 Explicit non-goal for that first slice:
 - do **not** attempt Java 25, Tycho uplift, or unrelated product-behaviour cleanup at the same time,
-- do **not** treat the current overlay generators as the destination state; after the base train is re-vendored, each overlay should be re-justified or removed.
-
-#### [Historical] Phase 5 preparation audit - repo-owned `org.eclipse.*` pin groups refreshed on 2026-04-19
-Audit purpose:
-- move from a repo-level “the platform is still 4.18 plus overlays” statement to an actionable inventory of the `org.eclipse.*` pins that must move together in the first coherent re-vendoring slice.
-
-Feature-layer inventory from the current repo state:
-
-1. `features/opensource/org.modelio.e4.rcp/feature.xml`
-   - This is the lowest repo-owned Eclipse feature layer and still carries the densest `org.eclipse.*` pin set.
-   - The bulk of its pins are still `4.18 / 2020-12` era workbench and Equinox bundles, especially these groups:
-     - **E4 workbench / DI / CSS core:** `org.eclipse.e4.core.services`, `org.eclipse.e4.core.commands`, `org.eclipse.e4.core.di`, `org.eclipse.e4.core.contexts`, `org.eclipse.e4.core.di.extensions`, `org.eclipse.e4.ui.*` bundles,
-     - **Equinox / OSGi runtime:** `org.eclipse.equinox.common`, `org.eclipse.equinox.event`, `org.eclipse.equinox.preferences`, `org.eclipse.equinox.registry`, `org.eclipse.equinox.simpleconfigurator`, `org.eclipse.equinox.app`, `org.eclipse.osgi`, `org.eclipse.osgi.compatibility.state`, `org.eclipse.osgi.services`, `org.eclipse.osgi.util`,
-     - **Core runtime / databinding / expressions:** `org.eclipse.core.commands`, `org.eclipse.core.contenttype`, `org.eclipse.core.databinding*`, `org.eclipse.core.expressions`, `org.eclipse.core.jobs`, `org.eclipse.core.runtime`,
-     - **UI shell:** `org.eclipse.jface`, `org.eclipse.jface.databinding`, `org.eclipse.jface.notifications`, `org.eclipse.equinox.console`, `org.eclipse.equinox.bidi`, `org.eclipse.urischeme`.
-   - This feature also still carries the active overlay-derived replacement pins that define the current hybrid runtime:
-     - `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` `1.2.200.v20210527-0259`,
-     - `org.eclipse.swt` `3.120.0.v20220530-1036`,
-     - `org.eclipse.swt.cocoa.macosx.aarch64` `3.120.0.v20220530-1036`.
-   - It also still carries non-mac Chromium baseline fragments for unsupported platforms:
-     - `org.eclipse.swt.browser.chromium.win32.win32.x86_64`,
-     - `org.eclipse.swt.browser.chromium.gtk.linux.x86_64`.
-
-2. `features/opensource/org.modelio.rcp/feature.xml`
-   - This is now a relatively thin wrapper over `org.modelio.e4.rcp`, but it still carries baseline UI shell pins that must move in lockstep with the e4 layer:
-     - `org.eclipse.help`,
-     - `org.eclipse.ui`,
-     - `org.eclipse.ui.workbench`,
-     - `org.eclipse.update.configurator`,
-     - `org.eclipse.rcp`,
-     - `org.eclipse.ui.cocoa`.
-   - Because `org.modelio.rcp` includes `org.modelio.e4.rcp`, the first coherent re-vendoring slice cannot safely update this feature independently of the e4 feature below it.
-
-3. `features/opensource/org.modelio.platform.feature/feature.xml`
-   - This layer is the broadest repo-owned Eclipse feature surface above `org.modelio.rcp`.
-   - It still carries a large `4.18 / 2020-12` era platform IDE set, including families such as:
-     - **platform / resources / variables / filebuffers:** `org.eclipse.platform`, `org.eclipse.core.resources`, `org.eclipse.core.filebuffers`, `org.eclipse.core.variables`,
-     - **debug / compare / search / refactoring:** `org.eclipse.debug.*`, `org.eclipse.compare*`, `org.eclipse.search`, `org.eclipse.ltk.*`,
-     - **text / editors / forms / navigator / IDE UI:** `org.eclipse.text`, `org.eclipse.jface.text`, `org.eclipse.ui.console`, `org.eclipse.ui.*`, `org.eclipse.ui.ide`, `org.eclipse.ui.ide.application`, `org.eclipse.ui.forms`, `org.eclipse.ui.views.properties.tabbed`,
-     - **team / jsch / p2 UI:** `org.eclipse.team.*`, `org.eclipse.jsch.*`, `org.eclipse.equinox.p2.user.ui`, `org.eclipse.equinox.p2.reconciler.dropins`.
-   - It also still carries the remaining active overlay-derived mac-native fragment pins:
-     - `org.eclipse.core.filesystem.macosx` `1.3.400.v20220812-1420`,
-     - `org.eclipse.equinox.security.macosx` `1.101.400.v20210427-1958`.
-   - So this feature is where the first coherent re-vendoring slice must reconcile the older baseline platform UI set with the newer mac-native fragment story.
-
-Practical conclusion from this pin inventory:
-- the first coherent re-vendoring slice should be treated as **three coupled repo-owned feature layers plus product metadata**, not as one feature file at a time,
-- the move order inside that slice should be:
-  1. replace the vendored `dev-platform/rcp-target/rcp-eclipse/eclipse` baseline,
-  2. repin `org.modelio.e4.rcp` against the new train,
-  3. repin `org.modelio.rcp` on top of that new e4 layer,
-  4. repin `org.modelio.platform.feature` on the same train,
-  5. update `products/modelio-os.product` only after those three feature layers are internally coherent again.
-
-Specific boundary for the first execution slice:
-- keep `eclipse-fr` and `org.modelio.platform.libraries` out of the first re-vendoring change unless the new train forces them to move,
-- keep `JNA` as an explicit follow-up check rather than assuming it disappears automatically,
-- treat the current overlay families (`swt`, `launcher-arm64`, `macos-arm64`, `jna`) as compatibility shims to be re-justified after the new base train is in place, not as part of the destination contract.
+- do **not** remove `eclipse-fr` in the same patch unless the staged train immediately forces the associated feature-layer move,
+- do **not** guess final overlay deletions until the staged `2026-03` metadata proves whether those overrides are still required.
 
 #### [Historical] Phase 5 execution prep - concrete re-vendoring checklist and initial version-diff audit on 2026-04-19
 Decision taken for the first real replacement slice:
@@ -1199,18 +1215,23 @@ Decision taken for the first real replacement slice:
 - the exact bundle and feature versions for that train are now staged locally as a **metadata-first parallel repository** under `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/`, so the next execution step can move from abstract planning to concrete repinning preparation without touching the active target yet.
 
 Current baseline contents re-confirmed from `dev-platform/rcp-target/rcp-eclipse/eclipse/content.xml`:
-- `org.eclipse.platform.feature.group` = `4.18.0.v20201202-1800`,
-- `org.eclipse.rcp.feature.group` = `4.18.0.v20201202-1800`,
-- `org.eclipse.e4.rcp.feature.group` = `4.18.0.v20201202-1103`,
-- `org.eclipse.platform` = `4.18.0.v20201202-1800`,
-- `org.eclipse.rcp` = `4.18.0.v20201202-1800`,
-- `org.eclipse.swt` = `3.115.100.v20201202-1103`,
-- `org.eclipse.ui.workbench` = `3.122.0.v20201122-1345`,
-- `org.eclipse.core.runtime` = `3.20.0.v20201027-1526`,
-- `org.eclipse.equinox.launcher` = `1.6.0.v20200915-1508`,
-- `org.eclipse.core.filesystem.macosx` = `1.3.200.v20190903-0945`,
-- `org.eclipse.equinox.security.macosx` = `1.101.200.v20190903-0934`,
-- `com.sun.jna` / `com.sun.jna.platform` = `4.5.1.v20190425-1842`.
+- `org.eclipse.platform.feature.group` = `4.39.0.v20260226-0420`,
+- `org.eclipse.rcp.feature.group` = `4.39.0.v20260226-0420`,
+- `org.eclipse.e4.rcp.feature.group` = `4.39.0.v20260225-1014`,
+- `org.eclipse.platform` = `4.39.0.v20260226-0420`,
+- `org.eclipse.rcp` = `4.39.0.v20260226-0420`,
+- `org.eclipse.ui` = `3.208.0.v20251219-1043`,
+- `org.eclipse.ui.workbench` = `3.138.0.v20260204-1601`,
+- `org.eclipse.ui.cocoa` = `1.3.400.v20260123-2255`,
+- `org.eclipse.core.runtime` = `3.34.200.v20251220-0953`,
+- `org.eclipse.equinox.launcher` = `1.7.100.v20251111-0406`,
+- `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` = `1.2.1400.v20250801-0854`,
+- `org.eclipse.swt` = `3.133.0.v20260225-1014`,
+- `org.eclipse.swt.cocoa.macosx.aarch64` = `3.133.0.v20260225-1014`,
+- `org.eclipse.core.filesystem.macosx` = `1.3.400.v20220812-1420`,
+- `org.eclipse.equinox.security.macosx` = `1.102.500.v20250521-0414`,
+- `com.sun.jna` = `5.18.1.v20251001-0800`,
+- `com.sun.jna.platform` = `5.18.1`.
 
 Initial version-diff audit against the still-active overlay set:
 
@@ -1231,7 +1252,8 @@ Repo-owned feature-layer impact at that point in the investigation:
     - `org.eclipse.swt` `3.120.0.v20220530-1036`,
     - `org.eclipse.swt.cocoa.macosx.aarch64` `3.120.0.v20220530-1036`,
     - `com.sun.jna` `5.18.1`,
-    - `com.sun.jna.platform` `5.18.1`.
+    - `com.sun.jna.platform` `5.18.1`,
+  - but is now missing the legacy Chromium and cross-platform native-fragment entries that were removed in the grouped repinning patch.
 - `features/opensource/org.modelio.rcp/feature.xml`
   - is still entirely baseline-aligned today,
   - so its first re-vendoring role is to follow the new e4/workbench/UI train coherently rather than carry independent overlay logic.
@@ -1263,7 +1285,7 @@ Smallest first replacement-slice plan:
    - `features/opensource/org.modelio.e4.rcp/feature.xml`: repin the E4, Equinox, SWT, launcher, and JNA-adjacent entries from the new train inventory.
    - `features/opensource/org.modelio.rcp/feature.xml`: repin the wrapper workbench/UI shell layer against the same train.
    - `features/opensource/org.modelio.platform.feature/feature.xml`: repin the broad IDE/platform layer and decide, based on the staged repo contents, whether the current `macos-arm64` fragment overrides still remain necessary.
-4. **Touch `products/modelio-os.product` only after those three feature files are internally coherent.**
+4. **Touch `products/modelio-os.product` only after those three feature files are internally coherent again.**
    - Verify whether any included feature ids, application ids, or startup bundle assumptions need adjustment for the new train.
    - Keep the product touch surface bounded to feature membership and runtime metadata, not unrelated behaviour changes.
 5. **Swap target wiring only after the repinned features resolve.**
@@ -1275,262 +1297,4 @@ Practical no-go rules for this first slice:
 - do **not** combine it with another Tycho upgrade,
 - do **not** remove `eclipse-fr` in the same patch unless the staged train immediately forces the associated feature-layer move,
 - do **not** guess final overlay deletions until the staged `2026-03` metadata proves whether those overrides are still required.
-
-Execution update from the first concrete staging step on `2026-04-19`:
-- created the parallel staging directory `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/`,
-- added `README.md` there to document that the directory is **not** yet part of the active target and is currently intended for metadata-first auditing only,
-- added `stage_metadata.py` there so the staging step is reproducible rather than a one-off manual download,
-- downloaded and extracted these direct-child `2026-03` p2 metadata files from `https://download.eclipse.org/releases/2026-03/202603111000/`:
-  - `content.jar` -> `content.xml`,
-  - `artifacts.jar` -> `artifacts.xml`,
-- recorded the fetched source URLs and file sizes in `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/stage-manifest.json`.
-
-Exact staged `2026-03` versions harvested for the first grouped repinning pass:
-- `org.eclipse.platform.feature.group` = `4.39.0.v20260226-0420`,
-- `org.eclipse.rcp.feature.group` = `4.39.0.v20260226-0420`,
-- `org.eclipse.e4.rcp.feature.group` = `4.39.0.v20260225-1014`,
-- `org.eclipse.platform` = `4.39.0.v20260226-0420`,
-- `org.eclipse.rcp` = `4.39.0.v20260226-0420`,
-- `org.eclipse.ui` = `3.208.0.v20251219-1043`,
-- `org.eclipse.ui.workbench` = `3.138.0.v20260204-1601`,
-- `org.eclipse.ui.cocoa` = `1.3.400.v20260123-2255`,
-- `org.eclipse.core.runtime` = `3.34.200.v20251220-0953`,
-- `org.eclipse.equinox.launcher` = `1.7.100.v20251111-0406`,
-- `org.eclipse.equinox.launcher.cocoa.macosx.aarch64` = `1.2.1400.v20250801-0854`,
-- `org.eclipse.swt` = `3.133.0.v20260225-1014`,
-- `org.eclipse.swt.cocoa.macosx.aarch64` = `3.133.0.v20260225-1014`,
-- `org.eclipse.core.filesystem.macosx` = `1.3.400.v20220812-1420`,
-- `org.eclipse.equinox.security.macosx` = `1.102.500.v20250521-0414`,
-- `com.sun.jna` = `5.18.1.v20251001-0800`,
-- `com.sun.jna.platform` = `5.18.1`.
-
-Immediate interpretation from the staged metadata:
-- the staged base train now **directly contains** the Apple Silicon launcher fragment, so `launcher-arm64` moves from “probably necessary” to “candidate for removal after repinning validation”,
-- the staged base train also **directly contains** the Apple Silicon SWT fragment, so the broad `swt` overlay is now a strong candidate for retirement rather than a likely long-term shim,
-- the staged base train contains `org.eclipse.core.filesystem.macosx` at exactly the same version as the current `macos-arm64` overlay pin, which is a strong signal that at least part of that overlay may already be redundant,
-- the staged base train contains a **newer** `org.eclipse.equinox.security.macosx` than the current overlay pin, which makes the current `macos-arm64` security override look obsolete for the first grouped repin,
-- the staged base train carries JNA `5.18.1`, so the repo can now test whether the standalone `jna` overlay is removable rather than assuming it remains part of the destination contract.
-
-Staged metadata gaps and shape changes that must influence the grouped repinning patch:
-- no `org.eclipse.swt.browser.chromium*` units were found in the staged `2026-03` metadata, so the current non-mac Chromium fragment pins in `features/opensource/org.modelio.e4.rcp/feature.xml` cannot simply be version-bumped and should be removed or replaced deliberately in the first grouped repinning patch,
-- these legacy native fragments from `features/opensource/org.modelio.platform.feature/feature.xml` were not found in the staged `2026-03` metadata either:
-  - `org.eclipse.core.net.linux.x86_64`,
-  - `org.eclipse.core.net.win32.x86_64`,
-  - `org.eclipse.core.resources.win32.x86_64`,
-  - `org.eclipse.core.filesystem.win32.x86_64`,
-  - `org.eclipse.equinox.security.win32.x86_64`,
-  - `org.eclipse.equinox.security.linux.x86_64`.
-
-Refined next action after staging:
-- use the harvested versions above to draft the first real grouped repinning patch across:
-  - `features/opensource/org.modelio.e4.rcp/feature.xml`,
-  - `features/opensource/org.modelio.rcp/feature.xml`,
-  - `features/opensource/org.modelio.platform.feature/feature.xml`,
-- treat the missing Chromium and cross-platform native-fragment entries as deliberate removal decisions that belong in that same grouped patch,
-- leave `dev-platform/rcp-target/rcp.target` unchanged until that grouped patch has been prepared and audited.
-
-Follow-up execution prep completed on `2026-04-19` after the metadata staging:
-- added `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/stage_repin_slice.py` so the staged metadata can be turned into a concrete grouped-repinning manifest instead of remaining a manual grep exercise,
-- generated `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/repin-suggestions.json`,
-- downloaded a direct artefact cache into `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/slice-cache/` for the current repo-owned feature entries that have staged `2026-03` replacements.
-
-Observed results from `repin-suggestions.json`:
-- direct staged artefacts cached: **118**,
-- `org.modelio.e4.rcp`: **55** direct replacements, **2** removals,
-- `org.modelio.rcp`: **6** direct replacements, **0** removals,
-- `org.modelio.platform.feature`: **61** direct replacements, **6** removals.
-
-Current removal candidates surfaced by the staged `2026-03` repo:
-- from `features/opensource/org.modelio.e4.rcp/feature.xml`:
-  - `org.eclipse.swt.browser.chromium.win32.win32.x86_64`,
-  - `org.eclipse.swt.browser.chromium.gtk.linux.x86_64`.
-- from `features/opensource/org.modelio.platform.feature/feature.xml`:
-  - `org.eclipse.core.net.linux.x86_64`,
-  - `org.eclipse.core.net.win32.x86_64`,
-  - `org.eclipse.core.resources.win32.x86_64`,
-  - `org.eclipse.core.filesystem.win32.x86_64`,
-  - `org.eclipse.equinox.security.win32.x86_64`,
-  - `org.eclipse.equinox.security.linux.x86_64`.
-
-Practical consequence of this extra prep step:
-- the next grouped patch no longer needs to guess either the replacement versions or the direct staged artefacts for the three affected repo-owned feature layers,
-- the first grouped repinning patch can now be authored directly from `repin-suggestions.json`, while still leaving `dev-platform/rcp-target/rcp.target` and the active baseline repo untouched until that patch is ready.
-
-#### [Historical] Phase 5 execution slice - grouped repo-owned feature repinning prepared on 2026-04-20
-Changes completed in this slice:
-- repinned `features/opensource/org.modelio.e4.rcp/feature.xml` from the old `4.18 / 2020-12` Eclipse pin set to the staged `2026-03` versions for the E4 workbench, Equinox runtime, SWT, launcher, JFace, and JNA-facing entries,
-- repaired the previously stray `org.eclipse.swt` text lines in that feature back into a proper `<plugin .../>` entry and set it to `3.133.0.v20260225-1014`,
-- removed the two Chromium fragment pins that are absent from the staged `2026-03` train:
-  - `org.eclipse.swt.browser.chromium.win32.win32.x86_64`,
-  - `org.eclipse.swt.browser.chromium.gtk.linux.x86_64`,
-- repinned `features/opensource/org.modelio.rcp/feature.xml` to the staged `2026-03` workbench/UI shell versions and aligned its include on the repinned `org.modelio.e4.rcp` feature version,
-- repinned `features/opensource/org.modelio.platform.feature/feature.xml` to the staged `2026-03` platform/IDE versions, aligned its include on the repinned `org.modelio.rcp` feature version, and removed the legacy native fragment pins that are absent from the staged train:
-  - `org.eclipse.core.net.linux.x86_64`,
-  - `org.eclipse.core.net.win32.x86_64`,
-  - `org.eclipse.core.resources.win32.x86_64`,
-  - `org.eclipse.core.filesystem.win32.x86_64`,
-  - `org.eclipse.equinox.security.win32.x86_64`,
-  - `org.eclipse.equinox.security.linux.x86_64`.
-
-Resulting feature versions after the grouped patch:
-- `org.modelio.e4.rcp` = `4.39.0.v20260225-1014`,
-- `org.modelio.rcp` = `4.39.0.v20260226-0420`,
-- `org.modelio.platform.feature` = `4.39.0.v20260226-0420`.
-
-Validation completed for this slice:
-- direct XML/error validation on the three edited feature files found no problems,
-- a metadata-level consistency check using `diagnostics/macos-aarch64/validate_feature_repin.py` completed successfully and confirmed that every repinned `org.eclipse.*` and `com.sun.jna*` entry in:
-  - `features/opensource/org.modelio.e4.rcp/feature.xml`,
-  - `features/opensource/org.modelio.rcp/feature.xml`,
-  - `features/opensource/org.modelio.platform.feature/feature.xml`
-  now exists at the same version in the staged `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/content.xml` metadata.
-
-Important boundary after this slice:
-- the repo-owned feature layers are now repinned to the staged `2026-03` metadata contract,
-- the active target and shared repository wiring now point at `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03` in `dev-platform/rcp-target/rcp.target`, `pom.xml`, and `maven/modelio-parent/pom.xml`,
-- and the remaining risk is no longer “make the new train active at all”, but “finish stabilising the active `2026-03` mirror and retire temporary compatibility baggage deliberately”.
-
-Practical next step after this grouped patch:
-- keep topping up any missing upstream bundles exposed by the active `2026-03` packaging path until the staged mirror is complete,
-- rerun the normal staged Maven validation ladder from a fresh scratch repository against the active `2026-03` baseline,
-- then audit each remaining overlay/input family (`swt`, `launcher-arm64`, `macos-arm64`, `jna`, and the direct staged mirror contents) to decide which ones are still justified on the fully active train.
-
-#### [Historical] Follow-up note from the earlier phase-based plan - target-platform provenance and binary ownership
-- The current `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/` mirror is still a correctness-first staging area backed by vendored upstream p2 artefacts, and some packaging fixes have required topping up missing external bundles directly in that mirror.
-- That is acceptable during the active `2026-03` migration because it keeps the modernization slice focused on feature/product correctness rather than on inventing a new provisioning system mid-flight.
-- It is **not** the intended final ownership model.
-- After the full modernization is complete and the `2026-03` stack is green end-to-end, run one final bounded follow-up to decide how those external jars should be provisioned long-term.
-
-Questions that follow-up must answer:
-1. Should the repo continue to vendor the full staged p2 mirror under `dev-platform/rcp-target/rcp-eclipse/**` and commit missing upstream bundles directly?
-2. Should the mirror instead be regenerated from a documented bootstrap step (for example a repo-owned fetch/materialisation script) so clean clones do not depend on ad-hoc manual top-ups?
-3. Which currently vendored overlay repos should remain repo-owned generators (`jna`, any still-justified Apple Silicon overlays) versus plain mirrored upstream inputs?
-4. What minimal reproducibility contract should a clean clone satisfy before the first Maven build starts?
-
-Boundary for now:
-- do **not** broaden the active modernization work into this provisioning redesign yet,
-- do **not** block the current `2026-03` migration on replacing the vendored-mirror approach,
-- treat this as one of the last cleanup tasks, after the modernized product path is already stable and boring.
-
-#### [Historical] Material from earlier plan iterations
-- The remaining Tycho retry notes, older phase labels, and earlier sequencing rules below are kept for historical relevance only.
-- Do **not** use them as the current roadmap; use Slices A-D above instead.
-
-#### [Historical] Bounded Tycho 2.7.5 retry preparation - ready state as of 2026-04-16
-Why the retry is now cleaner than before:
-- the main staged reactor is green again on `Tycho 2.2.0`;
-- Apple Silicon packaging is green;
-- final packaged `Modelio.app` audits clean (`HITS 0` for shipped `x86_64` payload);
-- source BREE declarations are normalized to `JavaSE-11`.
-
-What still makes the next modernization slice noisy if left unchanged:
-- the main remaining Java-baseline noise is now confined to helper or template history rather than active doc/runtime metadata.
-
-Recommendation before any future retry:
-- treat runtime plugin metadata cleanup as complete and focus the next slice on real runtime-baseline constraints rather than Eclipse project metadata.
-- or, if running the retry sooner, record any remaining helper-build/template remnants as known background noise so they are not confused with a true Tycho/target-layout failure.
-
-Exact future retry ladder for `Tycho 2.7.5`:
-1. change `pom.xml` and `maven/modelio-parent/pom.xml` from `2.2.0` to `2.7.5`
-2. keep runtime-side inputs fixed (`rcp.target`, `feature.xml`, vendored p2 content, `products/modelio-os.product`)
-3. run on Java 11 only:
-   - `AGGREGATOR/prebuild/pom.xml verify`
-   - `doc/aggregator/pom.xml package`
-   - `AGGREGATOR/plugins/pom.xml package`
-   - `AGGREGATOR/features/opensource/pom.xml package`
-   - `products/pom.xml package -Pproduct.org,platform.mac.aarch64`
-4. stop at the first failure and classify it:
-   - `prebuild`/target validation failure = build-layer or target-layout problem
-   - plugin compile/package failure = module/build problem
-   - feature/product resolution failure after green plugins = packaging-layer problem
-
-Recommended target for this phase:
-- `Java 21`, unless an upstream compatibility check proves `Java 25` is already safe in the chosen Tycho/RCP combination.
-
-Primary files:
-- `pom.xml`
-- `maven/modelio-parent/pom.xml`
-- affected `META-INF/MANIFEST.MF` files with `Bundle-RequiredExecutionEnvironment`
-- `products/modelio-os.product`
-
-Exit gate:
-- Full product build and smoke launch succeed on the new LTS Java without ad-hoc runtime flags.
-
-### [Historical] Phase 5 - Re-vendor the full Eclipse/RCP stack to 2026-03
-Scope:
-- Refresh the vendored p2 content under `dev-platform/rcp-target/rcp-eclipse/**` as a coherent train.
-- Re-resolve pinned versions in:
-  - `features/opensource/org.modelio.e4.rcp/feature.xml`
-  - `features/opensource/org.modelio.rcp/feature.xml`
-  - `products/modelio-os.product`
-- Remove temporary overlays that are no longer needed once the full platform is modernized.
-
-Important rule:
-- This is not a launcher swap. The whole Eclipse application stack must move together.
-
-Primary files:
-- `dev-platform/rcp-target/rcp-eclipse/**`
-- `dev-platform/rcp-target/rcp.target`
-- `features/opensource/org.modelio.e4.rcp/feature.xml`
-- `features/opensource/org.modelio.rcp/feature.xml`
-- `products/modelio-os.product`
-
-Exit gate:
-- The full product packages and launches on the new vendored RCP stack across the supported platforms.
-
-### [Historical] Phase 6 - Reassess Java 25 as an optional final hop
-Scope:
-- Only now test the highest Java level.
-- Treat this as a separate change with its own compiler/runtime verification and packaging run.
-
-Decision rule:
-- If `Java 25` causes unresolved Tycho, PDE, or runtime issues, stop at the latest stable LTS baseline and ship that.
-
-Exit gate:
-- `Java 25` is adopted only if build, packaging, and runtime are all cleaner than the LTS alternative.
-
-## [Historical] Order I would insist on
-1. Reproducible current baseline.
-2. Coherent target platform.
-3. Native mac parity.
-4. Build tooling uplift.
-5. Java LTS uplift.
-6. Full RCP `2026-03` uplift.
-7. Optional `Java 25` evaluation.
-
-## [Historical] Operational verification ladder
-
-Use the same smallest-scope-first validation pattern after each phase change:
-
-```zsh
-mvn -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/prebuild/pom.xml verify
-mvn -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/plugins/pom.xml package
-mvn -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/features/opensource/pom.xml package
-mvn -f /Users/david/IdeaProjects/Modelio/products/pom.xml package -P product.org,platform.mac.aarch64
-```
-
-For Tycho-only trials, keep the runtime target fixed and compare the same build ladder before and after the Tycho bump.
-
-For native mac correctness, add an artifact audit after packaging:
-
-```zsh
-find /Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app -type f -print0 | xargs -0 file | grep 'x86_64'
-```
-
-Expected result for a correct native package: no output.
-
-## [Historical] What I would explicitly avoid
-- No big-bang migration of Tycho + RCP + Java + mac-native fragments in one shot.
-- No claim that `2026-03` is “done” if the app still ships `x86_64` browser or AStyle fragments on macOS.
-- No `Java 25` commitment until the codebase is already green on the modernized RCP stack.
-- No keeping long-term hand-maintained version skew inside `feature.xml` unless a specific override is documented and tested.
-- No direct `Tycho 2.2.0 -> 5.0.2` jump unless a short spike proves it is genuinely low-risk.
-
-## [Historical] Friend review - skeptical critique
-A cautious reviewer would push back on one point: aiming for both `RCP 2026-03` and `Java 25` as a single declared destination is probably too ambitious for a Tycho/OSGi product with vendored p2 repositories and custom native fragments. The safer interpretation of “most current possible” is:
-- **commit to `RCP 2026-03`,**
-- **stabilize on `Java 21` first,**
-- **treat `Java 25` as a bonus hop only if it is boring.**
-
-That reviewer would also insist that native mac cleanup is not a side quest. In this repo, it is part of platform correctness because the product still carries explicit mac-native fragments in feature composition.
 

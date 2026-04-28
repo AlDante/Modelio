@@ -35,14 +35,15 @@ public class DiagramEditorSmokeCheck {
     }
 
     private static RGB renderElementAtScale(Display display, double scale) {
-        Image image = new Image(display, 200, 200);
+        int size = (int) (200 * scale);
+        Image image = new Image(display, size, size);
         try {
             GC gc = new GC(image);
             try {
                 SWTGraphics graphics = new SWTGraphics(gc);
                 try {
                     ScalableFreeformLayeredPane2 pane = new ScalableFreeformLayeredPane2();
-                    pane.setBounds(new Rectangle(0, 0, 200, 200));
+                    pane.setBounds(new Rectangle(0, 0, size, size));
                     pane.setScale(scale);
 
                     AbstractDiagramFigure diagram = new AbstractDiagramFigure();
@@ -66,7 +67,11 @@ public class DiagramEditorSmokeCheck {
             }
 
             ImageData data = image.getImageData();
-            return data.palette.getRGB(data.getPixel(30, 30));
+            // Sample a point well inside the rectangle.  At scale N the
+            // logical point (30, 30) maps to device pixel (30*N, 30*N).
+            int px = (int) (30 * scale);
+            int py = (int) (30 * scale);
+            return data.palette.getRGB(data.getPixel(px, py));
         } finally {
             image.dispose();
         }
