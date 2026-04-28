@@ -7,7 +7,6 @@ import subprocess
 
 PRODUCTS_DIR = Path(__file__).resolve().parent
 REPO_DIR = PRODUCTS_DIR.parent
-INFO_SRC = REPO_DIR / 'products/preserved-macos/Modelio 5.4.1 x86_64.app/Contents/Info.plist'
 LAUNCHER_SRC = REPO_DIR / 'products/preserved-macos/eclipse-arm64-rootfiles/Eclipse.app/Contents/MacOS/eclipse'
 ICON_SRC = REPO_DIR / 'products/icons/modelio.icns'
 
@@ -33,20 +32,30 @@ def detect_bundle_version(app_contents: Path, short_version: str) -> str:
     return plugin_name.removeprefix('org.modelio.version_').removesuffix('.jar')
 
 
-def patch_info_plist(info_dst: Path, app_name: str, short_version: str, bundle_version: str) -> None:
-    with INFO_SRC.open('rb') as handle:
-        plist = plistlib.load(handle)
+def build_info_plist(app_name: str, short_version: str, bundle_version: str) -> dict:
+    return {
+        'CFBundleExecutable': 'modelio',
+        'CFBundleGetInfoString': (
+            f'{app_name} {short_version}, '
+            'Copyright Modeliosoft and others 2013, 2026. All rights reserved.'
+        ),
+        'CFBundleIconFile': 'modelio.icns',
+        'CFBundleIdentifier': 'org.modelio.product',
+        'CFBundleInfoDictionaryVersion': '6.0',
+        'CFBundleName': app_name,
+        'CFBundlePackageType': 'APPL',
+        'CFBundleShortVersionString': short_version,
+        'CFBundleSignature': '????',
+        'CFBundleVersion': bundle_version,
+        'NSHighResolutionCapable': True,
+        'CFBundleDevelopmentRegion': 'English',
+        'Eclipse': ['-keyring', '~/.eclipse_keyring'],
+        'CFBundleDisplayName': app_name,
+    }
 
-    plist['CFBundleExecutable'] = 'modelio'
-    plist['CFBundleName'] = app_name
-    plist['CFBundleDisplayName'] = app_name
-    plist['CFBundleShortVersionString'] = short_version
-    plist['CFBundleVersion'] = bundle_version
-    plist['CFBundleGetInfoString'] = (
-        f'{app_name} {short_version}, '
-        'Copyright Modeliosoft and others 2013, 2026. All rights reserved.'
-    )
 
+def write_info_plist(info_dst: Path, app_name: str, short_version: str, bundle_version: str) -> None:
+    plist = build_info_plist(app_name, short_version, bundle_version)
     with info_dst.open('wb') as handle:
         plistlib.dump(plist, handle, sort_keys=False)
 
@@ -70,6 +79,18 @@ def patch_modelio_ini(modelio_ini: Path) -> None:
     lines = modelio_ini.read_text(encoding='utf-8').splitlines()
     lines = upsert_argument_pair(lines, '-configuration', '../Eclipse/configuration', '-vmargs')
     modelio_ini.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+
+
+def verify_launcher_arch(launcher: Path) -> None:
+    result = subprocess.run(
+        ['lipo', '-archs', str(launcher)],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    archs = result.stdout.strip()
+    if archs != 'arm64':
+        raise SystemExit(f'Expected arm64 launcher, got: {archs}')
 
 
 def clear_quarantine(path: Path) -> None:
@@ -106,10 +127,11 @@ def main() -> int:
 
     shutil.copy2(LAUNCHER_SRC, launcher_dst)
     shutil.copy2(ICON_SRC, icon_dst)
-    patch_info_plist(info_dst, args.app_name, args.short_version, bundle_version)
+    write_info_plist(info_dst, args.app_name, args.short_version, bundle_version)
     patch_modelio_ini(modelio_ini)
 
     launcher_dst.chmod(launcher_dst.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+    verify_launcher_arch(launcher_dst)
     clear_quarantine(app_bundle)
     ad_hoc_sign(app_bundle)
     return 0

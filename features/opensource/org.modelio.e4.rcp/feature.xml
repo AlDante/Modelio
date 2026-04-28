@@ -482,23 +482,6 @@
          version="1.8.400.v20240413-1529"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.e4.ui.swt.gtk"
-         ws="gtk"
-         download-size="10"
-         install-size="14"
-         version="1.2.200.v20240416-0658"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.e4.ui.swt.win32"
-         ws="win32"
-         download-size="10"
-         install-size="14"
-         version="1.2.300.v20240416-0658"
-         fragment="true"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.e4.core.di.extensions.supplier"
