@@ -48,6 +48,7 @@ def build_info_plist(app_name: str, short_version: str, bundle_version: str) -> 
         'CFBundleSignature': '????',
         'CFBundleVersion': bundle_version,
         'NSHighResolutionCapable': True,
+        'NSRequiresAquaSystemAppearance': True,
         'CFBundleDevelopmentRegion': 'English',
         'Eclipse': ['-keyring', '~/.eclipse_keyring'],
         'CFBundleDisplayName': app_name,

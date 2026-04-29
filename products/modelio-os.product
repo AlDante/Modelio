@@ -11,7 +11,7 @@
       </programArgs>
       <vmArgs>-Xms1024m -Xmx4096m -Dpython.console.encoding=UTF-8
       </vmArgs>
-      <vmArgsMac>-Dosgi.requiredJavaVersion=21 --add-modules=ALL-SYSTEM -XstartOnFirstThread
+      <vmArgsMac>-Dosgi.requiredJavaVersion=21 --add-modules=ALL-SYSTEM -XstartOnFirstThread -Dorg.eclipse.swt.display.useSystemTheme=false
       </vmArgsMac>
    </launcherArgs>
 

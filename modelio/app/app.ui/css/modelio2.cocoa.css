@@ -1,0 +1,30 @@
+Shell,
+Composite,
+ScrolledComposite,
+Sash,
+SashForm,
+ViewForm,
+CTabFolder,
+Tree,
+Table,
+List,
+Text,
+StyledText,
+ToolBar,
+CoolBar,
+CBanner,
+Canvas {
+	background-color: #ffffff;
+	color: #000000;
+}
+
+CTabFolder {
+	swt-selected-tabs-background: #ffffff;
+	swt-unselected-tabs-color: #f6f6f6 #eeeeee #e6e6e6 100% 100%;
+}
+
+Label,
+Button {
+	color: #000000;
+}
+

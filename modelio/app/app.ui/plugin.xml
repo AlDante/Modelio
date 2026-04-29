@@ -13,6 +13,11 @@
              label="Default"
              os="win32">
       </theme>
+      <theme id="org.modelio.app.theme.default"
+             basestylesheeturi="css/default.cocoa.css"
+             label="Default"
+             os="macosx">
+      </theme>
       <theme id="org.modelio.app.theme.modelio1"
             basestylesheeturi="css/modelio1.gtk.css"
             label="Modelio1"
@@ -23,6 +28,11 @@
             label="Modelio 1"
             os="win32">
       </theme>
+      <theme id="org.modelio.app.theme.modelio1"
+            basestylesheeturi="css/modelio1.cocoa.css"
+            label="Modelio 1"
+            os="macosx">
+      </theme>
       <theme id="org.modelio.app.theme.modelio2"
             basestylesheeturi="css/modelio2.gtk.css"
             label="Modelio 2"
@@ -32,6 +42,11 @@
             basestylesheeturi="css/modelio2.win.css"
             label="Modelio 2"
             os="win32">
+      </theme>
+      <theme id="org.modelio.app.theme.modelio2"
+            basestylesheeturi="css/modelio2.cocoa.css"
+            label="Modelio 2"
+            os="macosx">
       </theme>
    </extension>
 
