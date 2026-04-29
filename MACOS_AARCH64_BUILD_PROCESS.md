@@ -362,7 +362,8 @@ These are **not all final deliverables**.
 #### `products/target/org.eclipse.equinox.executable-.../`
 This is an intermediate Tycho/Eclipse packaging area created while materializing the product.
 
-It may contain upstream executable rootfiles such as:
+It may contain unpacked upstream executable payloads such as:
+- `bin/cocoa/macosx/aarch64/Eclipse.app`
 - `bin/cocoa/macosx/x86_64/Eclipse.app`
 
 This does **not** mean the final product is Intel.
@@ -583,10 +584,11 @@ In other words, treat the current checked build as:
 - locally signed well enough for development launch on the build machine
 - but not automatically equivalent to a notarized release artifact
 
-## 12. About the x86_64 `org.eclipse.equinox.executable` staging tree
+## 12. About the `org.eclipse.equinox.executable` staging tree
 
 You may see this intermediate directory during packaging:
-- `products/target/org.eclipse.equinox.executable-3.8.1000.v20200915-1508/bin/cocoa/macosx/x86_64/Eclipse.app`
+- `products/target/org.eclipse.equinox.executable-*/bin/cocoa/macosx/aarch64/Eclipse.app`
+- `products/target/org.eclipse.equinox.executable-*/bin/cocoa/macosx/x86_64/Eclipse.app`
 
 That path comes from the upstream executable feature stored in:
 - the matching `org.eclipse.equinox.executable_*` feature inside `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/features/`
@@ -598,6 +600,12 @@ It is **not** the final product.
 The correct final product to inspect is instead:
 - `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app`
 
+For the current supported Apple Silicon path, the important staged launcher source is:
+- `products/target/org.eclipse.equinox.executable-*/bin/cocoa/macosx/aarch64/Eclipse.app/Contents/MacOS/launcher`
+
+The checked-in wrapper patch now copies that staged `aarch64` launcher into the final app bundle as:
+- `Contents/MacOS/modelio`
+
 If you need to know whether the actual shipped product is ARM or Intel, always inspect the final app bundle, not the unpacked `org.eclipse.equinox.executable-*` staging area.
 
 ## 13. Checked-in post-processing helper
@@ -606,8 +614,7 @@ This repo contains a standalone helper:
 - `products/patch_macos_aarch64_app.py`
 
 That helper script writes macOS app wrapper files into the final bundle, using:
-- preserved Intel `Info.plist`
-- preserved ARM launcher rootfiles
+- the active Tycho-staged `aarch64` launcher from `products/target/org.eclipse.equinox.executable-*/bin/cocoa/macosx/aarch64/Eclipse.app/Contents/MacOS/launcher`
 - the repo icon
 
 It targets:
@@ -653,22 +660,23 @@ When debugging or locating outputs, use this order.
 6. `products/target/products/`
 7. `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app`
 8. `products/target/products/org.modelio.product-macosx.cocoa.aarch64.tar.gz`
-9. `products/patch_macos_aarch64_app.py`
+9. `products/target/org.eclipse.equinox.executable-*/bin/cocoa/macosx/aarch64/Eclipse.app/Contents/MacOS/launcher`
+10. `products/patch_macos_aarch64_app.py`
 
 ### Manual launch/debug of the current generated payload
-10. `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Eclipse/modelio.ini`
-11. `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Eclipse/configuration/config.ini`
-12. `~/.modelio/5.4/opensource-cache/conf`
-13. `~/.modelio/5.4/opensource-cache/data/.metadata/.log`
+11. `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Eclipse/modelio.ini`
+12. `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Eclipse/configuration/config.ini`
+13. `~/.modelio/5.4/opensource-cache/conf`
+14. `~/.modelio/5.4/opensource-cache/data/.metadata/.log`
 
 ### Wrapper/signature verification
-14. `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Info.plist`
-15. `codesign --verify --deep --strict --verbose=4 .../Modelio.app`
-16. `xattr -lr .../Modelio.app`
+15. `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Info.plist`
+16. `codesign --verify --deep --strict --verbose=4 .../Modelio.app`
+17. `xattr -lr .../Modelio.app`
 
 ### Only after that, inspect intermediates
-17. `products/target/org.eclipse.equinox.executable-*`
-18. `products/target/repository/`
+18. `products/target/org.eclipse.equinox.executable-*`
+19. `products/target/repository/`
 20. `products/target/targetPlatformRepository/`
 21. `products/target/p2agent/`
 

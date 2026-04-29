@@ -7,8 +7,8 @@ import subprocess
 
 PRODUCTS_DIR = Path(__file__).resolve().parent
 REPO_DIR = PRODUCTS_DIR.parent
-LAUNCHER_SRC = REPO_DIR / 'products/preserved-macos/eclipse-arm64-rootfiles/Eclipse.app/Contents/MacOS/eclipse'
 ICON_SRC = REPO_DIR / 'products/icons/modelio.icns'
+LAUNCHER_GLOB = 'target/org.eclipse.equinox.executable-*/bin/cocoa/macosx/aarch64/Eclipse.app/Contents/MacOS/launcher'
 
 
 def parse_args() -> argparse.Namespace:
@@ -30,6 +30,17 @@ def detect_bundle_version(app_contents: Path, short_version: str) -> str:
 
     plugin_name = version_plugins[-1].name
     return plugin_name.removeprefix('org.modelio.version_').removesuffix('.jar')
+
+
+def resolve_launcher_src() -> Path:
+    launchers = sorted(PRODUCTS_DIR.glob(LAUNCHER_GLOB))
+    if len(launchers) != 1:
+        raise SystemExit(
+            'Expected exactly one Tycho-staged aarch64 launcher at '
+            f'{PRODUCTS_DIR / LAUNCHER_GLOB}, got {len(launchers)}'
+        )
+
+    return launchers[0]
 
 
 def build_info_plist(app_name: str, short_version: str, bundle_version: str) -> dict:
@@ -114,6 +125,7 @@ def main() -> int:
     args = parse_args()
     app_contents = args.app_contents.resolve()
     app_bundle = app_contents.parent
+    launcher_src = resolve_launcher_src()
     modelio_ini = app_contents / 'Eclipse/modelio.ini'
     if not modelio_ini.exists():
         return 0
@@ -126,7 +138,7 @@ def main() -> int:
     launcher_dst.parent.mkdir(parents=True, exist_ok=True)
     icon_dst.parent.mkdir(parents=True, exist_ok=True)
 
-    shutil.copy2(LAUNCHER_SRC, launcher_dst)
+    shutil.copy2(launcher_src, launcher_dst)
     shutil.copy2(ICON_SRC, icon_dst)
     write_info_plist(info_dst, args.app_name, args.short_version, bundle_version)
     patch_modelio_ini(modelio_ini)

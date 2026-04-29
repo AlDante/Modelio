@@ -42,11 +42,11 @@ Assuming no major new upstream incompatibility is uncovered, the remaining work 
 |---|---|---|
 | Slice A | Top up missing upstream bundles into the vendored train and freeze the resolved baseline | **Completed on 2026-04-25** |
 | Slice B | Recut features/products to consume only the clean vendored train and remove historical fallbacks | **Completed on 2026-04-26** |
-| Slice C | Finish the clean Apple Silicon product/runtime stack and packaging integrity work | 4–7 days |
+| Slice C | Finish the clean Apple Silicon product/runtime stack and packaging integrity work | **Completed on 2026-04-29** |
 | Slice D | Complete validation, lock CI gates, and retire the hybrid path | 2–4 days |
 | Slice E | Early investigation: SLF4J 2.0/Logback 1.5 migration and GEF Classic/E4 compatibility hardening | 2–3 days |
 
-**Overall remaining work:** roughly **2–3 focused weeks** of engineering/validation across Slices C–E.
+**Overall remaining work:** roughly **1–2 focused weeks** of engineering/validation across Slices D–E.
 
 ## Active plan of record
 
@@ -230,6 +230,20 @@ Make macOS Apple Silicon a first-class, internally consistent product/runtime pa
 - Built macOS products are natively Apple Silicon clean.
 - No Intel-era compatibility artefacts are required for the standard path.
 - App integrity/artefact checks pass on the produced deliverables.
+
+### Slice C completion note — completed on 2026-04-29
+
+This slice is now complete for the supported local Apple Silicon path.
+
+Completed work:
+- the final macOS wrapper patch no longer depends on `products/preserved-macos/eclipse-arm64-rootfiles/` and now sources its launcher from the active Tycho-staged `aarch64` executable tree under `products/target/org.eclipse.equinox.executable-*/bin/cocoa/macosx/aarch64/Eclipse.app/Contents/MacOS/launcher`;
+- the preserved Apple Silicon rootfiles carry-over under `products/preserved-macos/eclipse-arm64-rootfiles/` has been retired from the working tree;
+- the current packaging path keeps the generated app metadata, launcher naming, icon, app-local `modelio.ini` configuration, quarantine clearing, and ad-hoc signing checks aligned with the active `eclipse-2026-03` train rather than with a historical preserved wrapper source;
+- full macOS Apple Silicon product packaging remains validated through the staged build plus wrapper integrity checks and the diagram-editor smoke test.
+
+What remains deliberately out of scope for Slice C:
+- CI hardening and default-path retirement are still part of Slice D;
+- the separate macOS dark-mode mixed-panel issue remains deferred under Slice E2.
 
 ---
 
