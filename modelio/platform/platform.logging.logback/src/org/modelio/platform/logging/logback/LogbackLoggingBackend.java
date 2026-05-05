@@ -1,12 +1,15 @@
 package org.modelio.platform.logging.logback;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Iterator;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.LogbackServiceProvider;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.FileAppender;
 import ch.qos.logback.core.joran.spi.JoranException;
@@ -90,9 +93,41 @@ final class LogbackLoggingBackend implements LoggingBackend {
             return loggerContext;
         }
 
+        loggerContext = installExplicitProvider();
+        if (loggerContext != null) {
+            return loggerContext;
+        }
+
         ILoggerFactory loggerFactory = LoggerFactory.getILoggerFactory();
         String actualFactory = loggerFactory == null ? "null" : loggerFactory.getClass().getName();
         throw new IllegalStateException("Expected Logback LoggerContext but got " + actualFactory);
+    }
+
+    private static LoggerContext installExplicitProvider() {
+        try {
+            LogbackServiceProvider provider = new LogbackServiceProvider();
+            provider.initialize();
+
+            Method resetMethod = LoggerFactory.class.getDeclaredMethod("reset");
+            resetMethod.setAccessible(true);
+            resetMethod.invoke(null);
+
+            Field providerField = LoggerFactory.class.getDeclaredField("PROVIDER");
+            providerField.setAccessible(true);
+            providerField.set(null, provider);
+
+            Field successField = LoggerFactory.class.getDeclaredField("SUCCESSFUL_INITIALIZATION");
+            successField.setAccessible(true);
+            int successState = successField.getInt(null);
+
+            Field stateField = LoggerFactory.class.getDeclaredField("INITIALIZATION_STATE");
+            stateField.setAccessible(true);
+            stateField.setInt(null, successState);
+        } catch (ReflectiveOperationException | RuntimeException e) {
+            return null;
+        }
+
+        return getLoggerContext();
     }
 
     private static LoggerContext getLoggerContext() {

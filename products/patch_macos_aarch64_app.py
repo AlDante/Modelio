@@ -87,9 +87,25 @@ def upsert_argument_pair(lines: list[str], flag: str, value: str, before_flag: s
     return updated
 
 
+def ensure_argument(lines: list[str], argument: str, before_flag: str) -> list[str]:
+    updated = list(lines)
+    if argument in updated:
+        return updated
+
+    insert_at = updated.index(before_flag) if before_flag in updated else len(updated)
+    updated.insert(insert_at, argument)
+    return updated
+
+
+def remove_argument(lines: list[str], argument: str) -> list[str]:
+    return [line for line in lines if line != argument]
+
+
 def patch_modelio_ini(modelio_ini: Path) -> None:
     lines = modelio_ini.read_text(encoding='utf-8').splitlines()
     lines = upsert_argument_pair(lines, '-configuration', '../Eclipse/configuration', '-vmargs')
+    lines = ensure_argument(lines, '-Dosgi.requiredJavaVersion=21', '-Djava.library.path=plugins/org.eclipse.justj.openjdk.hotspot.jre.full.macosx.aarch64_21.0.5.v20241007-1417/jre/lib')
+    lines = remove_argument(lines, '-Dslf4j.provider=ch.qos.logback.classic.spi.LogbackServiceProvider')
     modelio_ini.write_text('\n'.join(lines) + '\n', encoding='utf-8')
 
 

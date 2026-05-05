@@ -2,7 +2,9 @@
 
 ## Status of this document
 
-This document now has a single active execution plan: **Slices A–D** below.
+This document now has a single completed execution plan of record: **Slices A–D** below.
+
+The remaining active follow-up work is the bounded investigation in **Slice E**.
 
 Earlier roadmap material from previous iterations is retained only where it helps explain why the repository ended up in its current state. Any such material should be treated as **historical context only**, not as the plan of record.
 
@@ -43,10 +45,10 @@ Assuming no major new upstream incompatibility is uncovered, the remaining work 
 | Slice A | Top up missing upstream bundles into the vendored train and freeze the resolved baseline | **Completed on 2026-04-25** |
 | Slice B | Recut features/products to consume only the clean vendored train and remove historical fallbacks | **Completed on 2026-04-26** |
 | Slice C | Finish the clean Apple Silicon product/runtime stack and packaging integrity work | **Completed on 2026-04-29** |
-| Slice D | Complete validation, lock CI gates, and retire the hybrid path | 2–4 days |
+| Slice D | Complete validation, lock CI gates, and retire the hybrid path | **Completed on 2026-04-29** |
 | Slice E | Early investigation: SLF4J 2.0/Logback 1.5 migration and GEF Classic/E4 compatibility hardening | 2–3 days |
 
-**Overall remaining work:** roughly **1–2 focused weeks** of engineering/validation across Slices D–E.
+**Overall remaining work:** roughly **2–3 focused days** of engineering/validation in Slice E.
 
 ## Active plan of record
 
@@ -272,6 +274,24 @@ Turn the now-cleaned build path into the normal path and demote the mixed/histor
 - CI protects the repository from regressing back into a mixed stack.
 - This document’s active plan is complete.
 
+### Slice D completion note — completed on 2026-04-29
+
+This slice is now complete for the supported macOS `aarch64` path.
+
+Completed work:
+- full fresh-scratch staged validation is now locked to the one-shot `AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org clean package` flow as the default acceptance gate;
+- `products/pom.xml` now enforces checked validator scripts during `product.org` packaging, including feature repin validation, packaged-app Apple Silicon contract validation, wrapper integrity checks, and the diagram-editor smoke test;
+- the new packaged-app contract validator fails the build if active configuration files reintroduce retired fallback paths, if the final app carries unexpected `x86_64` native payloads, or if required Apple Silicon launcher/SWT fragments are missing;
+- repository instructions and build-process documentation now treat the cleaned `eclipse-2026-03` Apple Silicon path as the supported default and demote earlier hybrid guidance to historical context.
+
+Validated on 2026-04-29 with a fresh scratch local repository:
+- `AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org clean package`
+- `plutil -lint` on the final `Info.plist`
+- `codesign --verify --deep --strict --verbose=2` on the final `Modelio.app`
+- `lipo -archs` on `Contents/MacOS/modelio` returning `arm64`
+
+The remaining active modernisation work is now Slice E.
+
 ---
 
 ## Slice E — Early investigation: SLF4J 2.0/Logback 1.5 migration and GEF Classic/E4 compatibility hardening
@@ -295,6 +315,15 @@ The SLF4J/Logback migration was recently completed (see `SLF4J_LOGBACK_MIGRATION
 - Product starts without SLF4J/Logback-related errors in the console or OSGi log.
 - Application log file is created and contains expected entries.
 - No legacy logging bundle versions appear in `bundles.info`.
+
+#### E1 guardrail slice — completed on 2026-04-30
+- retired the stale legacy `dev-platform/rcp-target/org.slf4j/slf4j` and `dev-platform/rcp-target/ch.qos/logback` repositories from the active shared POMs and target definitions so the supported path no longer advertises the old logging stack as a live fallback;
+- added `diagnostics/macos-aarch64/validate_logging_stack.py` and wired it into `products/pom.xml` so the supported `product.org` packaging path now fails if the packaged app drifts away from `slf4j.api 2.0.17`, `ch.qos.logback.classic 1.5.32`, `ch.qos.logback.core 1.5.32`, or the `org.modelio.platform.logging.logback` backend plugin;
+- directly verified the current packaged `Modelio.app` resolves the modern logging stack in `bundles.info` and that the backend bundle still ships `config/logback.xml`;
+- confirmed an existing user-side `~/.modelio/5.4/modelio-*.log` file contains real runtime log output, so the migration still has positive end-to-end evidence beyond resolver metadata.
+
+Remaining E1 follow-up after this guardrail slice:
+- rerun one fresh interactive startup/diagram smoke on the rebuilt app and check the newest logfile for the same session.
 
 ### E2 — GEF Classic / E4 compatibility assessment and hardening
 

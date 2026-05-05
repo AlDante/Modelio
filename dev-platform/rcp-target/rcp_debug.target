@@ -28,8 +28,6 @@
 		<location path="dev-platform/rcp-target/org.eclipse/uml2" type="Directory"/>
 		<location path="dev-platform/rcp-target/org.eclipse/emf" type="Directory"/>
 		<location path="dev-platform/rcp-target/tmatesoft/svnkit-1.10.9" type="Directory"/>
-		<location path="dev-platform/rcp-target/org.slf4j/slf4j" type="Directory"/>
-		<location path="dev-platform/rcp-target/ch.qos/logback" type="Directory"/>
 
 
 		<!-- For debugging -->

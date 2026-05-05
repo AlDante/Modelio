@@ -650,8 +650,7 @@ When debugging or locating outputs, use this order.
 ### Target and overlays
 1. `dev-platform/rcp-target/rcp.target`
 2. `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/`
-3. `dev-platform/rcp-target/rcp-eclipse/launcher-arm64/` and `dev-platform/rcp-target/rcp-eclipse/macos-arm64/` (historical reference only)
-4. retired directories `dev-platform/rcp-target/rcp-eclipse/eclipse/`, `eclipse-fr/`, and `jna/` are no longer present and should not be recreated for the supported path
+3. retired directories `dev-platform/rcp-target/rcp-eclipse/eclipse/`, `eclipse-fr/`, `jna/`, `launcher-arm64/`, and `macos-arm64/` are no longer present and should not be recreated for the supported path
 
 ### Plugin and feature outputs
 5. module-local `target/` directories under `modelio/**` and `features/**`
@@ -682,7 +681,22 @@ When debugging or locating outputs, use this order.
 
 ## 15. Recommended future workflow
 
-If you need the full native macOS aarch64 product again, use this order:
+The default acceptance gate for the supported Apple Silicon path is the one-shot staged build from a fresh scratch local repository:
+
+```zsh
+rm -rf /Users/david/IdeaProjects/Modelio/tmp/m2-scratch
+
+cd /Users/david/IdeaProjects/Modelio
+mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org clean package
+```
+
+That path now includes the packaging-time validator scripts and checks in this order:
+- feature repin validation (`diagnostics/macos-aarch64/validate_feature_repin.py`)
+- macOS wrapper patching/signing
+- packaged-app Apple Silicon contract validation (`diagnostics/macos-aarch64/validate_macos_aarch64_contract.py`)
+- diagram-editor smoke validation (`diagnostics/macos-aarch64/verify_diagram_editor_smoke.py`)
+
+If you need the split native macOS aarch64 product workflow for scoped investigation, use this order:
 
 ```zsh
 rm -rf /Users/david/IdeaProjects/Modelio/tmp/m2-scratch
@@ -695,12 +709,6 @@ mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch -f /User
 mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/products/pom.xml -Pplatform.mac.aarch64,product.org clean package
 ```
 
-If you do not need split IntelliJ stages, the simpler one-shot alternative is still:
-
-```zsh
-cd /Users/david/IdeaProjects/Modelio
-mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch -f /Users/david/IdeaProjects/Modelio/AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org clean package
-```
 
 Then inspect:
 - `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app`

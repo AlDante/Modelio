@@ -9,9 +9,18 @@
    <launcherArgs>
       <programArgs>-clearPersistedState
       </programArgs>
-      <vmArgs>-Xms1024m -Xmx4096m -Dpython.console.encoding=UTF-8
+      <vmArgs>-Xms512m
+-Xmx2048m
+-Dosgi.requiredJavaVersion=21
+-Djava.library.path=plugins/org.eclipse.justj.openjdk.hotspot.jre.full.macosx.aarch64_21.0.5.v20241007-1417/jre/lib
+-Dorg.eclipse.swt.internal.carbon.smallFonts
+-Dapple.awt.graphics.UseQuartz=true
+-Dcom.apple.smallTabs=true
       </vmArgs>
-      <vmArgsMac>-Dosgi.requiredJavaVersion=21 --add-modules=ALL-SYSTEM -XstartOnFirstThread -Dorg.eclipse.swt.display.useSystemTheme=false
+      <vmArgsMac>-XstartOnFirstThread
+ -Dorg.eclipse.swt.internal.carbon.smallFonts
+ -Dapple.awt.graphics.UseQuartz=true
+ -Dcom.apple.smallTabs=true
       </vmArgsMac>
    </launcherArgs>
 

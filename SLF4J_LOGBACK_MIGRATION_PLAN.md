@@ -190,6 +190,14 @@ This migration has been scheduled for early investigation as part of **Slice E1*
 
 This is prioritised for early investigation because the logging stack touches runtime bootstrap and was recently changed (Slice 2 completed on 2026-04-27).
 
+### E1 guardrail slice completed on 2026-04-30
+- retired the stale `dev-platform/rcp-target/org.slf4j/slf4j` and `dev-platform/rcp-target/ch.qos/logback` repository references from the active shared POMs and target definitions;
+- added `diagnostics/macos-aarch64/validate_logging_stack.py` and wired it into `products/pom.xml` so packaging now fails if the final `Modelio.app` resolves anything other than `slf4j.api 2.0.17` and `ch.qos.logback.* 1.5.32`, or if the Logback backend bundle is missing;
+- directly checked the packaged `bundles.info` for the rebuilt app and confirmed `org.modelio.platform.logging.logback` is present alongside the expected modern logging bundle versions.
+
+Remaining follow-up after this guardrail slice:
+- a fresh interactive runtime smoke to confirm the newest session creates and writes a logfile after startup on the rebuilt product.
+
 ## Decision rule
 Choose Option A if the immediate goal is to stop relying on the legacy logging runtime.
 

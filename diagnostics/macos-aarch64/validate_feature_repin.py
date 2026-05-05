@@ -1,14 +1,10 @@
-import sys
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-REPO_ROOT = Path('/Users/david/IdeaProjects/Modelio')
-STAGED_CONTENT = REPO_ROOT / 'dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/content.xml'
-FEATURES = {
-    'org.modelio.e4.rcp': REPO_ROOT / 'features/opensource/org.modelio.e4.rcp/feature.xml',
-    'org.modelio.rcp': REPO_ROOT / 'features/opensource/org.modelio.rcp/feature.xml',
-    'org.modelio.platform.feature': REPO_ROOT / 'features/opensource/org.modelio.platform.feature/feature.xml',
-}
 EXPECTED_FEATURE_VERSIONS = {
     'org.modelio.e4.rcp': '4.39.0.v20260225-1014',
     'org.modelio.rcp': '4.39.0.v20260226-0420',
@@ -19,6 +15,32 @@ EXPECTED_INCLUDES = {
     ('org.modelio.platform.feature', 'org.modelio.rcp'): '4.39.0.v20260226-0420',
 }
 PREFIXES = ('org.eclipse.', 'com.sun.jna')
+
+
+def build_argument_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description='Validate that feature repins match the staged Eclipse 2026-03 metadata used by the supported macOS Apple Silicon path.'
+    )
+    parser.add_argument(
+        '--repo-root',
+        type=Path,
+        default=Path(__file__).resolve().parents[2],
+        help='Path to the repository root. Defaults to the parent of diagnostics/.',
+    )
+    parser.add_argument(
+        '--staged-content',
+        type=Path,
+        help='Override the staged content.xml location if needed.',
+    )
+    return parser
+
+
+def get_features(repo_root: Path) -> dict[str, Path]:
+    return {
+        'org.modelio.e4.rcp': repo_root / 'features/opensource/org.modelio.e4.rcp/feature.xml',
+        'org.modelio.rcp': repo_root / 'features/opensource/org.modelio.rcp/feature.xml',
+        'org.modelio.platform.feature': repo_root / 'features/opensource/org.modelio.platform.feature/feature.xml',
+    }
 
 
 def load_units(path: Path) -> dict[str, set[str]]:
@@ -33,10 +55,23 @@ def load_units(path: Path) -> dict[str, set[str]]:
 
 
 def main() -> int:
-    units = load_units(STAGED_CONTENT)
+    args = build_argument_parser().parse_args()
+    repo_root = args.repo_root.resolve()
+    staged_content = args.staged_content.resolve() if args.staged_content else repo_root / 'dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/content.xml'
+    features = get_features(repo_root)
+
+    if not staged_content.is_file():
+        print(f'Missing staged metadata file: {staged_content}')
+        return 1
+
+    units = load_units(staged_content)
     failures: list[str] = []
 
-    for feature_id, feature_path in FEATURES.items():
+    for feature_id, feature_path in features.items():
+        if not feature_path.is_file():
+            failures.append(f'{feature_id}: missing feature file {feature_path}')
+            continue
+
         root = ET.parse(feature_path).getroot()
         feature_version = root.get('version')
         if feature_version != EXPECTED_FEATURE_VERSIONS[feature_id]:
@@ -66,7 +101,7 @@ def main() -> int:
         return 1
 
     print('VALIDATION OK')
-    for feature_id in FEATURES:
+    for feature_id in features:
         print(feature_id)
     return 0
 

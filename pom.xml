@@ -87,11 +87,6 @@ This pom executes a maven target on ALL the (eclipse) features that compose the 
 					<url>file://${modelio.ws.path}/dev-platform/rcp-target/apache/log4j</url>
 				</repository>
 				<repository>
-					<id>logback</id>
-					<layout>p2</layout>
-					<url>file://${modelio.ws.path}/dev-platform/rcp-target/ch.qos/logback</url>
-				</repository>
-				<repository>
 					<id>commons-compress</id>
 					<layout>p2</layout>
 					<url>file://${modelio.ws.path}/dev-platform/rcp-target/apache/commons-compress</url>
@@ -136,11 +131,6 @@ This pom executes a maven target on ALL the (eclipse) features that compose the 
 					<id>svnkit</id>
 					<layout>p2</layout>
 					<url>file://${modelio.ws.path}/dev-platform/rcp-target/tmatesoft/svnkit-1.10.9</url>
-				</repository>
-				<repository>
-					<id>slf4j</id>
-					<layout>p2</layout>
-					<url>file://${modelio.ws.path}/dev-platform/rcp-target/org.slf4j/slf4j</url>
 				</repository>
 	</repositories>
 

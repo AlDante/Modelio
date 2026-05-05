@@ -98,6 +98,22 @@
 					<artifactId>maven-antrun-plugin</artifactId>
 					<version>3.1.0</version>
 					<executions>
+							<execution>
+								<id>validate-macos-aarch64-feature-repin</id>
+								<phase>package</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<exec executable="python3" failonerror="true">
+											<arg value="${project.basedir}/../diagnostics/macos-aarch64/validate_feature_repin.py"/>
+											<arg value="--repo-root"/>
+											<arg value="${project.basedir}/.."/>
+										</exec>
+									</target>
+								</configuration>
+							</execution>
 						<execution>
 							<id>patch-macos-aarch64-app-wrapper</id>
 							<phase>package</phase>
@@ -128,6 +144,60 @@
 								</target>
 							</configuration>
 						</execution>
+							<execution>
+								<id>validate-macos-aarch64-contract</id>
+								<phase>package</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<exec executable="python3" failonerror="true">
+											<arg value="${project.basedir}/../diagnostics/macos-aarch64/validate_macos_aarch64_contract.py"/>
+											<arg value="--repo-root"/>
+											<arg value="${project.basedir}/.."/>
+											<arg value="--app"/>
+											<arg value="${project.build.directory}/products/org.modelio.product/macosx/cocoa/aarch64/${modelio.rootFolder}.app"/>
+										</exec>
+									</target>
+								</configuration>
+							</execution>
+																			<execution>
+																				<id>validate-logging-stack</id>
+																				<phase>package</phase>
+																				<goals>
+																					<goal>run</goal>
+																				</goals>
+																				<configuration>
+																					<target>
+																						<exec executable="python3" failonerror="true">
+																							<arg value="${project.basedir}/../diagnostics/macos-aarch64/validate_logging_stack.py"/>
+																							<arg value="--repo-root"/>
+																							<arg value="${project.basedir}/.."/>
+																							<arg value="--app"/>
+																							<arg value="${project.build.directory}/products/org.modelio.product/macosx/cocoa/aarch64/${modelio.rootFolder}.app"/>
+																						</exec>
+																					</target>
+																				</configuration>
+																			</execution>
+																																																	<execution>
+																																																		<id>verify-runtime-logging-smoke</id>
+																																																		<phase>package</phase>
+																																																		<goals>
+																																																			<goal>run</goal>
+																																																		</goals>
+																																																		<configuration>
+																																																			<target>
+																																																				<exec executable="python3" failonerror="true">
+																																																					<arg value="${project.basedir}/../diagnostics/macos-aarch64/verify_runtime_logging_smoke.py"/>
+																																																					<arg value="--app"/>
+																																																					<arg value="${project.build.directory}/products/org.modelio.product/macosx/cocoa/aarch64/${modelio.rootFolder}.app"/>
+																																																					<arg value="--timeout"/>
+																																																					<arg value="45"/>
+																																																				</exec>
+																																																			</target>
+																																																		</configuration>
+																																																	</execution>
 						<execution>
 							<id>verify-macos-aarch64-diagram-editor-smoke</id>
 							<phase>package</phase>

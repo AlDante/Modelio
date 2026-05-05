@@ -13,7 +13,7 @@
 - Target platform is local-file based from `dev-platform/rcp-target/rcp.target`; the supported macOS `aarch64` path now resolves its upstream RCP content from `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03/` without active `eclipse/`, `eclipse-fr/`, `jna/repository/`, or `openjdk-jre11` fallback wiring, and the retired `dev-platform/rcp-target/rcp-eclipse/{eclipse,eclipse-fr,jna}/` directories have been removed from the working tree.
 
 ## Canonical build entrypoints
-- Full staged build (prebuild + plugins + features + products): run from `AGGREGATOR/pom.xml`.
+- Full staged build (prebuild + plugins + features + products): run from `AGGREGATOR/pom.xml`. This is now the canonical acceptance gate for the supported macOS `aarch64` path when used with a fresh scratch local repository.
 - Prebuild validates the shared parent + target-definition modules first (`AGGREGATOR/prebuild/pom.xml` builds root + `dev-platform/rcp-target` against the cleaned 2026-03 baseline wiring).
 - Run Maven on `Java 21` for the current Tycho baseline; the supported macOS `aarch64` product path now validates with Java 21 launcher metadata and no active `openjdk-jre11` target wiring.
 - Product packaging variants are profile-driven in `products/pom.xml`:
@@ -46,6 +46,8 @@
 - Build only the affected plugin family via `AGGREGATOR/plugins/{core|platform|app|uml|bpmn|plugdules}/pom.xml`.
 - Rebuild impacted features via `AGGREGATOR/features/opensource/pom.xml` when plugin membership or feature.xml changes.
 - Run product packaging only after plugin+feature success, using `AGGREGATOR/products/pom.xml` or `products/pom.xml` with `product.org` and `platform.mac.aarch64` for the supported product path, or `repositoryP2` when you only need p2 repository output.
+- The `product.org` macOS packaging path now enforces the checked diagnostics gates in `diagnostics/macos-aarch64/`, including feature repin validation, packaged-app contract validation, wrapper integrity checks, and the diagram-editor smoke test.
+- For final sign-off of the supported path, prefer the one-shot fresh-scratch `AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org clean package` run over piecemeal evidence.
 - There are no obvious `eclipse-test-plugin` modules in current poms; rely on targeted Tycho compile/package validation across touched aggregators.
 
 ## Existing AI-instruction sources found

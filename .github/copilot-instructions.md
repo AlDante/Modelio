@@ -31,6 +31,7 @@ mvn -Dmaven.repo.local=/Users/david/IdeaProjects/Modelio/tmp/m2-scratch \
   -Pplatform.mac.aarch64,product.org clean package
 ```
 Postcondition: `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app` exists.
+This is now the default acceptance gate for the supported macOS Apple Silicon path; the `products` stage also runs the checked validator scripts in `diagnostics/macos-aarch64/`.
 
 ### Smallest-scope target validation
 Validated in this workspace (~**1 min** from a fresh scratch repository):
@@ -61,6 +62,7 @@ Validated bundle integrity checks:
 ```zsh
 plutil -lint /Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app/Contents/Info.plist
 codesign --verify --deep --strict --verbose=2 /Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app
+python3 /Users/david/IdeaProjects/Modelio/diagnostics/macos-aarch64/validate_macos_aarch64_contract.py --repo-root /Users/david/IdeaProjects/Modelio --app /Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app
 ```
 Interactive run path:
 ```zsh
@@ -79,7 +81,7 @@ open /Users/david/IdeaProjects/Modelio/products/target/products/org.modelio.prod
 - `AGGREGATOR/pom.xml` is the staged top-level build and runs `doc -> prebuild -> plugins -> features -> products`.
 - `dev-platform/rcp-target/pom.xml` builds the local target-definition artifact `org.modelio:rcp`; `dev-platform/rcp-target/rcp.target` is the main target file.
 - Root `pom.xml` centralizes Tycho config and local p2 repositories; the active upstream RCP baseline is now `dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03` without legacy Eclipse, French localisation, or JNA fallback repositories.
-- `products/modelio-os.product` is the final product definition. `products/pom.xml` controls profile-based packaging (`product.org`, `repositoryP2`, `platform.*`) and patches/signs the macOS app with `products/patch_macos_aarch64_app.py`.
+- `products/modelio-os.product` is the final product definition. `products/pom.xml` controls profile-based packaging (`product.org`, `repositoryP2`, `platform.*`), patches/signs the macOS app with `products/patch_macos_aarch64_app.py`, and enforces the checked Apple Silicon validator scripts during `product.org` packaging.
 - OSGi dependencies are usually declared in `META-INF/MANIFEST.MF`, not Maven dependencies. Example: `modelio/platform/platform.rcp/META-INF/MANIFEST.MF` requires `org.eclipse.swt`; `modelio/platform/platform.ui/META-INF/MANIFEST.MF` requires `org.eclipse.gef` and `org.eclipse.nebula.widgets.gallery`.
 - UI wiring often spans `plugin.xml` plus e4 fragments. Example: `modelio/app/app.project.ui/plugin.xml` contributes `e4model/projectui.e4xmi`.
 - `*.ext_org` modules are paired open-source variants. Before changing one, check its non-`ext_org` sibling.
