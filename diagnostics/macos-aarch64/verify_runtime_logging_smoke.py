@@ -14,6 +14,10 @@ import time
 
 
 STARTUP_MARKERS = (
+    "Modelio by modelio.org",
+    "Modelio version",
+    "Modelio runtime data path",
+    "Instance location",
     "Eclipse application started.",
     "Workbench launched",
     "Workspace restored",
