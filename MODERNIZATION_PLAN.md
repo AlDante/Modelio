@@ -2,9 +2,9 @@
 
 ## Status of this document
 
-This document now has a single completed execution plan of record: **Slices A–D** below.
+This document now records a completed execution plan of record for the supported macOS Apple Silicon path: **Slices A–E** below.
 
-The remaining active follow-up work is the bounded investigation in **Slice E**.
+There is no further mandatory engineering work left in that active plan for the supported path. The only remaining follow-up is optional close-out work such as documenting the final validation evidence and, at a later date if desired, reviewing whether the reflective Logback bootstrap fallback can be simplified.
 
 Earlier roadmap material from previous iterations is retained only where it helps explain why the repository ended up in its current state. Any such material should be treated as **historical context only**, not as the plan of record.
 
@@ -21,40 +21,42 @@ The clean end-state is a repository that builds and ships from **one internally 
 | Product assembly | Product definitions still tolerate historical carry-overs to keep packaging working | Products assembled only from the clean vendored stack |
 | macOS runtime stack | Apple Silicon support works in places, but some launcher/runtime assumptions still reflect older Intel-era packaging | Fully clean macOS/aarch64 product stack: launcher, SWT fragments, runtime, metadata, validation |
 | Provenance/versioning | Some artefacts are effectively “known-good carried pieces” rather than part of one aligned train | Every shipped IU traceable to the chosen mirrored upstream baseline or an explicit in-repo patch fork |
-| Validation | Fresh scratch validation is mostly green, but the full ladder still needs to be completed and locked in | Repeatable full scratch validation with app integrity/artefact checks as standard acceptance gates |
+| Validation | Fresh scratch staged validation and the one-shot acceptance build are now green on the supported macOS `aarch64` path | Repeatable full scratch validation with app integrity/artefact checks as standard acceptance gates |
 
 ## How much work remains?
 
-The modernisation is **substantially advanced but not yet complete**.
+For the supported macOS Apple Silicon path, the modernisation is now **complete at the plan-of-record level**.
 
-What is already true:
-- the scratch-repo build can progress on the modernised path,
-- `prebuild` is green from a fresh repo,
-- the repo is no longer blocked on the original legacy-only stack,
-- Apple Silicon enablement is no longer theoretical.
+What is now true:
+- the fresh-scratch staged build is green,
+- the one-shot acceptance build from `AGGREGATOR/pom.xml` is green,
+- the packaged-app Apple Silicon contract validation passes,
+- the logging-stack validator passes,
+- the runtime logging smoke passes,
+- the diagram-editor smoke passes,
+- the repo is no longer blocked on the original hybrid recovery path.
 
-What is not yet true:
-- the full validation ladder and final product integrity checks are **not** yet all signed off.
+What remains:
+- no further mandatory engineering slices remain for the supported path;
+- only optional follow-up remains, chiefly documentation close-out and a later review of whether the current reflective logging-bootstrap fallback should stay as the long-term implementation.
 
-### Remaining effort estimate
+### Completion summary
 
-Assuming no major new upstream incompatibility is uncovered, the remaining work is approximately:
-
-| Slice | Scope | Rough effort |
+| Slice | Scope | Status |
 |---|---|---|
 | Slice A | Top up missing upstream bundles into the vendored train and freeze the resolved baseline | **Completed on 2026-04-25** |
 | Slice B | Recut features/products to consume only the clean vendored train and remove historical fallbacks | **Completed on 2026-04-26** |
 | Slice C | Finish the clean Apple Silicon product/runtime stack and packaging integrity work | **Completed on 2026-04-29** |
 | Slice D | Complete validation, lock CI gates, and retire the hybrid path | **Completed on 2026-04-29** |
-| Slice E | Early investigation: SLF4J 2.0/Logback 1.5 migration and GEF Classic/E4 compatibility hardening | 2–3 days |
+| Slice E | Early investigation: SLF4J 2.0/Logback 1.5 migration and GEF Classic/E4 compatibility hardening | **Completed on 2026-05-05** |
 
-**Overall remaining work:** roughly **2–3 focused days** of engineering/validation in Slice E.
+**Overall remaining work:** no mandatory engineering work remains in the active plan for the supported macOS Apple Silicon path.
 
 ## Active plan of record
 
-The following slices are the active plan we are working to going forward. These supersede earlier roadmap variants.
+The following slices are the active plan this modernisation stream worked to. They supersede earlier roadmap variants and now serve as the completed plan-of-record for the supported path.
 
-# Active execution plan: Slices A–D
+# Active execution record: Slices A–E
 
 ## Slice A — Complete the vendored upstream train
 
@@ -322,8 +324,12 @@ The SLF4J/Logback migration was recently completed (see `SLF4J_LOGBACK_MIGRATION
 - directly verified the current packaged `Modelio.app` resolves the modern logging stack in `bundles.info` and that the backend bundle still ships `config/logback.xml`;
 - confirmed an existing user-side `~/.modelio/5.4/modelio-*.log` file contains real runtime log output, so the migration still has positive end-to-end evidence beyond resolver metadata.
 
-Remaining E1 follow-up after this guardrail slice:
-- rerun one fresh interactive startup/diagram smoke on the rebuilt app and check the newest logfile for the same session.
+#### E1 runtime close-out — completed on 2026-05-05
+- removed the incompatible explicit `-Dslf4j.provider=ch.qos.logback.classic.spi.LogbackServiceProvider` VM argument from the product path and taught the macOS wrapper patch to strip it from the packaged `modelio.ini` if it reappears;
+- restored and enforced the required `-Dosgi.requiredJavaVersion=21` launcher metadata in the packaged `modelio.ini`, and aligned the packaged-app contract validator with the actual supported launcher contract;
+- added an owned-code fallback in `modelio/platform/platform.logging.logback` so the packaged OSGi runtime can still install the Logback provider when service-loader discovery would otherwise leave SLF4J on the NOP backend;
+- updated the runtime logging smoke so it accepts the current Modelio startup markers rather than only older generic Eclipse markers;
+- revalidated the supported path with `validate_macos_aarch64_contract.py`, `validate_logging_stack.py`, `verify_runtime_logging_smoke.py`, the diagram-editor smoke, the split staged `products` build, and the one-shot fresh-scratch `AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org clean package` acceptance build.
 
 ### E2 — GEF Classic / E4 compatibility assessment and hardening
 
@@ -405,6 +411,19 @@ All ten GEF Classic / E4 compatibility areas were manually verified against the 
 10. **Diagram tab lifecycle** ✓ — switching between diagrams updates the palette; closing tabs produces no errors.
 
 No GEF/E4 compatibility regressions were found. The `GefWorkbenchBridge` shim is working as expected for the current Eclipse 2026-03 baseline.
+
+### Slice E completion note — completed on 2026-05-05
+
+Slice E is now complete for the supported macOS `aarch64` path.
+
+Completed work across E1 and E2:
+- the logging stack now has packaging-time contract checks plus a passing runtime smoke on the rebuilt product;
+- the supported packaged app now creates and writes the expected session logfile during startup;
+- the GEF Classic / E4 compatibility assessment remains green for the current Eclipse `2026-03` baseline;
+- the final one-shot acceptance build is green on the supported `platform.mac.aarch64,product.org` path.
+
+Optional future follow-up, not required for this modernisation close-out:
+- review whether the current reflective fallback in `LogbackLoggingBackend` should remain permanently or later be replaced by a cleaner OSGi-native provider-bootstrap path.
 
 ---
 
