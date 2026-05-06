@@ -117,9 +117,46 @@ The bulky inline packaging shell payloads have now been extracted into checked-i
 
 ---
 
+### 4. Verify that the cleanup leaves the repo English-only
+
+**Status**
+
+Partially completed on **2026-05-06**.
+
+**Completed work**
+- removed the French documentation reactors and source trees from the active Maven build graph;
+- retired the French-only docs parent property that existed only to support `nl/fr` documentation generation;
+- rechecked that `products/modelio-os.product` already ships only the English documentation feature.
+
+**Why it matters**
+
+The supported macOS Apple Silicon product path is already treated as English-only, and the documentation build graph now matches that intent. The remaining mismatch is narrower: many runtime plugins under `modelio/` still carry embedded `plugin_fr.properties` or similar localisation resources even though the supported product direction is now English-only.
+
+**Representative files**
+- `doc/plugins/pom.xml`
+- `doc/features/pom.xml`
+- `doc/plugins/fr/pom.xml`
+- `doc/features/fr/pom.xml`
+
+**Things to check in the cleanup**
+- keep non-English documentation/plugin aggregators retired when they are no longer part of the intended product;
+- verify that no `*.nl_fr*` bundles, features, or fragments re-enter the build by accident;
+- audit embedded non-English runtime resources such as `plugin_fr.properties` if the English-only policy is meant to apply beyond the documentation build graph;
+- confirm that the supported product definition and packaging inputs continue to ship English-only content.
+
+**Current audit note**
+
+As of **2026-05-06**, the documentation build graph no longer contains any `nl_fr` artefacts, but there are still **168** embedded `*_fr.properties` / `plugin_fr.properties` / `module_fr.properties` files under `modelio/`. Those are not part of the retired docs reactor, so they should be treated as a separate repo-wide localisation cleanup if the English-only policy is intended to cover runtime resources as well.
+
+**Expected benefit**
+- clearer scope for supported language content;
+- less risk of reintroducing retired localisation inputs during future build or product changes.
+
+---
+
 ## Priority 2 — useful maintainability improvements
 
-### 4. Reduce duplicated parent-POM truth
+### 5. Reduce duplicated parent-POM truth
 
 **Why it matters**
 
@@ -145,7 +182,7 @@ They are not identical, which creates drift risk.
 
 ---
 
-### 5. Resolve the Java-level signalling mismatch in build metadata
+### 6. Resolve the Java-level signalling mismatch in build metadata
 
 **Why it matters**
 
@@ -167,7 +204,7 @@ The supported path now clearly targets Java 21 at runtime and many bundles alrea
 
 ---
 
-### 6. Modernise the documentation build configuration
+### 7. Modernise the documentation build configuration
 
 **Why it matters**
 
@@ -197,7 +234,7 @@ The docs build works, but it still emits avoidable warnings and relies on older 
 
 ## Priority 3 — optional hardening against future platform changes
 
-### 7. Revisit `GefWorkbenchBridge`
+### 8. Revisit `GefWorkbenchBridge`
 
 **Why this stands out**
 
@@ -220,7 +257,7 @@ This is the most obviously fragile remaining compatibility shim in the repo.
 
 ---
 
-### 8. Reduce dependence on Eclipse internal proxy UI APIs
+### 9. Reduce dependence on Eclipse internal proxy UI APIs
 
 **Representative files**
 - `modelio/platform/platform.preferences/src/org/modelio/platform/preferences/proxy/ProxyPreferencePage.java`
@@ -240,7 +277,7 @@ These classes depend on `org.eclipse.ui.internal.net.*` and `org.eclipse.core.in
 
 ---
 
-### 9. Reassess the macOS appearance compatibility layer
+### 10. Reassess the macOS appearance compatibility layer
 
 **Representative files**
 - `modelio/app/app.ui.ext_org/src/org/modelio/app/ui/lifecycle/MacAppearanceSupport.java`
@@ -261,7 +298,7 @@ The current fix is pragmatic, but it still relies on reflective access to non-pu
 
 ---
 
-### 10. Remove or archive unused experimental reflective utilities
+### 11. Remove or archive unused experimental reflective utilities
 
 **Representative file**
 - `modelio/platform/platform.ui/src/org/modelio/platform/ui/swt/DpiChangeListener.java`
@@ -280,7 +317,7 @@ This class is marked deprecated, experimental, and appears unused.
 
 ---
 
-### 11. Replace the legacy browser-launch helper
+### 12. Replace the legacy browser-launch helper
 
 **Representative file**
 - `modelio/app/app.xmi/src/org/modelio/xmi/util/BareBonesBrowserLaunch.java`
@@ -301,7 +338,7 @@ This helper still uses very old platform-specific logic, including:
 
 ## Priority 4 — only if a broader modernisation wave is wanted
 
-### 12. Gradually reduce manual `BundleActivator` usage where there is clear payoff
+### 13. Gradually reduce manual `BundleActivator` usage where there is clear payoff
 
 **Why it matters**
 
@@ -313,7 +350,7 @@ The repo still contains many bundles driven by explicit `BundleActivator` lifecy
 
 ---
 
-### 13. Normalise minor naming/version drift in build metadata
+### 14. Normalise minor naming/version drift in build metadata
 
 **Examples**
 - `AGGREGATOR/pom.xml` still uses artifactId `Modelio541`;
@@ -343,11 +380,14 @@ If optional follow-up is desired, the recommended order is:
 2. **Product hygiene pass**
    - clean `products/modelio-os.product`;
    - simplify `products/pom.xml` by extracting helper scripts.
-3. **Build-maintenance pass**
+3. **English-only cleanup pass**
+   - keep doc/plugin aggregators and any `*.nl_fr*` artefacts out of the intended build scope;
+   - optionally audit embedded runtime localisation resources if the English-only policy is to be enforced repo-wide.
+4. **Build-maintenance pass**
    - reduce duplicated parent-POM truth;
    - clarify Java-level build signalling;
    - tidy doc-build configuration.
-4. **Future-upgrade hardening pass**
+5. **Future-upgrade hardening pass**
    - review `GefWorkbenchBridge`;
    - review internal Eclipse proxy UI usage;
    - review the macOS appearance shim.
@@ -363,4 +403,3 @@ Further work is optional and should be justified as one of:
 - future-upgrade hardening.
 
 That is a healthy place for the project to be.
-

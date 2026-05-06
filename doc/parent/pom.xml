@@ -20,7 +20,6 @@
 		<!-- to convert Asciidoc to html files-->
 		<html.directory>html</html.directory>
 		<adoc.directory>adoc</adoc.directory>
-		<nlfr.directory>nl/fr</nlfr.directory>
 		<css.path>../../modeliosoft.css</css.path>
 		<asciidoctor.version>1.5.7.1</asciidoctor.version>
 		<phase.generate-documentation>package</phase.generate-documentation>

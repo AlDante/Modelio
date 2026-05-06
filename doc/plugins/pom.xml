@@ -13,7 +13,6 @@
 
 	<modules>
 		<module>en</module>
-		<module>fr</module>
 	</modules>
 
 </project>
