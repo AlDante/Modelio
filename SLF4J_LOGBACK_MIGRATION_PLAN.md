@@ -199,7 +199,7 @@ Investigation scope completed:
 - removed the incompatible explicit `-Dslf4j.provider=ch.qos.logback.classic.spi.LogbackServiceProvider` VM argument from `products/modelio-os.product` and from the packaged `modelio.ini` normalisation path in `products/patch_macos_aarch64_app.py`;
 - restored and enforced `-Dosgi.requiredJavaVersion=21` in the packaged launcher metadata and aligned `diagnostics/macos-aarch64/validate_macos_aarch64_contract.py` with the actual supported contract;
 - tightened `diagnostics/macos-aarch64/validate_logging_stack.py` so it now rejects the incompatible explicit provider flag while still enforcing `slf4j.api 2.0.17`, `ch.qos.logback.classic 1.5.32`, `ch.qos.logback.core 1.5.32`, and the backend plugin presence;
-- added an owned-code fallback in `modelio/platform/platform.logging.logback/src/org/modelio/platform/logging/logback/LogbackLoggingBackend.java` so the packaged OSGi runtime can still bootstrap Logback if SLF4J service-loader discovery falls back to NOP;
+- made the runtime bootstrap OSGi-native by explicitly including and starting `org.apache.aries.spifly.dynamic.bundle`, starting the Logback provider bundle before backend configuration, and changing `LogbackLoggingBackend` to wait in a bounded way for `org.slf4j.spi.SLF4JServiceProvider` and a real Logback `LoggerContext` before first SLF4J use;
 - updated `diagnostics/macos-aarch64/verify_runtime_logging_smoke.py` to accept the current Modelio startup markers emitted by the rebuilt product.
 
 Validation completed for the supported macOS Apple Silicon path:
@@ -212,7 +212,7 @@ Validation completed for the supported macOS Apple Silicon path:
 
 Remaining follow-up:
 - no mandatory engineering follow-up remains for the supported path;
-- optionally review later whether the reflective provider-bootstrap fallback should stay permanently or be replaced by a cleaner OSGi-native solution.
+- optionally review later whether other compatibility shims in the UI/runtime layers can be reduced without destabilising the supported path.
 
 ## Decision rule
 Choose Option A if the immediate goal is to stop relying on the legacy logging runtime.

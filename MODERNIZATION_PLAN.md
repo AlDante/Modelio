@@ -4,7 +4,7 @@
 
 This document now records a completed execution plan of record for the supported macOS Apple Silicon path: **Slices A–E** below.
 
-There is no further mandatory engineering work left in that active plan for the supported path. The only remaining follow-up is optional close-out work such as documenting the final validation evidence and, at a later date if desired, reviewing whether the reflective Logback bootstrap fallback can be simplified.
+There is no further mandatory engineering work left in that active plan for the supported path. The only remaining follow-up is optional close-out work such as documenting the final validation evidence and, at a later date if desired, reducing other upgrade-fragile compatibility shims.
 
 Earlier roadmap material from previous iterations is retained only where it helps explain why the repository ended up in its current state. Any such material should be treated as **historical context only**, not as the plan of record.
 
@@ -38,7 +38,7 @@ What is now true:
 
 What remains:
 - no further mandatory engineering slices remain for the supported path;
-- only optional follow-up remains, chiefly documentation close-out and a later review of whether the current reflective logging-bootstrap fallback should stay as the long-term implementation.
+- only optional follow-up remains, chiefly documentation close-out and later hardening work on unrelated compatibility shims.
 
 ### Completion summary
 
@@ -327,7 +327,7 @@ The SLF4J/Logback migration was recently completed (see `SLF4J_LOGBACK_MIGRATION
 #### E1 runtime close-out — completed on 2026-05-05
 - removed the incompatible explicit `-Dslf4j.provider=ch.qos.logback.classic.spi.LogbackServiceProvider` VM argument from the product path and taught the macOS wrapper patch to strip it from the packaged `modelio.ini` if it reappears;
 - restored and enforced the required `-Dosgi.requiredJavaVersion=21` launcher metadata in the packaged `modelio.ini`, and aligned the packaged-app contract validator with the actual supported launcher contract;
-- added an owned-code fallback in `modelio/platform/platform.logging.logback` so the packaged OSGi runtime can still install the Logback provider when service-loader discovery would otherwise leave SLF4J on the NOP backend;
+- replaced the temporary fallback-based logging bootstrap with an OSGi-native startup sequence: `platform.utils` now starts Aries SPI Fly and the Logback provider bundle before configuring the backend, while `platform.logging.logback` waits in a bounded way for `org.slf4j.spi.SLF4JServiceProvider` and a real Logback `LoggerContext` before touching SLF4J;
 - updated the runtime logging smoke so it accepts the current Modelio startup markers rather than only older generic Eclipse markers;
 - revalidated the supported path with `validate_macos_aarch64_contract.py`, `validate_logging_stack.py`, `verify_runtime_logging_smoke.py`, the diagram-editor smoke, the split staged `products` build, and the one-shot fresh-scratch `AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org clean package` acceptance build.
 
@@ -423,7 +423,7 @@ Completed work across E1 and E2:
 - the final one-shot acceptance build is green on the supported `platform.mac.aarch64,product.org` path.
 
 Optional future follow-up, not required for this modernisation close-out:
-- review whether the current reflective fallback in `LogbackLoggingBackend` should remain permanently or later be replaced by a cleaner OSGi-native provider-bootstrap path.
+- review other remaining compatibility shims such as `GefWorkbenchBridge` and the macOS appearance forcing layer if a later hardening slice is desired.
 
 ---
 
