@@ -15,7 +15,7 @@ public class LogbackBackendPlugin implements BundleActivator {
 
     @Override
     public void start(BundleContext bundleContext) {
-        this.loggingBackend = new LogbackLoggingBackend(bundleContext.getBundle());
+        this.loggingBackend = new LogbackLoggingBackend(bundleContext);
         this.registration = bundleContext.registerService(LoggingBackend.class, this.loggingBackend, null);
     }
 

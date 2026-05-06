@@ -24,6 +24,11 @@ STARTUP_MARKERS = (
     "Application model loaded",
 )
 
+FORBIDDEN_LOGGING_MARKERS = (
+    "SLF4J(W): No SLF4J providers were found.",
+    "Expected Logback LoggerContext but got",
+)
+
 
 def build_argument_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
@@ -384,12 +389,35 @@ def run_smoke_test(app_bundle: Path, timeout_seconds: int, requested_work_dir: P
 
     active_log_line = None
     combined_console = stdout_text + "\n" + stderr_text
+    for forbidden_marker in FORBIDDEN_LOGGING_MARKERS:
+        if forbidden_marker in combined_console:
+            print(
+                f"Runtime smoke observed forbidden logging bootstrap marker: {forbidden_marker}",
+                file=sys.stderr,
+            )
+            print(f"Captured console log: {console_log}", file=sys.stderr)
+            if should_cleanup:
+                shutil.rmtree(work_dir)
+            return 1
+
     for line in combined_console.splitlines():
         if "Active log file name:" in line:
             active_log_line = line.strip()
             break
 
     log_content = session_log.read_text(encoding="utf-8", errors="replace")
+    for forbidden_marker in FORBIDDEN_LOGGING_MARKERS:
+        if forbidden_marker in log_content:
+            print(
+                f"Runtime smoke observed forbidden logging bootstrap marker in session logfile: {forbidden_marker}",
+                file=sys.stderr,
+            )
+            print(f"Captured console log: {console_log}", file=sys.stderr)
+            print(f"Session logfile: {session_log}", file=sys.stderr)
+            if should_cleanup:
+                shutil.rmtree(work_dir)
+            return 1
+
     marker = find_first_marker(log_content)
     if marker is None:
         marker = find_first_marker(combined_console)

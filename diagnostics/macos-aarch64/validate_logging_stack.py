@@ -7,6 +7,7 @@ from pathlib import Path
 import zipfile
 
 REQUIRED_LOGGING_BUNDLES = {
+    'org.apache.aries.spifly.dynamic.bundle': '1.3.7',
     'slf4j.api': '2.0.17',
     'ch.qos.logback.classic': '1.5.32',
     'ch.qos.logback.core': '1.5.32',
@@ -21,6 +22,8 @@ LEGACY_REPOSITORY_SNIPPETS = {
 }
 REQUIRED_SOURCE_SNIPPETS = {
     'features/opensource/org.modelio.platform.libraries/feature.xml': (
+        'id="org.apache.aries.spifly.dynamic.bundle"',
+        'version="1.3.7"',
         'id="ch.qos.logback.classic"',
         'version="1.5.32"',
         'id="ch.qos.logback.core"',

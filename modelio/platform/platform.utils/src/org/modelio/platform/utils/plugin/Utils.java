@@ -32,6 +32,10 @@ public class Utils implements BundleActivator {
     @objid ("0055b0ea-4447-1fe3-9845-001ec947cd2a")
     public static final String PLUGIN_ID = "org.modelio.platform.utils";
 
+    private static final String SLF4J_SERVICE_LOADER_PROCESSOR_BUNDLE = "org.apache.aries.spifly.dynamic.bundle";
+
+    private static final String SLF4J_LOGBACK_PROVIDER_BUNDLE = "ch.qos.logback.classic";
+
     private static final String DEFAULT_LOGGING_BACKEND_BUNDLE = "org.modelio.platform.logging.logback";
 
     private static LoggingBackend loggingBackend;
@@ -85,13 +89,19 @@ public class Utils implements BundleActivator {
     }
 
     private static void startDefaultLoggingBackend(BundleContext bundleContext) {
-        Bundle backendBundle = findBundle(bundleContext, DEFAULT_LOGGING_BACKEND_BUNDLE);
-        if (backendBundle == null || backendBundle.getState() == Bundle.UNINSTALLED) {
+        startBundle(bundleContext, SLF4J_SERVICE_LOADER_PROCESSOR_BUNDLE);
+        startBundle(bundleContext, SLF4J_LOGBACK_PROVIDER_BUNDLE);
+        startBundle(bundleContext, DEFAULT_LOGGING_BACKEND_BUNDLE);
+    }
+
+    private static void startBundle(BundleContext bundleContext, String symbolicName) {
+        Bundle bundle = findBundle(bundleContext, symbolicName);
+        if (bundle == null || bundle.getState() == Bundle.UNINSTALLED) {
             return;
         }
         try {
-            if (backendBundle.getState() != Bundle.ACTIVE) {
-                backendBundle.start(Bundle.START_TRANSIENT);
+            if (bundle.getState() != Bundle.ACTIVE) {
+                bundle.start(Bundle.START_TRANSIENT);
             }
         } catch (BundleException e) {
             e.printStackTrace();

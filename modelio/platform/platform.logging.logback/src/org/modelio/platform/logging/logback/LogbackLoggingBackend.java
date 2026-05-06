@@ -1,15 +1,12 @@
 package org.modelio.platform.logging.logback;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Iterator;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.classic.spi.LogbackServiceProvider;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.FileAppender;
 import ch.qos.logback.core.joran.spi.JoranException;
@@ -17,15 +14,27 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.modelio.platform.utils.plugin.LoggingBackend;
 import org.modelio.version.ModelioVersion;
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.ServiceReference;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.LoggerFactory;
+import org.slf4j.spi.SLF4JServiceProvider;
 
 final class LogbackLoggingBackend implements LoggingBackend {
+    private static final long PROVIDER_WAIT_TIMEOUT_MILLIS = 5_000L;
+
+    private static final long LOGGER_CONTEXT_WAIT_TIMEOUT_MILLIS = 2_000L;
+
+    private static final long LOGGER_CONTEXT_RETRY_DELAY_MILLIS = 100L;
+
+    private final BundleContext bundleContext;
+
     private final Bundle bundle;
 
-    LogbackLoggingBackend(Bundle bundle) {
-        this.bundle = bundle;
+    LogbackLoggingBackend(BundleContext bundleContext) {
+        this.bundleContext = bundleContext;
+        this.bundle = bundleContext.getBundle();
     }
 
     @Override
@@ -87,13 +96,10 @@ final class LogbackLoggingBackend implements LoggingBackend {
         return null;
     }
 
-    private static LoggerContext getRequiredLoggerContext() {
-        LoggerContext loggerContext = getLoggerContext();
-        if (loggerContext != null) {
-            return loggerContext;
-        }
+    private LoggerContext getRequiredLoggerContext() {
+        waitForSlf4jProviderRegistration();
 
-        loggerContext = installExplicitProvider();
+        LoggerContext loggerContext = waitForLoggerContext();
         if (loggerContext != null) {
             return loggerContext;
         }
@@ -103,31 +109,52 @@ final class LogbackLoggingBackend implements LoggingBackend {
         throw new IllegalStateException("Expected Logback LoggerContext but got " + actualFactory);
     }
 
-    private static LoggerContext installExplicitProvider() {
-        try {
-            LogbackServiceProvider provider = new LogbackServiceProvider();
-            provider.initialize();
+    private void waitForSlf4jProviderRegistration() {
+        ServiceReference<SLF4JServiceProvider> reference = this.bundleContext.getServiceReference(SLF4JServiceProvider.class);
+        if (reference != null) {
+            return;
+        }
 
-            Method resetMethod = LoggerFactory.class.getDeclaredMethod("reset");
-            resetMethod.setAccessible(true);
-            resetMethod.invoke(null);
+        long deadline = System.nanoTime() + (PROVIDER_WAIT_TIMEOUT_MILLIS * 1_000_000L);
+        while (System.nanoTime() < deadline) {
+            sleepQuietly(LOGGER_CONTEXT_RETRY_DELAY_MILLIS, "Interrupted while waiting for SLF4J provider registration.");
+            reference = this.bundleContext.getServiceReference(SLF4JServiceProvider.class);
+            if (reference != null) {
+                return;
+            }
+        }
 
-            Field providerField = LoggerFactory.class.getDeclaredField("PROVIDER");
-            providerField.setAccessible(true);
-            providerField.set(null, provider);
+        throw new IllegalStateException(
+                "Timed out waiting for OSGi registration of org.slf4j.spi.SLF4JServiceProvider. "
+                + "Ensure org.apache.aries.spifly.dynamic.bundle is present and started before logging backend configuration."
+        );
+    }
 
-            Field successField = LoggerFactory.class.getDeclaredField("SUCCESSFUL_INITIALIZATION");
-            successField.setAccessible(true);
-            int successState = successField.getInt(null);
+    private static LoggerContext waitForLoggerContext() {
+        LoggerContext loggerContext = getLoggerContext();
+        if (loggerContext != null) {
+            return loggerContext;
+        }
 
-            Field stateField = LoggerFactory.class.getDeclaredField("INITIALIZATION_STATE");
-            stateField.setAccessible(true);
-            stateField.setInt(null, successState);
-        } catch (ReflectiveOperationException | RuntimeException e) {
-            return null;
+        long deadline = System.nanoTime() + (LOGGER_CONTEXT_WAIT_TIMEOUT_MILLIS * 1_000_000L);
+        while (System.nanoTime() < deadline) {
+            sleepQuietly(LOGGER_CONTEXT_RETRY_DELAY_MILLIS, "Interrupted while waiting for Logback LoggerContext initialization.");
+            loggerContext = getLoggerContext();
+            if (loggerContext != null) {
+                return loggerContext;
+            }
         }
 
         return getLoggerContext();
+    }
+
+    private static void sleepQuietly(long delayMillis, String interruptionMessage) {
+        try {
+            Thread.sleep(delayMillis);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException(interruptionMessage, e);
+        }
     }
 
     private static LoggerContext getLoggerContext() {
