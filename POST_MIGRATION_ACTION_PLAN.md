@@ -121,32 +121,34 @@ The bulky inline packaging shell payloads have now been extracted into checked-i
 
 **Status**
 
-Partially completed on **2026-05-06**.
+Completed on **2026-05-06**.
 
 **Completed work**
 - removed the French documentation reactors and source trees from the active Maven build graph;
 - retired the French-only docs parent property that existed only to support `nl/fr` documentation generation;
 - rechecked that `products/modelio-os.product` already ships only the English documentation feature.
+- removed the remaining French runtime resource files under `modelio/`, including `plugin_fr.properties`, `module_fr.properties`, `fragment_fr.properties`, `*_fr.properties`, `*_fr.html`, and CKEditor `fr*.js` files;
+- updated the affected `build.properties` files so retired French root resources are no longer packaged by accident.
 
 **Why it matters**
 
-The supported macOS Apple Silicon product path is already treated as English-only, and the documentation build graph now matches that intent. The remaining mismatch is narrower: many runtime plugins under `modelio/` still carry embedded `plugin_fr.properties` or similar localisation resources even though the supported product direction is now English-only.
+The supported macOS Apple Silicon product path is now aligned with the English-only cleanup work across both the documentation build graph and the runtime resource layer.
 
 **Representative files**
 - `doc/plugins/pom.xml`
 - `doc/features/pom.xml`
-- `doc/plugins/fr/pom.xml`
-- `doc/features/fr/pom.xml`
+- `modelio/**/build.properties`
+- `modelio/platform/platform.ui/rte/ckeditor/**`
 
 **Things to check in the cleanup**
 - keep non-English documentation/plugin aggregators retired when they are no longer part of the intended product;
 - verify that no `*.nl_fr*` bundles, features, or fragments re-enter the build by accident;
-- audit embedded non-English runtime resources such as `plugin_fr.properties` if the English-only policy is meant to apply beyond the documentation build graph;
+- keep embedded French runtime resources such as `plugin_fr.properties` out of the repository if the English-only policy remains in force;
 - confirm that the supported product definition and packaging inputs continue to ship English-only content.
 
 **Current audit note**
 
-As of **2026-05-06**, the documentation build graph no longer contains any `nl_fr` artefacts, but there are still **168** embedded `*_fr.properties` / `plugin_fr.properties` / `module_fr.properties` files under `modelio/`. Those are not part of the retired docs reactor, so they should be treated as a separate repo-wide localisation cleanup if the English-only policy is intended to cover runtime resources as well.
+As of **2026-05-06**, the documentation build graph no longer contains any `nl_fr` artefacts, and the runtime tree under `modelio/` no longer contains French resource files or CKEditor French translation payloads.
 
 **Expected benefit**
 - clearer scope for supported language content;
@@ -382,7 +384,7 @@ If optional follow-up is desired, the recommended order is:
    - simplify `products/pom.xml` by extracting helper scripts.
 3. **English-only cleanup pass**
    - keep doc/plugin aggregators and any `*.nl_fr*` artefacts out of the intended build scope;
-   - optionally audit embedded runtime localisation resources if the English-only policy is to be enforced repo-wide.
+   - keep French runtime resource payloads out of `modelio/` if the English-only policy remains in force.
 4. **Build-maintenance pass**
    - reduce duplicated parent-POM truth;
    - clarify Java-level build signalling;
