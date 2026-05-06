@@ -14,13 +14,9 @@
 -Dosgi.requiredJavaVersion=21
 -Djava.library.path=plugins/org.eclipse.justj.openjdk.hotspot.jre.full.macosx.aarch64_21.0.5.v20241007-1417/jre/lib
 -Dorg.eclipse.swt.internal.carbon.smallFonts
--Dapple.awt.graphics.UseQuartz=true
--Dcom.apple.smallTabs=true
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread
  -Dorg.eclipse.swt.internal.carbon.smallFonts
- -Dapple.awt.graphics.UseQuartz=true
- -Dcom.apple.smallTabs=true
       </vmArgsMac>
    </launcherArgs>
 

@@ -138,6 +138,14 @@ def validate_modelio_ini(app_bundle: Path, failures: list[str]) -> None:
         if snippet not in text:
             failures.append(f'{modelio_ini}: missing required snippet {snippet!r}')
 
+    forbidden_snippets = (
+        '-Dapple.awt.graphics.UseQuartz=true',
+        '-Dcom.apple.smallTabs=true',
+    )
+    for snippet in forbidden_snippets:
+        if snippet in text:
+            failures.append(f'{modelio_ini}: found retired launcher snippet {snippet!r}')
+
 
 def is_native_candidate(path: Path) -> bool:
     if not path.is_file():

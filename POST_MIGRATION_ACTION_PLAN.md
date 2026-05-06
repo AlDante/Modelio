@@ -37,6 +37,10 @@ The migration can be considered complete for the supported path; if more work is
 
 ### 1. Align migration documentation with the current logging implementation
 
+**Status**
+
+Completed on **2026-05-06**.
+
 **Why this is first**
 
 Some documentation still refers to the older reflective Logback bootstrap fallback as if it still exists or still needs later review, but the codebase now uses the newer OSGi-native startup ordering and provider-wait approach.
@@ -53,29 +57,30 @@ Some documentation still refers to the older reflective Logback bootstrap fallba
   - bounded wait for `org.slf4j.spi.SLF4JServiceProvider`,
   - repeated green runtime smoke evidence.
 
-**Expected benefit**
-- reduces confusion for future maintainers;
-- prevents the plans from understating work that has already been completed.
+**Outcome**
+- the active migration documents now describe the current SPI Fly / OSGi-native logging bootstrap path rather than the retired reflective fallback wording.
 
 ---
 
 ### 2. Tidy `products/modelio-os.product`
 
-**Observed issues**
-- duplicate feature entry for `org.modelio.functions.modelviewtemplate`;
-- probable typo in `osgi.sharedConfiguration.area.readlOnly`;
-- some macOS VM arguments still look historically inherited rather than freshly justified.
+**Status**
+
+Partially completed on **2026-05-06**.
+
+**Completed work**
+- removed the duplicate `org.modelio.functions.modelviewtemplate` feature entry;
+- corrected `osgi.sharedConfiguration.area.readOnly`;
+- retired the obsolete Apple AWT flags:
+  - `-Dapple.awt.graphics.UseQuartz=true`
+  - `-Dcom.apple.smallTabs=true`
+- kept `-Dorg.eclipse.swt.internal.carbon.smallFonts` in place because the active `eclipse-2026-03` launcher metadata still carries it and there is not yet enough evidence to retire it safely.
 
 **Representative file**
 - `products/modelio-os.product`
 
-**Suggested work**
-- remove the duplicated feature inclusion;
-- confirm the intended Equinox property spelling and correct it if needed;
-- review whether these VM arguments are still necessary on the active `eclipse-2026-03` / Java 21 baseline:
-  - `-Dorg.eclipse.swt.internal.carbon.smallFonts`
-  - `-Dapple.awt.graphics.UseQuartz=true`
-  - `-Dcom.apple.smallTabs=true`
+**Remaining follow-up**
+- review whether `-Dorg.eclipse.swt.internal.carbon.smallFonts` is still necessary on the active `eclipse-2026-03` / Java 21 baseline.
 
 **Expected benefit**
 - removes avoidable noise from the product contract;
@@ -85,26 +90,25 @@ Some documentation still refers to the older reflective Logback bootstrap fallba
 
 ### 3. Simplify and harden `products/pom.xml`
 
+**Status**
+
+Completed on **2026-05-06**.
+
 **Clarification recorded on 2026-05-06**
 
 The earlier note about the shell being flaky applies to **Copilot-driven interactive shell usage**, not to Maven invoking shell commands during the build. Shell execution from Maven is therefore **not a problem in itself**.
 
-**Why cleanup is still recommended**
+**Outcome**
 
-Even with that clarification, `products/pom.xml` still contains large inline shell command strings that are hard to read, review, and maintain.
+The bulky inline packaging shell payloads have now been extracted into checked-in helper scripts:
+- `products/patch_and_archive_macos_aarch64_product.py`
+- `products/verify_macos_aarch64_app.py`
+
+`products/pom.xml` now keeps Maven responsible for lifecycle wiring and argument passing, while the multi-step packaging logic lives in reviewable helper scripts.
 
 **Representative file**
 - `products/pom.xml`
 
-**Suggested work**
-- move the more complex `maven-antrun-plugin` shell payloads into small checked-in helper scripts;
-- keep Maven responsible only for argument passing and lifecycle wiring;
-- preserve current behaviour exactly while improving readability.
-
-**Examples to extract first**
-- wrapper patching and archive regeneration;
-- wrapper verification;
-- any future multi-step packaging validation logic.
 
 **Expected benefit**
 - clearer product packaging logic;

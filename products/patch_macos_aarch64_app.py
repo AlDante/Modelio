@@ -106,6 +106,8 @@ def patch_modelio_ini(modelio_ini: Path) -> None:
     lines = upsert_argument_pair(lines, '-configuration', '../Eclipse/configuration', '-vmargs')
     lines = ensure_argument(lines, '-Dosgi.requiredJavaVersion=21', '-Djava.library.path=plugins/org.eclipse.justj.openjdk.hotspot.jre.full.macosx.aarch64_21.0.5.v20241007-1417/jre/lib')
     lines = remove_argument(lines, '-Dslf4j.provider=ch.qos.logback.classic.spi.LogbackServiceProvider')
+    lines = remove_argument(lines, '-Dapple.awt.graphics.UseQuartz=true')
+    lines = remove_argument(lines, '-Dcom.apple.smallTabs=true')
     modelio_ini.write_text('\n'.join(lines) + '\n', encoding='utf-8')
 
 
@@ -164,6 +166,5 @@ def main() -> int:
     clear_quarantine(app_bundle)
     ad_hoc_sign(app_bundle)
     return 0
-
-
-raise SystemExit(main())
+if __name__ == '__main__':
+    raise SystemExit(main())
