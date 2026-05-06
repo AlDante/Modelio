@@ -78,7 +78,6 @@
       <feature id="org.modelio.platform.feature"/>
       <feature id="org.modelio.platform.libraries"/>
       <feature id="org.modelio.documentation.modeler.feature"/>
-      <feature id="org.modelio.functions.modelviewtemplate"/>
    </features>
 
    <configurations>
@@ -92,7 +91,7 @@
       <property name="osgi.configuration.area" value="@user.home/.modelio/5.4/opensource-cache/conf" />
       <property name="osgi.instance.area" value="@user.home/.modelio/5.4/opensource-cache/data" />
       <property name="osgi.sharedConfiguration.area" value="file\:configuration/" />
-      <property name="osgi.sharedConfiguration.area.readlOnly" value="true" />
+      <property name="osgi.sharedConfiguration.area.readOnly" value="true" />
    </configurations>
 
 </product>
