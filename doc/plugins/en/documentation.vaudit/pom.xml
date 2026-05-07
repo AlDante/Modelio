@@ -13,26 +13,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>${tycho-groupid}</groupId>
-				<artifactId>tycho-maven-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<extensions>true</extensions>
-				<configuration>
-					<resolver>p2</resolver>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>${tycho-groupid}</groupId>
-				<artifactId>tycho-packaging-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<configuration>
-					<strictVersions>false</strictVersions>
-					<archive>
-						<addMavenDescriptor>false</addMavenDescriptor>
-					</archive>
-				</configuration>
-			</plugin>
 
 			<!-- Convert all asciidoc files in adoc directory to html files in ${html.directory}
 				directory (images are copied too) -->

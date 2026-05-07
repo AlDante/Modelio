@@ -208,6 +208,10 @@ The supported path now clearly targets Java 21 at runtime and many bundles alrea
 
 ### 7. Modernise the documentation build configuration
 
+**Status**
+
+Partially completed on **2026-05-06**.
+
 **Why it matters**
 
 The docs build works, but it still emits avoidable warnings and relies on older repeated plugin configuration.
@@ -219,8 +223,11 @@ The docs build works, but it still emits avoidable warnings and relies on older 
 
 **Observed points**
 - the Asciidoctor configuration still uses the unsupported `compact` parameter;
-- many doc plugin POMs repeat nearly identical plugin setup;
+- many doc plugin POMs repeated nearly identical plugin setup;
 - simple file operations still rely on old Ant invocations.
+
+**Completed work**
+- the English documentation plugin POMs now inherit the shared Tycho configuration directly from `doc/parent/pom.xml` instead of repeating the same `tycho-maven-plugin` and `tycho-packaging-plugin` blocks in every child POM.
 
 **Suggested work**
 - remove unsupported Asciidoctor parameters;
