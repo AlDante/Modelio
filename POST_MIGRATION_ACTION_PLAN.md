@@ -200,7 +200,8 @@ Partially completed on **2026-05-07**.
 
 **Completed work**
 - documented in `pom.xml`, `maven/modelio-parent/pom.xml`, and `doc/parent/pom.xml` that the current `maven.compiler.source` / `maven.compiler.target` values are retained as legacy workspace/build metadata and are not the authoritative runtime contract for the supported Apple Silicon path;
-- revalidated the primary and legacy prebuild/doc entrypoints after that clarification-only change.
+- updated the remaining `modelio/**/.classpath` JRE container metadata from `JavaSE-11` to `JavaSE-21` so Eclipse workspace metadata now matches the supported runtime baseline more closely;
+- revalidated the primary and legacy prebuild/doc entrypoints after that clarification and workspace-metadata alignment change.
 
 **Why it matters**
 
@@ -212,9 +213,9 @@ The supported path now clearly targets Java 21 at runtime and many bundles alrea
 - `doc/parent/pom.xml`
 
 **Suggested work**
-- decide whether the remaining Java 11 workspace metadata in `.classpath` files is still required for IDE/Tycho interoperability;
-- if it is no longer required, align it with the current supported Java 21 contract in a separately validated slice;
-- otherwise keep the current parent-POM comments so the distinction between workspace metadata and the supported runtime contract remains explicit.
+- audit the remaining explicit module-level `source` / `target` 11 compiler pins in runtime plugin POMs;
+- if they are no longer required, align them with the current supported Java 21 contract in a separately validated slice;
+- otherwise keep the current parent-POM comments so the distinction between module build metadata and the supported runtime contract remains explicit.
 
 **Expected benefit**
 - clearer toolchain intent;

@@ -18,10 +18,11 @@
 		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
 		<tycho-version>5.0.2</tycho-version>
 		<!--
-			These Maven compiler properties are kept aligned with the older workspace/.classpath baseline
-			still present in many plug-ins. They are not the authoritative runtime contract for the
-			supported macOS Apple Silicon path, which is now validated on Java 21 through product metadata,
-			Tycho-on-Java-21 execution, and bundle execution-environment declarations.
+			These Maven compiler properties remain at 11 because some modules still carry explicit
+			compiler-plugin/Tycho source-target pins at that level. They are not the authoritative runtime
+			contract for the supported macOS Apple Silicon path, which is now validated on Java 21 through
+			product metadata, Tycho-on-Java-21 execution, Java 21 workspace containers, and bundle
+			execution-environment declarations.
 		-->
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.compiler.source>11</maven.compiler.source>
