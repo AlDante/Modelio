@@ -66,7 +66,7 @@ Some documentation still refers to the older reflective Logback bootstrap fallba
 
 **Status**
 
-Partially completed on **2026-05-06**.
+Completed on **2026-05-07**.
 
 **Completed work**
 - removed the duplicate `org.modelio.functions.modelviewtemplate` feature entry;
@@ -74,13 +74,10 @@ Partially completed on **2026-05-06**.
 - retired the obsolete Apple AWT flags:
   - `-Dapple.awt.graphics.UseQuartz=true`
   - `-Dcom.apple.smallTabs=true`
-- kept `-Dorg.eclipse.swt.internal.carbon.smallFonts` in place because the active `eclipse-2026-03` launcher metadata still carries it and there is not yet enough evidence to retire it safely.
+- retired `-Dorg.eclipse.swt.internal.carbon.smallFonts` from the supported product definition and packaged-app patch path after a fresh products-stage rebuild plus runtime smoke confirmed that the active Apple Silicon path no longer depends on it.
 
 **Representative file**
 - `products/modelio-os.product`
-
-**Remaining follow-up**
-- review whether `-Dorg.eclipse.swt.internal.carbon.smallFonts` is still necessary on the active `eclipse-2026-03` / Java 21 baseline.
 
 **Expected benefit**
 - removes avoidable noise from the product contract;
@@ -167,6 +164,8 @@ Partially completed on **2026-05-07**.
 **Completed work**
 - aligned `maven/modelio-parent/pom.xml` so `modelio.rootFolder` now matches the primary parent (`Modelio 5.4.1`);
 - documented that the secondary parent still intentionally resolves `modelio.ws.path` from `ECLIPSE_WS` because the legacy `maven/aggregators/**` entrypoints depend on that behaviour.
+- revalidated the legacy `maven/aggregators/prebuild` path against a scratch local repository once the shared `modelio-parent` artefact had been installed, confirming that the `modelio.rootFolder` alignment did not break that supported legacy prebuild entrypoint.
+- retired the dead `products/os-archimate` module reference from `maven/aggregators/products/pom.xml`, leaving the legacy products wrapper pointed only at the live `products/` module.
 
 **Why it matters**
 

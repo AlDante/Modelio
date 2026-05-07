@@ -139,6 +139,7 @@ def validate_modelio_ini(app_bundle: Path, failures: list[str]) -> None:
             failures.append(f'{modelio_ini}: missing required snippet {snippet!r}')
 
     forbidden_snippets = (
+        '-Dorg.eclipse.swt.internal.carbon.smallFonts',
         '-Dapple.awt.graphics.UseQuartz=true',
         '-Dcom.apple.smallTabs=true',
     )
