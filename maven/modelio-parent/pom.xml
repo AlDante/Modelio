@@ -11,7 +11,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<!-- <modelio.ws.path>${project.basedir}/${project.parent.relativePath}</modelio.ws.path> -->
+		<!-- Legacy maven/aggregators entrypoints still resolve the workspace root through ECLIPSE_WS. -->
 		<modelio.ws.path>${env.ECLIPSE_WS}</modelio.ws.path>
 
 		<!-- Compilation settings -->
@@ -22,7 +22,7 @@
 		<javadesigner.annotation.version>2.2.0</javadesigner.annotation.version>
 
 		<!-- Modelio version settings -->
-		<modelio.rootFolder>Modelio 5.4</modelio.rootFolder>
+		<modelio.rootFolder>Modelio 5.4.1</modelio.rootFolder>
 		<modelio.version>5.4.1-SNAPSHOT</modelio.version>
 		<newVersion>5.4.1</newVersion>
 

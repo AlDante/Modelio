@@ -160,6 +160,14 @@ As of **2026-05-06**, the documentation build graph no longer contains any `nl_f
 
 ### 5. Reduce duplicated parent-POM truth
 
+**Status**
+
+Partially completed on **2026-05-07**.
+
+**Completed work**
+- aligned `maven/modelio-parent/pom.xml` so `modelio.rootFolder` now matches the primary parent (`Modelio 5.4.1`);
+- documented that the secondary parent still intentionally resolves `modelio.ws.path` from `ECLIPSE_WS` because the legacy `maven/aggregators/**` entrypoints depend on that behaviour.
+
 **Why it matters**
 
 There is near-duplicate repository and Tycho configuration in both:
@@ -176,7 +184,8 @@ They are not identical, which creates drift risk.
 **Suggested work**
 - identify why both parents still need to exist in their current form;
 - consolidate shared repository and Tycho setup where practical;
-- document any remaining intentional divergence explicitly.
+- document any remaining intentional divergence explicitly;
+- revisit whether the legacy `maven/aggregators/**` path can stop depending on `ECLIPSE_WS` without breaking workspace-root resolution.
 
 **Expected benefit**
 - less build-configuration drift;
