@@ -194,6 +194,14 @@ They are not identical, which creates drift risk.
 
 ### 6. Resolve the Java-level signalling mismatch in build metadata
 
+**Status**
+
+Partially completed on **2026-05-07**.
+
+**Completed work**
+- documented in `pom.xml`, `maven/modelio-parent/pom.xml`, and `doc/parent/pom.xml` that the current `maven.compiler.source` / `maven.compiler.target` values are retained as legacy workspace/build metadata and are not the authoritative runtime contract for the supported Apple Silicon path;
+- revalidated the primary and legacy prebuild/doc entrypoints after that clarification-only change.
+
 **Why it matters**
 
 The supported path now clearly targets Java 21 at runtime and many bundles already declare `Bundle-RequiredExecutionEnvironment: JavaSE-21`, but the shared Maven compiler properties still advertise Java 11 in multiple parent POMs.
@@ -204,9 +212,9 @@ The supported path now clearly targets Java 21 at runtime and many bundles alrea
 - `doc/parent/pom.xml`
 
 **Suggested work**
-- decide whether the current Maven compiler properties are still authoritative;
-- if they are not authoritative, document that clearly or remove them;
-- if they are authoritative for some modules, align them with the current supported Java contract where safe.
+- decide whether the remaining Java 11 workspace metadata in `.classpath` files is still required for IDE/Tycho interoperability;
+- if it is no longer required, align it with the current supported Java 21 contract in a separately validated slice;
+- otherwise keep the current parent-POM comments so the distinction between workspace metadata and the supported runtime contract remains explicit.
 
 **Expected benefit**
 - clearer toolchain intent;

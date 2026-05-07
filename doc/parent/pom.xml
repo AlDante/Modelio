@@ -12,6 +12,11 @@
 
 	<properties>
 		<modelio.version>[5.4.1,5.4.2)</modelio.version>
+		<!--
+			The documentation reactor does not define the supported runtime Java contract.
+			These inherited Maven compiler properties are retained only for consistency with the shared
+			parent metadata while the active supported product path itself is validated on Java 21.
+		-->
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.compiler.source>11</maven.compiler.source>
 		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
