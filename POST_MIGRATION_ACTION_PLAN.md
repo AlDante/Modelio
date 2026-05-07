@@ -166,6 +166,7 @@ Partially completed on **2026-05-07**.
 - documented that the secondary parent still intentionally resolves `modelio.ws.path` from `ECLIPSE_WS` because the legacy `maven/aggregators/**` entrypoints depend on that behaviour.
 - revalidated the legacy `maven/aggregators/prebuild` path against a scratch local repository once the shared `modelio-parent` artefact had been installed, confirming that the `modelio.rootFolder` alignment did not break that supported legacy prebuild entrypoint.
 - retired the dead `products/os-archimate` module reference from `maven/aggregators/products/pom.xml`, leaving the legacy products wrapper pointed only at the live `products/` module.
+- retired the secondary-parent-only `realtimebuild`, `setversion`, `debug`, and `tests` profiles plus the unused `sonar-maven-plugin` version pin, so the remaining parent divergence is now limited to intentional `ECLIPSE_WS` workspace resolution.
 
 **Why it matters**
 
@@ -177,7 +178,6 @@ They are not identical, which creates drift risk.
 
 **Examples of current differences**
 - workspace path derivation differs;
-- `modelio.rootFolder` differs (`Modelio 5.4.1` vs `Modelio 5.4`);
 - only the secondary parent uses `ECLIPSE_WS`.
 
 **Suggested work**
