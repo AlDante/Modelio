@@ -204,6 +204,7 @@ Partially completed on **2026-05-07**.
 - raised the explicit compiler `source` / `target` pins from 11 to 21 in `modelio/bpmn/bpmn.metamodel.api/pom.xml` and `modelio/bpmn/bpmn.metamodel.implementation/pom.xml`, matching the `JavaSE-21` execution-environment contract those bundles already declared;
 - raised the explicit compiler `source` / `target` pins from 11 to 21 in `modelio/core/version/pom.xml` and aligned that module's Eclipse JDT compiler preferences to 21, matching the `JavaSE-21` execution-environment contract it already declared;
 - raised the explicit compiler `source` / `target` pins plus the PDE `javacSource` / `javacTarget` metadata from 11 to 21 in `modelio/core/core.project.data`, matching the `JavaSE-21` execution-environment contract that bundle already declared;
+- raised the explicit compiler `source` / `target` pins plus the PDE and Eclipse JDT compiler metadata from 11/1.8 to 21 in `modelio/core/core.utils`, matching the `JavaSE-21` execution-environment contract and Java 21 workspace container that bundle already declared;
 - revalidated the primary and legacy prebuild/doc entrypoints after that clarification and workspace-metadata alignment change.
 
 **Why it matters**
@@ -218,7 +219,7 @@ The supported path now clearly targets Java 21 at runtime and many bundles alrea
 **Suggested work**
 - audit the remaining explicit module-level `source` / `target` 11 compiler pins in runtime plugin POMs;
 - if they are no longer required, align them with the current supported Java 21 contract in small separately validated slices, starting with low-fan-in bundles that already declare `JavaSE-21`;
-- treat foundational shared bundles such as `modelio/core/core.utils` as later, higher-risk waves even when they already declare `JavaSE-21`;
+- treat the remaining broad shared bundles as later, higher-risk waves even when they already declare `JavaSE-21`;
 - otherwise keep the current parent-POM comments so the distinction between module build metadata and the supported runtime contract remains explicit.
 
 **Expected benefit**
