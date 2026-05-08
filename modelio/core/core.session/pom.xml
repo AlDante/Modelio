@@ -8,7 +8,6 @@
 		<relativePath>../../..</relativePath>
 	</parent>
 
-	<groupId>org.modelio</groupId>
 	<artifactId>org.modelio.core.session</artifactId>
 	<packaging>eclipse-plugin</packaging>
 

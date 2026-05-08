@@ -10,7 +10,6 @@
 		<relativePath>../../..</relativePath>
 	</parent>
 
-	<groupId>org.modelio</groupId>
 	<artifactId>org.modelio.core.project.data</artifactId>
 	<packaging>eclipse-plugin</packaging>
 
