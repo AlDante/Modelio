@@ -12,7 +12,6 @@
 		<relativePath>../../modelio-parent</relativePath>
 	</parent>
 
-	<groupId>org.modelio</groupId>
 	<artifactId>aggregator-products</artifactId>
 	<packaging>pom</packaging>
 
