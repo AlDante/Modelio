@@ -207,6 +207,7 @@ Partially completed on **2026-05-07**.
 - raised the explicit compiler `source` / `target` pins plus the PDE and Eclipse JDT compiler metadata from 11/1.8 to 21 in `modelio/core/core.utils`, matching the `JavaSE-21` execution-environment contract and Java 21 workspace container that bundle already declared;
 - raised the explicit compiler `source` / `target` pins plus the PDE `javacSource` / `javacTarget` metadata from 11 to 21 in `modelio/core/core.kernel` and `modelio/core/core.session`, validating that shared dependency boundary on the canonical plugins reactor;
 - raised the explicit compiler `source` / `target` pins plus the PDE `javacSource` / `javacTarget` metadata from 11 to 21 in `modelio/core/core.store.exml`, matching the `JavaSE-21` execution-environment contract and Java 21 workspace container that bundle already declared;
+- raised the explicit compiler `source` / `target` pins plus the PDE `javacSource` / `javacTarget` metadata from 11 to 21 in `modelio/core/core.project`, `modelio/core/core.metamodel.api`, and `modelio/core/core.metamodel.impl`, matching the `JavaSE-21` execution-environment contract those core bundles already declared;
 - revalidated the primary and legacy prebuild/doc entrypoints after that clarification and workspace-metadata alignment change.
 
 **Why it matters**
