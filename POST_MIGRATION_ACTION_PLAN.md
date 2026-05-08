@@ -208,6 +208,7 @@ Partially completed on **2026-05-07**.
 - raised the explicit compiler `source` / `target` pins plus the PDE `javacSource` / `javacTarget` metadata from 11 to 21 in `modelio/core/core.kernel` and `modelio/core/core.session`, validating that shared dependency boundary on the canonical plugins reactor;
 - raised the explicit compiler `source` / `target` pins plus the PDE `javacSource` / `javacTarget` metadata from 11 to 21 in `modelio/core/core.store.exml`, matching the `JavaSE-21` execution-environment contract and Java 21 workspace container that bundle already declared;
 - raised the explicit compiler `source` / `target` pins plus the PDE `javacSource` / `javacTarget` metadata from 11 to 21 in `modelio/core/core.project`, `modelio/core/core.metamodel.api`, and `modelio/core/core.metamodel.impl`, matching the `JavaSE-21` execution-environment contract those core bundles already declared;
+- raised the remaining PDE `javacSource` / `javacTarget` metadata from 11 to 21 across the `modelio/bpmn/**` and `modelio/uml/**` formalism bundles whose manifests and POM compiler settings were already aligned to `JavaSE-21`, eliminating the last Java-11 PDE lag in those two plugin families;
 - revalidated the primary and legacy prebuild/doc entrypoints after that clarification and workspace-metadata alignment change.
 
 **Why it matters**
