@@ -12,7 +12,6 @@
 		<relativePath>..</relativePath>
 	</parent>
 
-	<groupId>org.modelio</groupId>
 	<artifactId>Modelio541</artifactId>
 	<packaging>pom</packaging>
 

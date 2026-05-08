@@ -12,7 +12,6 @@
 		<relativePath>../..</relativePath>
 	</parent>
 
-	<groupId>org.modelio</groupId>
 	<artifactId>aggregator-all-plugins</artifactId>
 	<packaging>pom</packaging>
 
