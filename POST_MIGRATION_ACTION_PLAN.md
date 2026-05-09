@@ -210,6 +210,8 @@ Partially completed on **2026-05-07**.
 - raised the explicit compiler `source` / `target` pins plus the PDE `javacSource` / `javacTarget` metadata from 11 to 21 in `modelio/core/core.project`, `modelio/core/core.metamodel.api`, and `modelio/core/core.metamodel.impl`, matching the `JavaSE-21` execution-environment contract those core bundles already declared;
 - raised the remaining PDE `javacSource` / `javacTarget` metadata from 11 to 21 across the `modelio/bpmn/**` and `modelio/uml/**` formalism bundles whose manifests and POM compiler settings were already aligned to `JavaSE-21`, eliminating the last Java-11 PDE lag in those two plugin families;
 - raised the remaining PDE `javacSource` / `javacTarget` metadata from 11 to 21 across the `modelio/app/app.model.*` bundles whose manifests and workspace metadata were already aligned to `JavaSE-21`, validating that next bounded application-layer slice on the canonical app plugins reactor;
+- raised the remaining PDE `javacSource` / `javacTarget` metadata from 11 to 21 across the rest of the `modelio/app/**` bundles, including the currently reactor-retired rich-note office integrations, after confirming those bundles already declared `JavaSE-21` and carried Java 21 workspace metadata;
+- raised the remaining PDE `javacSource` / `javacTarget` metadata from 11 to 21 across the `modelio/platform/**` bundles plus the platform-reactor-owned `modelio/plugdule/modelermodule`, validating both larger waves on the canonical plugins reactor;
 - revalidated the primary and legacy prebuild/doc entrypoints after that clarification and workspace-metadata alignment change.
 
 **Why it matters**
@@ -223,8 +225,7 @@ The supported path now clearly targets Java 21 at runtime and many bundles alrea
 
 **Suggested work**
 - audit the remaining explicit module-level `source` / `target` 11 compiler pins in runtime plugin POMs;
-- if they are no longer required, align them with the current supported Java 21 contract in small separately validated slices, starting with low-fan-in bundles that already declare `JavaSE-21`;
-- treat the remaining broad shared bundles as later, higher-risk waves even when they already declare `JavaSE-21`;
+- finish the last PDE `javacSource` / `javacTarget` 11 lag in the two remaining `modelio/core/**` bundles that already declare `JavaSE-21`, keeping them as separately validated higher-risk core slices;
 - keep using canonical `AGGREGATOR/plugins` validation as the acceptance gate once a slice touches broad core bundles with many downstream consumers;
 - otherwise keep the current parent-POM comments so the distinction between module build metadata and the supported runtime contract remains explicit.
 
