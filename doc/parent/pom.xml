@@ -13,13 +13,12 @@
 	<properties>
 		<modelio.version>[5.4.1,5.4.2)</modelio.version>
 		<!--
-			The documentation reactor does not define the supported runtime Java contract.
-			These inherited Maven compiler properties remain at 11 for consistency with the shared parent
-			metadata while some runtime modules still carry explicit compiler-level 11 pins. The active
-			supported product path itself is nevertheless validated on Java 21.
+			The documentation reactor does not define the supported runtime Java contract, but its inherited
+			compiler metadata should still stay consistent with the shared Java 21 build baseline now used by
+			the validated workspace and runtime/plugin tree.
 		-->
-		<maven.compiler.target>11</maven.compiler.target>
-		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
+		<maven.compiler.source>21</maven.compiler.source>
 		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
 		<tycho-version>5.0.2</tycho-version>
 

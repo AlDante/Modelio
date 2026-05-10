@@ -16,14 +16,12 @@ This pom executes a maven target on ALL the (eclipse) features that compose the 
 		<tycho-version>5.0.2</tycho-version>
 		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
 		<!--
-			These Maven compiler properties remain at 11 because some modules still carry explicit
-			compiler-plugin/Tycho source-target pins at that level. They are not the authoritative runtime
-			contract for the supported macOS Apple Silicon path, which is now validated on Java 21 through
-			product metadata, Tycho-on-Java-21 execution, Java 21 workspace containers, and bundle
-			execution-environment declarations.
+			The supported macOS Apple Silicon build path is now validated on Java 21 end-to-end, and the
+			runtime/plugin tree no longer carries source-controlled Java 11 compiler or PDE metadata.
+			Keep these shared Maven compiler properties aligned with that baseline.
 		-->
-		<maven.compiler.target>11</maven.compiler.target>
-		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
+		<maven.compiler.source>21</maven.compiler.source>
 		<javadesigner.annotation.version>2.2.0</javadesigner.annotation.version>
 
 		<modelio.rootFolder>Modelio 5.4.1</modelio.rootFolder>

@@ -159,7 +159,7 @@ As of **2026-05-06**, the documentation build graph no longer contains any `nl_f
 
 **Status**
 
-Partially completed on **2026-05-07**.
+Completed on **2026-05-09**.
 
 **Completed work**
 - aligned `maven/modelio-parent/pom.xml` so `modelio.rootFolder` now matches the primary parent (`Modelio 5.4.1`);
@@ -167,6 +167,7 @@ Partially completed on **2026-05-07**.
 - revalidated the legacy `maven/aggregators/prebuild` path against a scratch local repository once the shared `modelio-parent` artefact had been installed, confirming that the `modelio.rootFolder` alignment did not break that supported legacy prebuild entrypoint.
 - retired the dead `products/os-archimate` module reference from `maven/aggregators/products/pom.xml`, leaving the legacy products wrapper pointed only at the live `products/` module.
 - retired the secondary-parent-only `realtimebuild`, `setversion`, `debug`, and `tests` profiles plus the unused `sonar-maven-plugin` version pin, so the remaining parent divergence is now limited to intentional `ECLIPSE_WS` workspace resolution.
+- aligned the shared `maven.compiler.source` / `maven.compiler.target` properties to 21 in both repository parents, reducing one of the remaining duplicated parent-POM drift points without changing the intentional `ECLIPSE_WS` workspace-resolution split.
 
 **Why it matters**
 
@@ -214,11 +215,11 @@ Partially completed on **2026-05-07**.
 - raised the remaining PDE `javacSource` / `javacTarget` metadata from 11 to 21 across the `modelio/platform/**` bundles plus the platform-reactor-owned `modelio/plugdule/modelermodule`, validating both larger waves on the canonical plugins reactor;
 - raised the final remaining PDE `javacSource` / `javacTarget` metadata from 11 to 21 in `modelio/core/version` and `modelio/core/core.modelshield`, eliminating the last source-controlled Java-11 PDE lag under `modelio/**/build.properties` on the canonical plugins reactor;
 - rechecked the runtime plugin tree and confirmed that no explicit module-level Java 11 compiler pins remain under `modelio/**/pom.xml`, leaving only the documented parent-POM legacy metadata distinction for workspace/build signalling;
-- revalidated the primary and legacy prebuild/doc entrypoints after that clarification and workspace-metadata alignment change.
+- raised the shared `maven.compiler.source` / `maven.compiler.target` properties from 11 to 21 in `pom.xml`, `maven/modelio-parent/pom.xml`, and `doc/parent/pom.xml`, then revalidated the primary prebuild path, the legacy `maven/aggregators/prebuild` path, and the active docs reactor against scratch local repositories.
 
-**Why it matters**
+**Outcome**
 
-The supported path now clearly targets Java 21 at runtime and many bundles already declare `Bundle-RequiredExecutionEnvironment: JavaSE-21`, but the shared Maven compiler properties still advertise Java 11 in multiple parent POMs.
+The supported path now clearly targets Java 21 at runtime and in shared parent/build metadata, while the intentional `ECLIPSE_WS` divergence in the legacy secondary parent remains documented separately as a workspace-resolution concern rather than a Java-level mismatch.
 
 **Representative files**
 - `pom.xml`
@@ -226,7 +227,7 @@ The supported path now clearly targets Java 21 at runtime and many bundles alrea
 - `doc/parent/pom.xml`
 
 **Suggested work**
-- keep the current parent-POM comments so the distinction between legacy shared build metadata and the supported Java 21 runtime contract remains explicit;
+- keep the current parent-POM comments so the intentional remaining divergence (`ECLIPSE_WS` workspace resolution in the legacy secondary parent) stays explicit;
 - keep using canonical `AGGREGATOR/plugins` validation as the acceptance gate once a slice touches broad core bundles with many downstream consumers;
 
 **Expected benefit**
