@@ -11,6 +11,11 @@
 	<packaging>pom</packaging>
 
 	<properties>
+		<!--
+			Keep this shared repository/Tycho configuration aligned with the primary repository parent in
+			../../../pom.xml. The only intentional behavioural divergence is that this legacy parent still
+			resolves modelio.ws.path from ECLIPSE_WS for maven/aggregators/** entrypoints.
+		-->
 		<!-- Legacy maven/aggregators entrypoints still resolve the workspace root through ECLIPSE_WS. -->
 		<modelio.ws.path>${env.ECLIPSE_WS}</modelio.ws.path>
 
@@ -37,6 +42,10 @@
 	<repositories>
 
 		<!-- Eclipse RCP platform -->
+		<repository>
+			<id>modelio</id>
+			<url>https://repository.modelio.org</url>
+		</repository>
 		<repository>
 			<id>rcp-Eclipse</id>
 			<layout>p2</layout>

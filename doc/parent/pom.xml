@@ -25,6 +25,7 @@
 		<!-- to convert Asciidoc to html files-->
 		<html.directory>html</html.directory>
 		<adoc.directory>adoc</adoc.directory>
+		<doc.stylesheet.directory>${project.basedir}/../../../stylesheet</doc.stylesheet.directory>
 		<css.path>../../modeliosoft.css</css.path>
 		<asciidoctor.version>1.5.7.1</asciidoctor.version>
 		<phase.generate-documentation>package</phase.generate-documentation>
@@ -62,5 +63,96 @@
 		</plugins>
 
 	</build>
+
+	<profiles>
+		<profile>
+			<id>doc-plugin-with-adoc</id>
+			<activation>
+				<file>
+					<exists>${project.basedir}/${adoc.directory}</exists>
+				</file>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-clean-plugin</artifactId>
+						<version>3.2.0</version>
+						<configuration>
+							<filesets>
+								<fileset>
+									<directory>${project.basedir}/${html.directory}</directory>
+									<includes>
+										<include>**/*</include>
+									</includes>
+								</fileset>
+							</filesets>
+						</configuration>
+						<executions>
+							<execution>
+								<id>clean-generated-doc-html-before-gen</id>
+								<phase>initialize</phase>
+								<goals>
+									<goal>clean</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctor-maven-plugin</artifactId>
+						<version>${asciidoctor.version}</version>
+						<executions>
+							<execution>
+								<id>output-html</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>process-asciidoc</goal>
+								</goals>
+								<configuration>
+									<headerFooter>true</headerFooter>
+									<sourceDirectory>${adoc.directory}</sourceDirectory>
+									<outputDirectory>${html.directory}</outputDirectory>
+									<preserveDirectories>true</preserveDirectories>
+									<backend>html5</backend>
+									<sourceHighlighter>coderay</sourceHighlighter>
+									<attributes>
+										<stylesheet>modeliosoft.css</stylesheet>
+										<linkcss>true</linkcss>
+										<imagesdir>.</imagesdir>
+									</attributes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-resources-plugin</artifactId>
+						<version>3.3.1</version>
+						<executions>
+							<execution>
+								<id>copy-doc-stylesheet</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.basedir}/${html.directory}</outputDirectory>
+									<resources>
+										<resource>
+											<directory>${doc.stylesheet.directory}</directory>
+											<includes>
+												<include>modeliosoft.css</include>
+											</includes>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>

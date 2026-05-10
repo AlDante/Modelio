@@ -168,6 +168,7 @@ Completed on **2026-05-09**.
 - retired the dead `products/os-archimate` module reference from `maven/aggregators/products/pom.xml`, leaving the legacy products wrapper pointed only at the live `products/` module.
 - retired the secondary-parent-only `realtimebuild`, `setversion`, `debug`, and `tests` profiles plus the unused `sonar-maven-plugin` version pin, so the remaining parent divergence is now limited to intentional `ECLIPSE_WS` workspace resolution.
 - aligned the shared `maven.compiler.source` / `maven.compiler.target` properties to 21 in both repository parents, reducing one of the remaining duplicated parent-POM drift points without changing the intentional `ECLIPSE_WS` workspace-resolution split.
+- added the shared `modelio` repository to `maven/modelio-parent/pom.xml` and documented directly in both parents that repository/Tycho configuration is now expected to stay in lockstep apart from the intentional workspace-root resolution split.
 
 **Why it matters**
 
@@ -181,11 +182,9 @@ They are not identical, which creates drift risk.
 - workspace path derivation differs;
 - only the secondary parent uses `ECLIPSE_WS`.
 
-**Suggested work**
-- identify why both parents still need to exist in their current form;
-- consolidate shared repository and Tycho setup where practical;
-- document any remaining intentional divergence explicitly;
-- revisit whether the legacy `maven/aggregators/**` path can stop depending on `ECLIPSE_WS` without breaking workspace-root resolution.
+**Outcome**
+
+The remaining parent divergence is now narrow and explicit: the secondary parent exists only to preserve the legacy `ECLIPSE_WS`-based workspace-root resolution used by `maven/aggregators/**`, while shared repository, Tycho, and compiler metadata is otherwise kept aligned.
 
 **Expected benefit**
 - less build-configuration drift;
@@ -240,7 +239,7 @@ The supported path now clearly targets Java 21 at runtime and in shared parent/b
 
 **Status**
 
-Partially completed on **2026-05-06**.
+Completed on **2026-05-10**.
 
 **Why it matters**
 
@@ -258,11 +257,13 @@ The docs build works, but it still emits avoidable warnings and relies on older 
 
 **Completed work**
 - the English documentation plugin POMs now inherit the shared Tycho configuration directly from `doc/parent/pom.xml` instead of repeating the same `tycho-maven-plugin` and `tycho-packaging-plugin` blocks in every child POM.
+- centralised the shared Asciidoctor configuration in `doc/parent/pom.xml` behind an `adoc`-directory-activated profile so only documentation plugins with real Asciidoc content inherit it;
+- replaced the repeated `maven-antrun-plugin` delete/copy steps in the English documentation plugins with standard `maven-clean-plugin` and `maven-resources-plugin` executions owned by `doc/parent/pom.xml`;
+- removed the repeated or empty per-module `build` blocks from the affected English documentation plugin POMs.
 
-**Suggested work**
-- remove unsupported Asciidoctor parameters;
-- centralise shared configuration in `doc/parent/pom.xml`;
-- replace simple Ant file operations with standard Maven plugins where practical.
+**Outcome**
+
+The active English documentation build now keeps shared generation and resource-copy logic in one reviewed parent-POM location, avoids the old Ant-based file operations for simple clean/copy work, and no longer carries the previously noted unsupported `compact` Asciidoctor setting.
 
 **Expected benefit**
 - quieter builds;

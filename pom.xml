@@ -13,6 +13,12 @@ This pom executes a maven target on ALL the (eclipse) features that compose the 
 	<packaging>pom</packaging>
 
 	<properties>
+		<!--
+			Keep this shared repository/Tycho configuration aligned with maven/modelio-parent/pom.xml.
+			The only intentional behavioural divergence between the two parents is workspace-root
+			resolution: this primary parent derives modelio.ws.path from relativePath, whereas the legacy
+			secondary parent still uses ECLIPSE_WS for maven/aggregators/** entrypoints.
+		-->
 		<tycho-version>5.0.2</tycho-version>
 		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
 		<!--

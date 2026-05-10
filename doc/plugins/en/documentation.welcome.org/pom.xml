@@ -11,9 +11,5 @@
 	<artifactId>org.modelio.documentation.welcome</artifactId>
 	<packaging>eclipse-plugin</packaging>
 
-	<build>
-		<plugins>
-		</plugins>
-	</build>
 
 </project>
