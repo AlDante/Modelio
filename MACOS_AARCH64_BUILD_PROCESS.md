@@ -208,10 +208,10 @@ Relevant files:
 - `dev-platform/rcp-target/rcp.target`
 - `dev-platform/rcp-target/rcp_debug.target`
 - `pom.xml`
-- `maven/modelio-parent/pom.xml`
 
 The current normalized contract is:
-- the target-definition files and both shared parent POMs point at the same `eclipse-2026-03` upstream baseline plus the same companion vendored repositories under `dev-platform/rcp-target/**`;
+- the target-definition files and the primary shared parent POM point at the same `eclipse-2026-03` upstream baseline plus the same companion vendored repositories under `dev-platform/rcp-target/**`;
+- the legacy `maven/aggregators/**` wrappers and secondary `maven/modelio-parent/pom.xml` entrypoint have been retired;
 - the supported macOS `aarch64` path no longer carries active `openjdk-jre11` target wiring;
 - the supported macOS `aarch64` path no longer carries active `eclipse/`, `eclipse-fr/`, or `jna/repository/` fallback wiring;
 - the retired `dev-platform/rcp-target/rcp-eclipse/eclipse/`, `eclipse-fr/`, and `jna/` directories have been removed from the working tree;

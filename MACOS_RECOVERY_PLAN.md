@@ -172,7 +172,6 @@ Goal: create a native `macosx/cocoa/aarch64` product path.
 Files likely involved:
 - `products/pom.xml`
 - root `pom.xml`
-- `maven/modelio-parent/pom.xml`
 - `products/modelio-os.product`
 
 Concrete tasks:

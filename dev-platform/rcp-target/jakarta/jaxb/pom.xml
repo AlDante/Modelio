@@ -7,7 +7,7 @@
 		<groupId>org.modelio</groupId>
 		<artifactId>modelio-parent</artifactId>
 		<version>5.4.1-SNAPSHOT</version>
-		<relativePath>../../../../maven/modelio-parent</relativePath>
+		<relativePath>../../../../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>org.modelio.rcp.jaxb-4.0</artifactId>

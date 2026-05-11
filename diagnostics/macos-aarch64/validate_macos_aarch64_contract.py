@@ -20,7 +20,6 @@ FORBIDDEN_CONFIG_SNIPPETS = {
 
 REQUIRED_CONFIG_SNIPPETS = {
     'pom.xml': ('dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03',),
-    'maven/modelio-parent/pom.xml': ('dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03',),
     'dev-platform/rcp-target/rcp.target': ('dev-platform/rcp-target/rcp-eclipse/eclipse-2026-03',),
     'products/pom.xml': ('org.eclipse.equinox.launcher.cocoa.macosx.aarch64', 'verify-macos-aarch64-diagram-editor-smoke'),
 }
@@ -72,7 +71,7 @@ def validate_active_configuration(repo_root: Path, failures: list[str]) -> None:
             if forbidden in text:
                 failures.append(f'{relative_path}: found forbidden {label} snippet {forbidden!r}')
 
-    for pom_relative in ('pom.xml', 'maven/modelio-parent/pom.xml'):
+    for pom_relative in ('pom.xml',):
         pom_text = (repo_root / pom_relative).read_text(encoding='utf-8')
         for line in pom_text.splitlines():
             stripped = line.strip()

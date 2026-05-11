@@ -176,7 +176,7 @@ Option B:
 - added the new `modelio/platform/platform.logging.logback` plugin to own Logback bootstrap, logfile discovery, and backend shutdown,
 - introduced the internal `LoggingBackend` contract in `org.modelio.platform.utils` and reduced `Utils.java` to service lookup plus façade delegation,
 - moved `config/logback.xml` out of `platform.utils` into the backend plugin and removed the stale `config/` packaging entry from `platform.utils/build.properties`,
-- wired the backend plugin into `AGGREGATOR/plugins/platform/pom.xml`, `maven/aggregators/plugins/platform/pom.xml`, and `features/opensource/org.modelio.application.services/feature.xml`,
+- wired the backend plugin into `AGGREGATOR/plugins/platform/pom.xml` and `features/opensource/org.modelio.application.services/feature.xml`,
 - kept the runtime pinned to `slf4j.api 2.0.17` and `ch.qos.logback.* 1.5.32`,
 - validated the slice with fresh-scratch `prebuild`, `plugins`, `features/opensource`, `doc`, and `products` builds on the macOS Apple Silicon profile.
 

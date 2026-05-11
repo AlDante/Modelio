@@ -440,7 +440,6 @@ Any roadmap sections below this point are retained only for historical relevance
 - That does **not** change the broader sequencing: the next modernization hop after this tool uplift should be Java-baseline cleanup, then the larger RCP re-vendoring.
 - Current verified Tycho state in the workspace:
   - `pom.xml` = `5.0.2`
-  - `maven/modelio-parent/pom.xml` = `5.0.2`
   - `doc/parent/pom.xml` = `5.0.2`
   - `dev-platform/rcp-target/jakarta/jaxb/pom.xml` = `5.0.2`
 
@@ -821,7 +820,7 @@ Scope:
 
 Status today:
 - **Tooling uplift completed.**
-- The main staged reactor is green on `Tycho 5.0.2` across `pom.xml`, `maven/modelio-parent/pom.xml`, `doc/parent/pom.xml`, and `dev-platform/rcp-target/jakarta/jaxb/pom.xml`.
+- The main staged reactor is green on `Tycho 5.0.2` across `pom.xml`, `doc/parent/pom.xml`, and `dev-platform/rcp-target/jakarta/jaxb/pom.xml`.
 - The remaining work in this phase is no longer “make `5.0.2` work”; it is to preserve this now-green baseline while later phases move Java and the vendored RCP stack.
 
 Tycho-specific recommendation for this phase:
@@ -834,7 +833,6 @@ Why here:
 
 Primary files:
 - `pom.xml`
-- `maven/modelio-parent/pom.xml`
 - `doc/parent/pom.xml`
 - `products/pom.xml`
 - `dev-platform/rcp-target/jakarta/jaxb/pom.xml`
