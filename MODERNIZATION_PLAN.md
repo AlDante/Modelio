@@ -749,10 +749,10 @@ Practical implication:
 Post-rebuild packaged-app audit:
 - Audited artifact:
   - `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app`
-- Recorded result:
-  - `diagnostics/macos-aarch64/final-app-x86_64-audit-after-rebuild.txt`
 - Audit result:
   - `HITS 0`
+- Note:
+  - the one-off captured audit output was later retired from version control after this result had been transcribed here.
 
 Interpretation after rebuild:
 - The latest rebuilt Apple Silicon `Modelio.app` still contains **no shipped `x86_64` files** after disabling the mac Chromium and mac AStyle fragments.
@@ -761,29 +761,27 @@ Interpretation after rebuild:
 #### Tycho issue resolution progress - 2026-04-16
 - `doc/parent/pom.xml` has been reverted from `Tycho 2.7.5` to `Tycho 2.2.0` to match the main reactor.
 - Validation completed:
-  - `doc/aggregator/pom.xml install` succeeded (`diagnostics/macos-aarch64/doc-aggregator-install-after-tycho-align.exit` = `0`)
-  - `AGGREGATOR/pom.xml validate` succeeded (`diagnostics/macos-aarch64/aggregator-validate-after-tycho-align.exit` = `0`)
+  - `doc/aggregator/pom.xml install` succeeded.
+  - `AGGREGATOR/pom.xml validate` succeeded.
 - Practical interpretation:
   - the specific **"Several versions of tycho plugins are configured"** blocker is now resolved.
   - This restores a single-Tycho main staged reactor without committing to a broader Tycho uplift.
 
 #### Full staged build status after Tycho alignment - 2026-04-16
 - `AGGREGATOR/pom.xml -Pplatform.mac.aarch64,product.org package` now succeeds again on `Java 11`.
-- Retained repo-owned evidence:
-  - `diagnostics/macos-aarch64/aggregator-package-after-tycho-fix.exit`
-- Summary tail captured in:
-  - `diagnostics/macos-aarch64/aggregator-package-after-tycho-fix.tail.txt`
 - Key outcome:
   - `BUILD SUCCESS`
   - total staged build time recorded: `01:49 min`
+- Note:
+  - the temporary captured `.exit` / `.tail.txt` evidence files were later pruned from version control after their outcomes had been summarised in this plan.
 
 Post-AGGREGATOR packaged-app audit:
 - Audited artifact:
   - `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app`
-- Recorded result:
-  - `diagnostics/macos-aarch64/final-app-x86_64-audit-after-aggregator-success.txt`
 - Audit result:
   - `HITS 0`
+- Note:
+  - the corresponding one-off audit capture was later retired from version control after this result had been recorded here.
 
 Interpretation:
 - The full staged reactor is operational again.
@@ -857,7 +855,7 @@ Exit gate:
 - Verified postconditions:
   - `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app` exists,
   - packaging-time `plutil` and `codesign --verify --deep --strict --verbose=2` checks pass,
-  - `diagnostics/macos-aarch64/final-app-x86_64-audit-after-tycho-275.txt` reports `HITS 0`.
+  - the post-package `x86_64` audit reports `HITS 0`.
 
 #### [Historical] Phase 3 completion update - 2026-04-18
 - The bounded `Tycho 5.0.2` probe is also green, but **only when Maven runs on Java 21**.
@@ -872,7 +870,7 @@ Exit gate:
 - Verified postconditions for the `5.0.2` probe:
   - `products/target/products/org.modelio.product/macosx/cocoa/aarch64/Modelio.app` still materialises successfully,
   - packaging-time `plutil` and `codesign --verify --deep --strict --verbose=2` checks still pass,
-  - `diagnostics/macos-aarch64/final-app-x86_64-audit-after-tycho-502.txt` reports `HITS 0`.
+  - the post-package `x86_64` audit still reports `HITS 0`.
 - Immediate interpretation:
   - `Tycho 5.0.2` is now an accepted baseline for this repo,
   - the next bounded step should move away from Tycho experiments and back to Java-baseline cleanup inside owned bundles.
@@ -1073,11 +1071,10 @@ Recommended next bounded step after this audit:
 #### Doc/tooling Java metadata cleanup completed - 2026-04-18
 Changes completed in this bounded slice:
 - `doc/parent/pom.xml` now uses `<maven.compiler.source>11</maven.compiler.source>` and `<maven.compiler.target>11</maven.compiler.target>`.
-- `maven/toolchains.macos.macports.xml` now carries `JavaSE-21` and `JavaSE-11` toolchain templates instead of a stale `JavaSE-1.8` template.
-- `AGGREGATOR/toolchains.xml` now carries `JavaSE-21` and `JavaSE-11` toolchain templates instead of a stale `JavaSE-1.8` template.
+- the repo toolchain templates then carried `JavaSE-21` and `JavaSE-11` definitions instead of a stale `JavaSE-1.8` template.
 
 Validation completed:
-- a direct rescan of those three files on `2026-04-18` found **no remaining** `1.8` or `JavaSE-1.8` markers,
+- a direct rescan of the docs parent and toolchain templates on `2026-04-18` found **no remaining** `1.8` or `JavaSE-1.8` markers,
 - `AGGREGATOR/doc/pom.xml clean install` succeeded on the current `Tycho 5.0.2` / `Java 21` baseline.
 
 Interpretation after this cleanup:
@@ -1223,7 +1220,7 @@ Validation completed:
 
 Interpretation after this slice:
 - the supported Apple Silicon packaging path is now less encumbered by obsolete Linux, Windows, and Intel mac profile declarations,
-- the next meaningful platform step is no longer profile pruning; it is either deciding whether historical docs like `MACOS_RECOVERY_PLAN.md` should be retired or moving on to the larger coherent-target / RCP re-vendoring work.
+- the next meaningful platform step is no longer profile pruning; it is the larger coherent-target / RCP re-vendoring work, with the old Rosetta recovery note now retired from the working tree.
 
 #### [Historical] Phase 5 preparation audit - coherent RCP re-vendoring boundary refreshed on 2026-04-19
 Audit goal:
