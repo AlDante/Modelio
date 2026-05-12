@@ -58,7 +58,8 @@ The retired repo-owned JNA overlay is no longer part of the working tree. If JNA
 The active upstream RCP baseline path is the one used by:
 - `pom.xml`
 - `dev-platform/rcp-target/rcp.target`
-- `dev-platform/rcp-target/rcp_debug.target`
+
+The old repo-owned debug target has been retired from the working tree; only `dev-platform/rcp-target/rcp.target` remains part of the supported path.
 
 ### 2.2 Retired JNA overlay note
 
@@ -201,12 +202,9 @@ Key macOS aarch64-relevant inputs are:
 - `dev-platform/rcp-target/apache/**`
 - `dev-platform/rcp-target/org.eclipse/**`
 - `dev-platform/rcp-target/tmatesoft/svnkit-1.10.9`
-- `dev-platform/rcp-target/org.slf4j/slf4j`
-- `dev-platform/rcp-target/ch.qos/logback`
 
 Relevant files:
 - `dev-platform/rcp-target/rcp.target`
-- `dev-platform/rcp-target/rcp_debug.target`
 - `pom.xml`
 
 The current normalized contract is:
@@ -554,7 +552,7 @@ Expected:
 In the generated product, confirm the ARM launcher fragment exists under:
 - `Contents/Eclipse/plugins/org.eclipse.equinox.launcher.cocoa.macosx_1.2.1400.v20250801-0854/`
 
-Historical evidence files in this repo such as `diagnostics/macos-aarch64/launcher-filetypes.txt` and `diagnostics/macos-aarch64/final-aarch64-launcher-check.txt` remain useful as background verification artifacts, but the checked-in build now generates `Contents/MacOS/modelio` directly.
+Earlier checked-in launcher evidence text captures have now been retired from version control. Use the generated `Contents/MacOS/modelio` launcher itself as the source of truth for `lipo` / `file` verification.
 
 ### 11.3 Wrapper signing and quarantine check
 

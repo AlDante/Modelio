@@ -185,7 +185,7 @@ The duplicated parent configuration has been removed. The repository now has a s
 
 **Status**
 
-Partially completed on **2026-05-07**.
+Completed on **2026-05-10**.
 
 **Completed work**
 - documented in `pom.xml` and `doc/parent/pom.xml` that the current `maven.compiler.source` / `maven.compiler.target` values are retained as legacy workspace/build metadata and are not the authoritative runtime contract for the supported Apple Silicon path;

@@ -89,7 +89,7 @@ def validate_source_configuration(repo_root: Path, failures: list[str]) -> None:
                 f'{provider_flag!r}'
             )
 
-    for relative_path in ('pom.xml', 'dev-platform/rcp-target/rcp.target', 'dev-platform/rcp-target/rcp_debug.target'):
+    for relative_path in ('pom.xml', 'dev-platform/rcp-target/rcp.target'):
         path = repo_root / relative_path
         if not path.is_file():
             failures.append(f'Missing source file: {relative_path}')
