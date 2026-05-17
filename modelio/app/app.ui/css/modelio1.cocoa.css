@@ -23,6 +23,47 @@ CTabFolder {
 	swt-unselected-tabs-color: #f6f6f6 #eeeeee #e6e6e6 100% 100%;
 }
 
+.MPartStack,
+.MPartStack.active,
+.MPartStack.active.noFocus {
+	background-color: #ffffff;
+	color: #000000;
+	swt-selected-tab-fill: #ffffff #ffffff 100% 100%;
+	swt-unselected-tabs-color: #f8f8f8 #f8f8f8 100% 100%;
+	swt-outer-keyline-color: #eaeaea;
+	swt-inner-keyline-color: #eaeaea;
+	swt-tab-outline: #eaeaea;
+	swt-draw-custom-tab-content-background: true;
+	swt-unselected-hot-tab-color-background: #ffffff;
+}
+
+.MPartStack > Composite,
+.MPartStack.active > Composite,
+.MPartStack.active.noFocus > Composite,
+#org-eclipse-ui-editorss,
+#org-eclipse-ui-editorss CTabFolder,
+#org-eclipse-ui-editorss CTabFolder Canvas {
+	background-color: #ffffff;
+	color: #000000;
+}
+
+#org-eclipse-ui-editorss CTabItem {
+	color: #000000;
+	background-color: #f8f8f8;
+}
+
+
+#org-eclipse-ui-editorss CTabFolder,
+#org-eclipse-ui-editorss CTabFolder.active {
+	swt-selected-tab-fill: #ffffff #ffffff 100% 100%;
+	swt-selected-tab-highlight: #5983c5;
+	swt-selected-highlight-top: true;
+	swt-tab-outline: #eaeaea;
+	swt-tab-outer-keyline: #eaeaea;
+	swt-draw-custom-tab-content-background: true;
+	swt-unselected-hot-tab-color-background: #ffffff;
+}
+
 Label,
 Button {
 	color: #000000;

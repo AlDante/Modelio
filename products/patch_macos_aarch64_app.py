@@ -104,6 +104,7 @@ def remove_argument(lines: list[str], argument: str) -> list[str]:
 def patch_modelio_ini(modelio_ini: Path) -> None:
     lines = modelio_ini.read_text(encoding='utf-8').splitlines()
     lines = upsert_argument_pair(lines, '-configuration', '../Eclipse/configuration', '-vmargs')
+    lines = ensure_argument(lines, '-Dorg.eclipse.swt.display.useSystemTheme=false', '-Dosgi.requiredJavaVersion=21')
     lines = ensure_argument(lines, '-Dosgi.requiredJavaVersion=21', '-Djava.library.path=plugins/org.eclipse.justj.openjdk.hotspot.jre.full.macosx.aarch64_21.0.5.v20241007-1417/jre/lib')
     lines = remove_argument(lines, '-Dslf4j.provider=ch.qos.logback.classic.spi.LogbackServiceProvider')
     lines = remove_argument(lines, '-Dorg.eclipse.swt.internal.carbon.smallFonts')

@@ -103,7 +103,7 @@ public class OsLifeCycleManager {
     @objid ("b46266aa-9b70-4eca-bc39-03ed33589e0f")
     @PostContextCreate
     void postContextCreate(final IEclipseContext context) {
-        MacAppearanceSupport.forceLightAppearance();
+        MacAppearanceSupport.forceLightAppearance("postContextCreate");
 
         // Modelio start sequence is logged at INFO level
         LogLevel prevLevel = PluginLogger.ensureLogLevel(LogLevel.INFO);
@@ -344,7 +344,7 @@ public class OsLifeCycleManager {
     @Inject
     void onApplicationStarted(@SuppressWarnings ("unused")
     @UIEventTopic (UIEvents.UILifeCycle.APP_STARTUP_COMPLETE) final MApplication mApp, final Display display) {
-        MacAppearanceSupport.forceLightAppearance();
+        MacAppearanceSupport.forceLightAppearance("appStartupComplete");
         DefaultSWTExceptionHandler.setup(display);
     }
 

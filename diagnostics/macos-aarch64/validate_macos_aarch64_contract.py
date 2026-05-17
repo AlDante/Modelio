@@ -131,6 +131,7 @@ def validate_modelio_ini(app_bundle: Path, failures: list[str]) -> None:
     required_snippets = (
         '-configuration',
         '../Eclipse/configuration',
+        '-Dorg.eclipse.swt.display.useSystemTheme=false',
         '-Dosgi.requiredJavaVersion=21',
     )
     for snippet in required_snippets:

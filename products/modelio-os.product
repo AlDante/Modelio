@@ -11,6 +11,7 @@
       </programArgs>
       <vmArgs>-Xms512m
 -Xmx2048m
+-Dorg.eclipse.swt.display.useSystemTheme=false
 -Dosgi.requiredJavaVersion=21
 -Djava.library.path=plugins/org.eclipse.justj.openjdk.hotspot.jre.full.macosx.aarch64_21.0.5.v20241007-1417/jre/lib
       </vmArgs>
