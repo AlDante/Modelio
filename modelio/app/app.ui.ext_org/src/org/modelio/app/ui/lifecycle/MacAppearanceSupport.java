@@ -81,6 +81,12 @@ final class MacAppearanceSupport {
     @objid ("5da21e0b-cf7f-4f87-a431-f8b29fb8229a")
     private static final String SHELL_REFRESH_KEY = MacAppearanceSupport.class.getName() + ".refreshScheduled";
 
+    @objid ("c4a0d77a-1735-4d4d-98f2-70bc907402c4")
+    private static final String DISPLAY_REFRESH_KEY = MacAppearanceSupport.class.getName() + ".displayRefreshScheduled";
+
+    @objid ("39b37d38-3177-4f7d-9310-9183d6b8ed78")
+    private static final String ACTIVE_SHELL_KEY = MacAppearanceSupport.class.getName() + ".activeShell";
+
     @objid ("0d59112d-ec44-42a0-a567-fda0b2cafb7f")
     private static final String DEBUG_HOOK_KEY = MacAppearanceSupport.class.getName() + ".debugHookInstalled";
 
@@ -145,16 +151,27 @@ final class MacAppearanceSupport {
                     logDiagnostic("event=%s widget=%s colours=%s", eventName(event.type), describeWidget(event.widget), describeWidgetColours(event.widget));
                 }
 
-                if (event.type == SWT.Activate || event.type == SWT.Deactivate) {
+                if (event.type == SWT.Settings) {
                     applyLightDisplayAppearance(display);
-                    scheduleGlobalRefresh(display, 0);
+                    scheduleGlobalRefresh(display, 0, "settings");
                 }
 
                 if (event.widget instanceof Control control) {
-                    if (control instanceof Shell shell && (event.type == SWT.Activate || event.type == SWT.Deactivate)) {
-                        applyLightControlTheme(shell);
-                        scheduleShellRefresh(shell);
-                    } else if (control instanceof CTabFolder && event.type == SWT.Activate) {
+                    if (control instanceof Shell shell) {
+                        if (event.type == SWT.Show) {
+                            applyLightDisplayAppearance(display);
+                            applyLightControlTheme(shell);
+                            scheduleShellRefresh(shell);
+                            scheduleGlobalRefresh(display, 0, "shellShow");
+                        } else if (event.type == SWT.Activate || event.type == SWT.Deactivate) {
+                            applyLightDisplayAppearance(display);
+                            applyLightControlTheme(shell);
+                            scheduleShellRefresh(shell);
+                            if (updateActiveShell(display)) {
+                                scheduleGlobalRefresh(display, 0, "shellActiveChange");
+                            }
+                        }
+                    } else if (control instanceof CTabFolder && (event.type == SWT.Activate || event.type == SWT.Show)) {
                         applyLightControlTheme(control);
                     }
                 }
@@ -166,6 +183,7 @@ final class MacAppearanceSupport {
         display.addFilter(SWT.Show, listener);
         display.addFilter(SWT.Settings, listener);
         display.setData(SHELL_HOOK_KEY, Boolean.TRUE);
+        display.setData(ACTIVE_SHELL_KEY, display.getActiveShell());
 
         logDiagnostic("installLightControlHook installed on %s shells=%d", describeDisplay(display), display.getShells().length);
 
@@ -174,26 +192,73 @@ final class MacAppearanceSupport {
             scheduleShellRefresh(shell);
         }
 
-        scheduleGlobalRefresh(display, 0);
+        scheduleGlobalRefresh(display, 0, "initialInstall");
     }
 
     @objid ("eb9a5265-60b9-48d4-831d-08d115953c0d")
-    private static void scheduleGlobalRefresh(final Display display, final int delayMs) {
-        logDiagnostic("scheduleGlobalRefresh delayMs=%d display=%s shells=%d", delayMs, describeDisplay(display), display.getShells().length);
+    private static void scheduleGlobalRefresh(final Display display, final int delayMs, final String reason) {
+        if (display.isDisposed()) {
+            return;
+        }
+
+        if (Boolean.TRUE.equals(display.getData(DISPLAY_REFRESH_KEY))) {
+            logDiagnostic("scheduleGlobalRefresh skipped delayMs=%d reason=%s display=%s shells=%d pending=true",
+                    delayMs,
+                    reason,
+                    describeDisplay(display),
+                    display.getShells().length);
+            return;
+        }
+
+        display.setData(DISPLAY_REFRESH_KEY, Boolean.TRUE);
+        logDiagnostic("scheduleGlobalRefresh delayMs=%d reason=%s display=%s shells=%d pending=false",
+                delayMs,
+                reason,
+                describeDisplay(display),
+                display.getShells().length);
         display.timerExec(delayMs, new Runnable() {
             @Override
             public void run() {
-                if (display.isDisposed()) {
-                    return;
-                }
+                try {
+                    if (display.isDisposed()) {
+                        return;
+                    }
 
-                logDiagnostic("runGlobalRefresh delayMs=%d display=%s shells=%d", delayMs, describeDisplay(display), display.getShells().length);
+                    logDiagnostic("runGlobalRefresh delayMs=%d reason=%s display=%s shells=%d",
+                            delayMs,
+                            reason,
+                            describeDisplay(display),
+                            display.getShells().length);
 
-                for (final Shell shell : display.getShells()) {
-                    applyLightControlTheme(shell);
+                    for (final Shell shell : display.getShells()) {
+                        applyLightControlTheme(shell);
+                    }
+                } finally {
+                    if (!display.isDisposed()) {
+                        display.setData(DISPLAY_REFRESH_KEY, null);
+                    }
                 }
             }
         });
+    }
+
+    @objid ("0345f042-2662-4f9b-aaaf-ae498b514e22")
+    private static boolean updateActiveShell(final Display display) {
+        final Shell currentActiveShell = display.getActiveShell();
+        final Object previousActiveShell = display.getData(ACTIVE_SHELL_KEY);
+        if (previousActiveShell == currentActiveShell) {
+            logDiagnostic("activeShell unchanged display=%s shell=%s",
+                    describeDisplay(display),
+                    describeWidget(currentActiveShell));
+            return false;
+        }
+
+        display.setData(ACTIVE_SHELL_KEY, currentActiveShell);
+        logDiagnostic("activeShell changed display=%s previous=%s current=%s",
+                describeDisplay(display),
+                describeWidget(previousActiveShell),
+                describeWidget(currentActiveShell));
+        return true;
     }
 
     @objid ("ab3bf57a-bf76-4eb4-bf2a-45c71389da89")
