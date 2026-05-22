@@ -1,0 +1,356 @@
+/**
+ * \page startup_modelio_ui_elements Modelio startup UI elements and appearance ownership
+ *
+ * This page documents the Modelio startup UI elements that matter to the macOS light-appearance investigation.
+ * It is intentionally class-centric and complementary to `STARTUP_UI_INSTANTIATION_AND_VISIBILITY.md`, which is the action list.
+ *
+ * For each element this page records:
+ * - the Modelio class or e4 model type,
+ * - inheritance or contracts,
+ * - the primary SWT or GEF widgets involved,
+ * - how the element behaves during startup,
+ * - what determines its appearance,
+ * - and where those appearance parameters are currently set.
+ *
+ * \section startup_ui_scope Scope
+ *
+ * The scope here is the startup workbench and the startup-visible views described in the startup trace:
+ * - splash,
+ * - main workbench window,
+ * - perspective and welcome stacks,
+ * - bottom workbench stack,
+ * - status bar,
+ * - welcome view,
+ * - property view,
+ * - diagram outline,
+ * - audit view,
+ * - diagram browser,
+ * - script view,
+ * - link editor.
+ *
+ * \section startup_ui_splash Splash
+ *
+ * <b>Element</b>
+ * - Java class: `org.modelio.app.ui.login.Splash`
+ * - Inheritance: direct `java.lang.Object`
+ *
+ * <b>Primary widgets</b>
+ * - `Shell`
+ * - `Label` for version
+ * - `Label` for progress message
+ * - `Label` for copyright
+ *
+ * <b>Startup behaviour</b>
+ * - Created in `OsLifeCycleManager.postContextCreate()`.
+ * - Opened by `Splash.open()` before the main workbench shell is shown.
+ * - Closed in `OsLifeCycleManager.onProcessAdditions()`.
+ *
+ * <b>Appearance ownership</b>
+ * - The shell is given a background image explicitly.
+ * - The labels use explicit dark-blue foreground colours.
+ * - This is therefore mostly a self-contained UI element.
+ *
+ * <b>Appearance parameters set in</b>
+ * - `modelio/app/app.ui/src/org/modelio/app/ui/login/Splash.java`
+ *
+ * \section startup_ui_workbench Main workbench window
+ *
+ * <b>Element</b>
+ * - e4 model type: `basic:TrimmedWindow`
+ * - Model element id: `org.modelio.app.ui.trimmed`
+ * - Backing SWT widget: `Shell`
+ *
+ * <b>Primary widgets</b>
+ * - `Shell`
+ * - trim bars
+ * - top-level perspective stack
+ *
+ * <b>Startup behaviour</b>
+ * - Declared in `modelio/app/app.ui/e4model/modelio.e4xmi`.
+ * - SWT `Shell` created by upstream `org.eclipse.e4.ui.workbench.renderers.swt.WBWRenderer#createWidget()`.
+ * - First shown by upstream `Shell.open()`.
+ *
+ * <b>Appearance ownership</b>
+ * - First paint is owned by upstream e4/SWT and native Cocoa defaults.
+ * - Subsequent colour intent is described by `default.cocoa.css`.
+ * - Modelio tries to reassert light appearance via `MacAppearanceSupport`.
+ *
+ * <b>Appearance parameters set in</b>
+ * - `modelio/app/app.ui/e4model/modelio.e4xmi`
+ * - `modelio/app/app.ui/css/default.cocoa.css`
+ * - `modelio/app/app.ui.ext_org/src/org/modelio/app/ui/lifecycle/MacAppearanceSupport.java`
+ *
+ * \section startup_ui_perspectives Perspective and welcome stacks
+ *
+ * <b>Elements</b>
+ * - e4 model type: `advanced:PerspectiveStack`
+ * - element id: `org.modelio.app.ui.stack.perspectives`
+ * - e4 model type: `basic:PartStack`
+ * - element id: `org.modelio.app.ui.welcome.view`
+ *
+ * <b>Primary widgets</b>
+ * - workbench `CTabFolder` or related part-stack controls owned by e4 renderers
+ *
+ * <b>Startup behaviour</b>
+ * - Perspective stack comes from `modelio/app/app.ui/e4model/modelio.e4xmi`.
+ * - Welcome stack comes from `modelio/app/app.ui.welcome/e4model/welcome.e4xmi`.
+ * - Visibility toggled by `org.modelio.app.ui.lifecycle.PerspectiveManager.showWelcome(boolean)`.
+ *
+ * <b>Appearance ownership</b>
+ * - Stack widgets are created by upstream e4 renderers.
+ * - Colour intent is described in `default.cocoa.css` for `CTabFolder` and `.MPartStack`.
+ * - Runtime fallback is currently `MacAppearanceSupport`.
+ *
+ * <b>Appearance parameters set in</b>
+ * - `modelio/app/app.ui/e4model/modelio.e4xmi`
+ * - `modelio/app/app.ui.welcome/e4model/welcome.e4xmi`
+ * - `modelio/app/app.ui/css/default.cocoa.css`
+ * - `modelio/app/app.ui.ext_org/src/org/modelio/app/ui/lifecycle/PerspectiveManager.java`
+ * - `modelio/app/app.ui.ext_org/src/org/modelio/app/ui/lifecycle/MacAppearanceSupport.java`
+ *
+ * \section startup_ui_statusbar Status bar
+ *
+ * <b>Element</b>
+ * - Java class: `org.modelio.app.ui.statusbar.AppStatusBar`
+ * - Inheritance: direct `java.lang.Object`
+ *
+ * <b>Primary widgets</b>
+ * - root `Composite`
+ * - left, centre and right `Composite` containers
+ * - extension-contributed child controls
+ *
+ * <b>Startup behaviour</b>
+ * - Added as a trim `ToolControl` in `modelio.e4xmi`.
+ * - Created in `AppStatusBar.createControls(...)` when the trimmed window is built.
+ * - Visible as soon as the main workbench window is visible.
+ *
+ * <b>Appearance ownership</b>
+ * - The class sets layout only; it does not set explicit background or foreground colours.
+ * - Appearance therefore depends on inherited composite colours, CSS and any child contribution that sets its own colours.
+ *
+ * <b>Appearance parameters set in</b>
+ * - `modelio/app/app.ui/e4model/modelio.e4xmi`
+ * - `modelio/app/app.ui/src/org/modelio/app/ui/statusbar/AppStatusBar.java`
+ * - extension-point contributions under `org.modelio.app.ui.statusbar`
+ *
+ * \section startup_ui_welcome Welcome view
+ *
+ * <b>Element</b>
+ * - Java class: `org.modelio.app.ui.welcome.impl.WelcomeView`
+ * - Inheritance: direct `java.lang.Object`
+ *
+ * <b>Primary widgets</b>
+ * - `Browser`
+ *
+ * <b>Startup behaviour</b>
+ * - Declared in `welcome.e4xmi` as part `org.modelio.app.ui.welcome.part`.
+ * - `createControls(...)` creates the browser and loads the welcome page URL.
+ * - Visible when the welcome stack is visible.
+ *
+ * <b>Appearance ownership</b>
+ * - The browser host inherits the surrounding workbench colours.
+ * - The actual welcome content appearance comes from the loaded HTML and its CSS.
+ *
+ * <b>Appearance parameters set in</b>
+ * - `modelio/app/app.ui.welcome/e4model/welcome.e4xmi`
+ * - `modelio/app/app.ui.welcome/src/org/modelio/app/ui/welcome/impl/WelcomeView.java`
+ * - the welcome HTML resources referenced by `WELCOME_HREF`
+ *
+ * \section startup_ui_property Property view
+ *
+ * <b>Elements</b>
+ * - Java class: `org.modelio.propertyview.PropertyView`
+ * - Contracts: `IModelChangeListener`, `IStatusChangeListener`
+ * - Custom widget: `org.modelio.propertyview.vtabfolder.VTabFolder extends Composite`
+ *
+ * <b>Primary widgets</b>
+ * - root `Composite`
+ * - header `CLabel`
+ * - inner `VTabFolder`
+ * - dynamic `VTabItem` children
+ * - contributor panels implementing `IPanelProvider`
+ *
+ * <b>Startup behaviour</b>
+ * - Contributed as a shared part, then referenced by placeholder `org.modelio.propertyview.placeholder` in the bottom stack.
+ * - `PropertyView.createGui(...)` builds the root controls.
+ * - Sub-tabs are created later in `showTabFor(...)` when a panel becomes relevant for the current selection.
+ *
+ * <b>Appearance ownership</b>
+ * - Header appearance is explicit: gradient background, font and foreground are set directly.
+ * - The inner tab strip is owned by the custom `VTabFolder` and `VTabFolderRenderer`.
+ * - Contributor panels may still introduce their own root colours.
+ *
+ * <b>Appearance parameters set in</b>
+ * - `modelio/app/app.propertyview/e4model/propertyview.e4xmi`
+ * - `modelio/app/app.propertyview/src/org/modelio/propertyview/PropertyView.java`
+ * - `modelio/app/app.propertyview/src/org/modelio/propertyview/vtabfolder/VTabFolder.java`
+ * - `modelio/app/app.propertyview/src/org/modelio/propertyview/vtabfolder/VTabFolderRenderer.java`
+ *
+ * \section startup_ui_outline Diagram outline
+ *
+ * <b>Element</b>
+ * - Java class: `org.modelio.diagram.outline.view.DiagramOutlineView`
+ * - Inheritance: direct `java.lang.Object`
+ *
+ * <b>Primary widgets</b>
+ * - outer host `Composite`
+ * - deferred `IContentOutlinePage` control created by the active editor or part
+ *
+ * <b>Startup behaviour</b>
+ * - The outer host is created immediately in `createPartControl(...)`.
+ * - The real outline control is created only when `activePartChanged(...)` finds an `IContentOutlinePage`.
+ *
+ * <b>Appearance ownership</b>
+ * - The outer host currently relies on inherited colours.
+ * - The real outline control is owned by whichever active part supplies the `IContentOutlinePage`.
+ *
+ * <b>Appearance parameters set in</b>
+ * - `modelio/app/app.diagram.outline/src/org/modelio/diagram/outline/view/DiagramOutlineView.java`
+ * - the active editor implementation that provides `IContentOutlinePage`
+ *
+ * \section startup_ui_audit Audit view
+ *
+ * <b>Elements</b>
+ * - Java class: `org.modelio.audit.view.AuditView`
+ * - Java class: `org.modelio.audit.view.AuditPanelProvider`
+ * - Contracts: `IPanelProvider`, `IAuditListener`, `IAuditMonitor`
+ *
+ * <b>Primary widgets</b>
+ * - parent `Composite`
+ * - deferred root `Composite area`
+ * - `TreeViewer` and its `Tree`
+ * - e4 toolbar contributed from `auditui.e4xmi`
+ *
+ * <b>Startup behaviour</b>
+ * - Outer part is created first.
+ * - Toolbar visibility is forced in `AuditView.createControls(...)`.
+ * - Real audit content is created in `onProjectOpened(...)`.
+ *
+ * <b>Appearance ownership</b>
+ * - Toolbar icons and structure come from the e4 fragment.
+ * - The provider creates the actual `Composite` and `TreeViewer`, but does not set explicit colours.
+ * - Appearance therefore depends on tree/widget defaults plus any runtime theming fallback.
+ *
+ * <b>Appearance parameters set in</b>
+ * - `modelio/app/app.audit/e4model/auditui.e4xmi`
+ * - `modelio/app/app.audit/src/org/modelio/audit/view/AuditView.java`
+ * - `modelio/app/app.audit/src/org/modelio/audit/view/AuditPanelProvider.java`
+ *
+ * \section startup_ui_diagrambrowser Diagram browser
+ *
+ * <b>Elements</b>
+ * - Java class: `org.modelio.diagram.browser.view.DiagramBrowserView`
+ * - Java class: `org.modelio.diagram.browser.view.DiagramBrowserPanelProvider`
+ * - Contract: `IPanelProvider`
+ *
+ * <b>Primary widgets</b>
+ * - stored parent `Composite`
+ * - deferred `TreeViewer`
+ * - model-specific label/content providers
+ * - e4 toolbar from `diagrambrowser.e4xmi`
+ *
+ * <b>Startup behaviour</b>
+ * - Part host created first.
+ * - Real browser tree is created when `initDiagramBrowserPanelProvider(...)` runs, usually after project open.
+ *
+ * <b>Appearance ownership</b>
+ * - Toolbar and commands come from the e4 fragment.
+ * - Tree appearance is controlled by the `TreeViewer` host, the active browser model, and any inherited colours.
+ * - The class does not set explicit background or foreground colours.
+ *
+ * <b>Appearance parameters set in</b>
+ * - `modelio/app/app.diagram.browser/e4model/diagrambrowser.e4xmi`
+ * - `modelio/app/app.diagram.browser/src/org/modelio/diagram/browser/view/DiagramBrowserView.java`
+ * - `modelio/app/app.diagram.browser/src/org/modelio/diagram/browser/view/DiagramBrowserPanelProvider.java`
+ *
+ * \section startup_ui_script Script view
+ *
+ * <b>Elements</b>
+ * - Java class: `org.modelio.script.view.ScriptView`
+ * - Java class: `org.modelio.script.view.InputView extends SourceViewer`
+ * - Java class: `org.modelio.script.view.OutputView extends StyledText`
+ *
+ * <b>Primary widgets</b>
+ * - `SashForm`
+ * - output `StyledText`
+ * - input source viewer control
+ * - e4 toolbar from `scriptui.e4xmi`
+ *
+ * <b>Startup behaviour</b>
+ * - The entire inner UI is created immediately in `ScriptView.createPartControl(...)`.
+ * - Toolbar visibility is forced by the part class.
+ *
+ * <b>Appearance ownership</b>
+ * - The output area is explicitly set to `UIColor.POSTIT_YELLOW`.
+ * - The input control is explicitly set to `UIColor.WHITE`.
+ * - Fonts and text styles are configured directly in Java code.
+ * - The remaining host widgets rely on the parent theme.
+ *
+ * <b>Appearance parameters set in</b>
+ * - `modelio/app/app.script.ui/e4model/scriptui.e4xmi`
+ * - `modelio/app/app.script.ui/src/org/modelio/script/view/ScriptView.java`
+ * - `modelio/app/app.script.ui/src/org/modelio/script/view/InputView.java`
+ * - `modelio/app/app.script.ui/src/org/modelio/script/view/OutputView.java`
+ *
+ * \section startup_ui_linkeditor Link editor
+ *
+ * <b>Elements</b>
+ * - Java class: `org.modelio.linkeditor.ext.view.LinkEditorView implements ILinkEditorView`
+ * - Java class: `org.modelio.linkeditor.panel.LinkEditorPanelProvider implements ILinkEditor`
+ * - Java class: `org.modelio.linkeditor.panel.LinkEditorPanelUi`
+ * - Java class: `org.modelio.linkeditor.gef.background.BackgroundEditPart`
+ * - Java class: `org.modelio.linkeditor.gef.node.NodeEditPart`
+ *
+ * <b>Primary widgets</b>
+ * - outer host `Composite`
+ * - GEF `GraphicalViewer`
+ * - background figure
+ * - node figures
+ * - e4 toolbar from `link.editor.ext_org.e4xmi`
+ *
+ * <b>Startup behaviour</b>
+ * - The outer view creates the panel provider immediately in `postConstruct(...)`.
+ * - The provider delegates to the UI/controller pair.
+ * - The GEF viewer is created immediately, then populated as the controller builds the background model.
+ *
+ * <b>Appearance ownership</b>
+ * - Viewer host background is explicitly set to `ColorConstants.listBackground`.
+ * - Background figure colour is explicit: `UIColor.TEXT_WRITABLE_BG` or `UIColor.POSTIT_YELLOW`.
+ * - Node figures use `ColorConstants.listBackground`, `ColorConstants.menuBackground` and SWT list colours for text.
+ * - This makes the link editor an appearance island with both SWT-level and GEF-level colour policy.
+ *
+ * <b>Appearance parameters set in</b>
+ * - `modelio/app/app.link.editor.ext_org/e4model/link.editor.ext_org.e4xmi`
+ * - `modelio/app/app.link.editor.ext_org/src/org/modelio/linkeditor/ext/view/LinkEditorView.java`
+ * - `modelio/app/app.link.editor/src/org/modelio/linkeditor/panel/LinkEditorPanelProvider.java`
+ * - `modelio/app/app.link.editor/src/org/modelio/linkeditor/panel/LinkEditorPanelUi.java`
+ * - `modelio/app/app.link.editor/src/org/modelio/linkeditor/gef/background/BackgroundEditPart.java`
+ * - `modelio/app/app.link.editor/src/org/modelio/linkeditor/gef/node/NodeEditPart.java`
+ *
+ * \section startup_ui_css_css CSS and runtime overrides
+ *
+ * <b>Theme stylesheet</b>
+ * - `modelio/app/app.ui/css/default.cocoa.css`
+ * - Declares light backgrounds and dark foregrounds for `Shell`, `Composite`, `CTabFolder`, `Tree`, `Table`, `Text`, `StyledText`, `ToolBar` and related controls.
+ * - Also sets `.MPartStack` selected and unselected tab colours.
+ *
+ * <b>Runtime fallback</b>
+ * - `modelio/app/app.ui.ext_org/src/org/modelio/app/ui/lifecycle/MacAppearanceSupport.java`
+ * - Reasserts light appearance on macOS via display appearance hooks, control traversal and tab-renderer tweaking.
+ * - Useful as a fallback, but not sufficient on its own for the first visible paint.
+ *
+ * \section startup_ui_takeaway Practical takeaway
+ *
+ * Modelio startup appearance is controlled by a mixture of:
+ * - e4 model metadata,
+ * - upstream renderer creation,
+ * - Modelio part and panel code,
+ * - explicit colour assignments,
+ * - and CSS/runtime fallback.
+ *
+ * Therefore the fix strategy must be layered:
+ * - fix upstream-owned first-paint surfaces at creation time,
+ * - fix Modelio-owned roots locally where they are created,
+ * - and use runtime hooks only as a safety net.
+ */
+
