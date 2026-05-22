@@ -167,11 +167,20 @@ def build_native_command(app_bundle: Path, data_dir: Path) -> list[str]:
     return [str(launcher), "-vm", resolve_java(), "-consoleLog", "-clean", "-data", str(data_dir)]
 
 
-def build_java_command(app_bundle: Path, home_dir: Path, data_dir: Path) -> list[str]:
+def prepare_isolated_configuration(app_bundle: Path, work_dir: Path) -> Path:
+    packaged_configuration_dir = app_bundle / "Contents" / "Eclipse" / "configuration"
+    if not packaged_configuration_dir.is_dir():
+        raise FileNotFoundError(f"Missing configuration directory: {packaged_configuration_dir}")
+
+    isolated_configuration_dir = work_dir / "configuration"
+    if isolated_configuration_dir.exists():
+        shutil.rmtree(isolated_configuration_dir)
+    shutil.copytree(packaged_configuration_dir, isolated_configuration_dir)
+    return isolated_configuration_dir
+
+
+def build_java_command(app_bundle: Path, home_dir: Path, data_dir: Path, configuration_dir: Path) -> list[str]:
     eclipse_dir = app_bundle / "Contents" / "Eclipse"
-    configuration_dir = eclipse_dir / "configuration"
-    if not configuration_dir.is_dir():
-        raise FileNotFoundError(f"Missing configuration directory: {configuration_dir}")
 
     parsed: tuple[Path, list[str], list[str]] | None = None
     for candidate in iter_launcher_candidates(app_bundle):
@@ -301,7 +310,6 @@ def find_first_marker(content: str) -> str | None:
 
 
 def run_smoke_test(app_bundle: Path, timeout_seconds: int, requested_work_dir: Path | None, launch_mode: str) -> int:
-    eclipse_dir = app_bundle / "Contents" / "Eclipse"
     work_dir, should_cleanup = prepare_work_dir(requested_work_dir)
     home_dir = work_dir / "home"
     data_dir = work_dir / "workspace"
@@ -319,7 +327,8 @@ def run_smoke_test(app_bundle: Path, timeout_seconds: int, requested_work_dir: P
             )
             working_directory = launcher.parent
         else:
-            command = build_java_command(app_bundle, home_dir, data_dir)
+            configuration_dir = prepare_isolated_configuration(app_bundle, work_dir)
+            command = build_java_command(app_bundle, home_dir, data_dir, configuration_dir)
             launcher_bundle = app_bundle
             launcher = Path(java_executable)
             working_directory = app_bundle / "Contents" / "Eclipse"

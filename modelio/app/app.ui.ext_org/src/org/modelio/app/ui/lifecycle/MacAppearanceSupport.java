@@ -157,13 +157,16 @@ final class MacAppearanceSupport {
                 }
 
                 if (event.widget instanceof Control control) {
-                    if (control instanceof Shell shell) {
-                        if (event.type == SWT.Show) {
-                            applyLightDisplayAppearance(display);
-                            applyLightControlTheme(shell);
+                    if (event.type == SWT.Show) {
+                        applyLightDisplayAppearance(display);
+                        applyLightControlThemeAncestors(control);
+                        applyLightControlTheme(control);
+                        if (control instanceof Shell shell) {
                             scheduleShellRefresh(shell);
                             scheduleGlobalRefresh(display, 0, "shellShow");
-                        } else if (event.type == SWT.Activate || event.type == SWT.Deactivate) {
+                        }
+                    } else if (control instanceof Shell shell) {
+                        if (event.type == SWT.Activate || event.type == SWT.Deactivate) {
                             applyLightDisplayAppearance(display);
                             applyLightControlTheme(shell);
                             scheduleShellRefresh(shell);
@@ -296,6 +299,34 @@ final class MacAppearanceSupport {
             return;
         }
 
+        applyLightControlThemeSelf(control);
+
+        if (control instanceof Composite composite) {
+            for (final Control child : composite.getChildren()) {
+                applyLightControlTheme(child);
+            }
+        }
+    }
+
+    @objid ("13d8cfd3-7ecc-48b7-a004-76dba0e31785")
+    private static void applyLightControlThemeAncestors(final Control control) {
+        if (control == null || control.isDisposed()) {
+            return;
+        }
+
+        Composite parent = control.getParent();
+        while (parent != null && !parent.isDisposed()) {
+            applyLightControlThemeSelf(parent);
+            parent = parent.getParent();
+        }
+    }
+
+    @objid ("a5e5c568-5c2a-4f67-b1e0-c2a7d2d70ad4")
+    private static void applyLightControlThemeSelf(final Control control) {
+        if (control == null || control.isDisposed()) {
+            return;
+        }
+
         installDebugProbe(control);
 
         final boolean logControl = shouldProbeControl(control);
@@ -332,11 +363,6 @@ final class MacAppearanceSupport {
             applyLightTabFolderRendererTheme(tabFolder, white);
         }
 
-        if (control instanceof Composite composite) {
-            for (final Control child : composite.getChildren()) {
-                applyLightControlTheme(child);
-            }
-        }
 
         if (logControl) {
             final String afterColours = describeControlColours(control);

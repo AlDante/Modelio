@@ -283,8 +283,14 @@ public class VTabFolder extends Composite {
     @objid ("d9021783-3bd4-4bb6-a072-9ea22f731dc6")
     Color selectionForeground;
 
+    @objid ("6f98c986-a8af-4ec5-97b3-f1a501460c1b")
+    boolean selectionForegroundExplicit;
+
     @objid ("0261c77e-6476-4088-a058-af9bc99b2fb8")
     Color selectionBackground;
+
+    @objid ("3c960e7c-498b-4eab-925b-6c4e2bc415a4")
+    boolean selectionBackgroundExplicit;
 
     @objid ("26e03545-f034-42b6-9939-47dd5b693e07")
     Rectangle hoverRect = new Rectangle(0, 0, 0, 0);
@@ -376,8 +382,8 @@ public class VTabFolder extends Composite {
         this.setBorderVisible((style & SWT.BORDER) != 0);
         // set up default colors
         Display display = getDisplay();
-        this.selectionForeground = display.getSystemColor(SELECTION_FOREGROUND);
-        this.selectionBackground = display.getSystemColor(SELECTION_BACKGROUND);
+        this.selectionForeground = resolveDefaultSelectionForeground(display);
+        this.selectionBackground = resolveDefaultSelectionBackground(display);
         this.renderer = new VTabFolderRenderer(this);
         this.useDefaultRenderer = true;
         this.controls = new Control[0];
@@ -2459,6 +2465,9 @@ public class VTabFolder extends Composite {
     @Override
     public void setBackground(Color color) {
         super.setBackground(color);
+        if (!this.selectionBackgroundExplicit) {
+            this.selectionBackground = resolveDefaultSelectionBackground(getDisplay());
+        }
         
         updateBkImages();
         redraw();
@@ -2623,6 +2632,9 @@ public class VTabFolder extends Composite {
     @Override
     public void setForeground(Color color) {
         super.setForeground(color);
+        if (!this.selectionForegroundExplicit) {
+            this.selectionForeground = resolveDefaultSelectionForeground(getDisplay());
+        }
         redraw();
         
     }
@@ -3174,11 +3186,12 @@ public class VTabFolder extends Composite {
         if (this.inDispose)
             return;
         checkWidget();
-        
+
+        this.selectionBackgroundExplicit = color != null;
+        if (color == null)
+            color = resolveDefaultSelectionBackground(getDisplay());
         if (this.selectionBackground == color)
             return;
-        if (color == null)
-            color = getDisplay().getSystemColor(SELECTION_BACKGROUND);
         this.selectionBackground = color;
         
         if (this.getSelectedIndex() > -1)
@@ -3228,14 +3241,34 @@ public class VTabFolder extends Composite {
     @objid ("cd5b9731-ed34-44d8-a064-3694a11601c5")
     public void setSelectionForeground(Color color) {
         checkWidget();
+
+        this.selectionForegroundExplicit = color != null;
+        if (color == null)
+            color = resolveDefaultSelectionForeground(getDisplay());
         if (this.selectionForeground == color)
             return;
-        if (color == null)
-            color = getDisplay().getSystemColor(SELECTION_FOREGROUND);
         this.selectionForeground = color;
         if (this.getSelectedIndex() > -1)
             redraw();
         
+    }
+
+    @objid ("1f4d67d4-f7f1-4bce-a969-b2bc51c7038c")
+    private Color resolveDefaultSelectionBackground(Display display) {
+        Color color = getBackground();
+        if (color == null) {
+            color = display.getSystemColor(SELECTION_BACKGROUND);
+        }
+        return color;
+    }
+
+    @objid ("3f6fe4a7-f2d5-4f53-9640-bffad1650b73")
+    private Color resolveDefaultSelectionForeground(Display display) {
+        Color color = getForeground();
+        if (color == null) {
+            color = display.getSystemColor(SELECTION_FOREGROUND);
+        }
+        return color;
     }
 
     /**
