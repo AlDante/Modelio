@@ -206,6 +206,7 @@ public class ModelBrowserPanelProvider implements IPanelProvider, IElementNameEd
     @Override
     public TreeViewer createPanel(Composite parent) {
         this.treeViewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+        applyLightTreeTheme(parent, this.treeViewer);
         this.treeViewer.setUseHashlookup(true);
         
         configureTreeviewer();
@@ -214,6 +215,20 @@ public class ModelBrowserPanelProvider implements IPanelProvider, IElementNameEd
         
         this.treeViewer.setInput(null);
         return this.treeViewer;
+    }
+
+    @objid ("6d58c872-5af8-4cdb-aa1c-afd7436ce6c6")
+    private void applyLightTreeTheme(final Composite parent, final TreeViewer treeViewer) {
+        if (parent == null || treeViewer == null || treeViewer.getTree().isDisposed()) {
+            return;
+        }
+
+        final Display display = treeViewer.getTree().getDisplay();
+        parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
+        parent.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
+        parent.setForeground(display.getSystemColor(SWT.COLOR_BLACK));
+        treeViewer.getTree().setBackground(display.getSystemColor(SWT.COLOR_WHITE));
+        treeViewer.getTree().setForeground(display.getSystemColor(SWT.COLOR_BLACK));
     }
 
     @objid ("c2a435c5-2910-4cf3-b726-ec2f40e42623")

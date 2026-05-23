@@ -87,6 +87,9 @@ final class MacAppearanceSupport {
     @objid ("39b37d38-3177-4f7d-9310-9183d6b8ed78")
     private static final String ACTIVE_SHELL_KEY = MacAppearanceSupport.class.getName() + ".activeShell";
 
+    @objid ("22b7eef7-37b9-490b-bad6-4a4f6554838b")
+    private static final String SHELL_WINDOW_THEME_KEY = MacAppearanceSupport.class.getName() + ".windowThemeApplied";
+
     @objid ("0d59112d-ec44-42a0-a567-fda0b2cafb7f")
     private static final String DEBUG_HOOK_KEY = MacAppearanceSupport.class.getName() + ".debugHookInstalled";
 
@@ -157,18 +160,34 @@ final class MacAppearanceSupport {
                 }
 
                 if (event.widget instanceof Control control) {
-                    if (event.type == SWT.Show) {
+                    if (event.type == SWT.Skin) {
                         applyLightDisplayAppearance(display);
-                        applyLightControlThemeAncestors(control);
-                        applyLightControlTheme(control);
                         if (control instanceof Shell shell) {
+                            applyLightShellTheme(shell);
+                        } else {
+                            applyLightControlThemeAncestors(control);
+                            applyLightControlThemeSelf(control);
+                        }
+                    } else if (event.type == SWT.Paint) {
+                        if (control instanceof Shell shell) {
+                            applyLightShellTheme(shell);
+                        } else if (control instanceof CTabFolder) {
+                            applyLightControlThemeSelf(control);
+                        }
+                    } else if (event.type == SWT.Show) {
+                        applyLightDisplayAppearance(display);
+                        if (control instanceof Shell shell) {
+                            applyLightShellTheme(shell);
                             scheduleShellRefresh(shell);
                             scheduleGlobalRefresh(display, 0, "shellShow");
+                        } else {
+                            applyLightControlThemeAncestors(control);
+                            applyLightControlTheme(control);
                         }
                     } else if (control instanceof Shell shell) {
                         if (event.type == SWT.Activate || event.type == SWT.Deactivate) {
                             applyLightDisplayAppearance(display);
-                            applyLightControlTheme(shell);
+                            applyLightShellTheme(shell);
                             scheduleShellRefresh(shell);
                             if (updateActiveShell(display)) {
                                 scheduleGlobalRefresh(display, 0, "shellActiveChange");
@@ -183,6 +202,8 @@ final class MacAppearanceSupport {
 
         display.addFilter(SWT.Activate, listener);
         display.addFilter(SWT.Deactivate, listener);
+        display.addFilter(SWT.Skin, listener);
+        display.addFilter(SWT.Paint, listener);
         display.addFilter(SWT.Show, listener);
         display.addFilter(SWT.Settings, listener);
         display.setData(SHELL_HOOK_KEY, Boolean.TRUE);
@@ -191,7 +212,7 @@ final class MacAppearanceSupport {
         logDiagnostic("installLightControlHook installed on %s shells=%d", describeDisplay(display), display.getShells().length);
 
         for (final Shell shell : display.getShells()) {
-            applyLightControlTheme(shell);
+            applyLightShellTheme(shell);
             scheduleShellRefresh(shell);
         }
 
@@ -282,7 +303,7 @@ final class MacAppearanceSupport {
                 try {
                     if (!shell.isDisposed()) {
                         logDiagnostic("runShellRefresh shell=%s", describeControl(shell));
-                        applyLightControlTheme(shell);
+                        applyLightShellTheme(shell);
                     }
                 } finally {
                     if (!shell.isDisposed()) {
@@ -306,6 +327,16 @@ final class MacAppearanceSupport {
                 applyLightControlTheme(child);
             }
         }
+    }
+
+    @objid ("c74ba365-0d6f-4ff5-bb51-a07ab2493115")
+    private static void applyLightShellTheme(final Shell shell) {
+        if (shell == null || shell.isDisposed()) {
+            return;
+        }
+
+        applyLightShellWindowAppearance(shell);
+        applyLightControlTheme(shell);
     }
 
     @objid ("13d8cfd3-7ecc-48b7-a004-76dba0e31785")
@@ -342,6 +373,7 @@ final class MacAppearanceSupport {
         if (control instanceof Shell shell) {
             shell.setAlpha(255);
             shell.setBackgroundMode(SWT.INHERIT_DEFAULT);
+            applyLightShellWindowAppearance(shell);
         } else if (control instanceof Composite composite) {
             composite.setBackgroundMode(SWT.INHERIT_DEFAULT);
         }
@@ -492,7 +524,8 @@ final class MacAppearanceSupport {
 
         return event.widget instanceof Shell
                 || event.widget instanceof CTabFolder
-                || event.type == SWT.Settings;
+                || event.type == SWT.Settings
+                || event.type == SWT.Skin;
     }
 
     @objid ("31d8a2e5-f043-4af5-88d2-4ee4c0ca9135")
@@ -515,6 +548,8 @@ final class MacAppearanceSupport {
             return "Deactivate";
         case SWT.Show:
             return "Show";
+        case SWT.Skin:
+            return "Skin";
         case SWT.Paint:
             return "Paint";
         case SWT.Settings:
@@ -586,15 +621,58 @@ final class MacAppearanceSupport {
         logDiagnostic("applyLightDisplayAppearance display=%s shells=%d", describeDisplay(display), display.getShells().length);
         try {
             final Class<?> appearanceClass = Class.forName("org.eclipse.swt.widgets.Display$APPEARANCE");
-            final Field lightField = appearanceClass.getField("Light");
-            lightField.setAccessible(true);
-            final Object lightAppearance = lightField.get(null);
+            final Object lightAppearance = getLightAppearanceValue(appearanceClass);
 
             invokeAppearanceMethod(display, "setAppAppearance", appearanceClass, lightAppearance);
             invokeAppearanceMethod(display, "setWindowsAppearance", appearanceClass, lightAppearance);
         } catch (final ReflectiveOperationException | RuntimeException e) {
             AppUi.LOG.debug(e);
         }
+    }
+
+    @objid ("0f7dd98f-c2e9-46e2-a7cf-a8c27fa6808d")
+    private static void applyLightShellWindowAppearance(final Shell shell) {
+        if (shell == null || shell.isDisposed()) {
+            return;
+        }
+
+        try {
+            final Field windowField = Shell.class.getDeclaredField("window");
+            windowField.setAccessible(true);
+            final Object nsWindow = windowField.get(shell);
+            if (nsWindow == null) {
+                return;
+            }
+
+            final Display display = shell.getDisplay();
+            final Class<?> displayAppearanceClass = Class.forName("org.eclipse.swt.widgets.Display$APPEARANCE");
+            final Object lightAppearance = getLightAppearanceValue(displayAppearanceClass);
+
+            final Method getAppearanceMethod = Display.class.getDeclaredMethod("getAppearance", displayAppearanceClass);
+            getAppearanceMethod.setAccessible(true);
+            final Object nsAppearance = getAppearanceMethod.invoke(display, lightAppearance);
+
+            final Method setWindowAppearanceMethod = Display.class.getDeclaredMethod(
+                    "setWindowAppearance",
+                    Class.forName("org.eclipse.swt.internal.cocoa.NSWindow"),
+                    Class.forName("org.eclipse.swt.internal.cocoa.NSAppearance"));
+            setWindowAppearanceMethod.setAccessible(true);
+            setWindowAppearanceMethod.invoke(display, nsWindow, nsAppearance);
+
+            if (!Boolean.TRUE.equals(shell.getData(SHELL_WINDOW_THEME_KEY))) {
+                shell.setData(SHELL_WINDOW_THEME_KEY, Boolean.TRUE);
+                logDiagnostic("shell window appearance themed shell=%s", describeControl(shell));
+            }
+        } catch (final ReflectiveOperationException | RuntimeException e) {
+            AppUi.LOG.debug(e);
+        }
+    }
+
+    @objid ("49a1d609-6f54-4bcb-aef5-6d7f5ff04a85")
+    private static Object getLightAppearanceValue(final Class<?> appearanceClass) throws ReflectiveOperationException {
+        final Field lightField = appearanceClass.getField("Light");
+        lightField.setAccessible(true);
+        return lightField.get(null);
     }
 
     @objid ("1bb0c6c7-bf8b-42d1-9404-93f5f71603bc")

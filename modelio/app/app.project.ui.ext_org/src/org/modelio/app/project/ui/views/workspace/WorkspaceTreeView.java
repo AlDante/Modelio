@@ -129,6 +129,7 @@ public class WorkspaceTreeView {
     @PostConstruct
     void createControls(final Composite parent) {
         this.viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+        applyLightTreeTheme(parent, this.viewer);
         this.viewer.setContentProvider(new WksContentProvider());
         this.viewer.setLabelProvider(new WksLabelProvider(this.projectService, this.viewer.getTree().getFont()));
         this.viewer.setComparator(new WksNameSorter());
@@ -162,6 +163,20 @@ public class WorkspaceTreeView {
         
         this.service.registerContextMenu(this.viewer.getTree(), WorkspaceTreeView.POPUP_MENU_ID);
         
+    }
+
+    @objid ("92372974-6d0e-405d-b6ad-759e55060835")
+    private void applyLightTreeTheme(final Composite parent, final TreeViewer treeViewer) {
+        if (parent == null || treeViewer == null || treeViewer.getTree().isDisposed()) {
+            return;
+        }
+
+        final Display display = treeViewer.getTree().getDisplay();
+        parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
+        parent.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
+        parent.setForeground(display.getSystemColor(SWT.COLOR_BLACK));
+        treeViewer.getTree().setBackground(display.getSystemColor(SWT.COLOR_WHITE));
+        treeViewer.getTree().setForeground(display.getSystemColor(SWT.COLOR_BLACK));
     }
 
     /**

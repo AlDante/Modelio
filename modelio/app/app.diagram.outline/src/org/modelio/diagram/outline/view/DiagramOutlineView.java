@@ -31,6 +31,7 @@ import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.modelio.gproject.core.IGProject;
@@ -56,6 +57,8 @@ public class DiagramOutlineView {
     public void createPartControl(Composite theParent) {
         this.parent = theParent;
         this.panel = new Composite(this.parent, SWT.NONE);
+        applyLightControlTheme(this.parent);
+        applyLightControlTheme(this.panel);
         this.panel.setLayout(new FillLayout());
         
     }
@@ -98,10 +101,25 @@ public class DiagramOutlineView {
         this.outlinePage = ((IAdaptable) part.getObject()).getAdapter(IContentOutlinePage.class);
         if (this.outlinePage != null) {
             this.outlinePage.createControl(this.panel);
+            applyLightControlTheme(this.outlinePage.getControl());
             this.panel.layout();
             this.parent.layout();
         }
         
+    }
+
+    @objid ("4390d13f-911d-406d-8f31-28ea7ec8c63b")
+    private void applyLightControlTheme(final Control control) {
+        if (control == null || control.isDisposed()) {
+            return;
+        }
+
+        final Display display = control.getDisplay();
+        control.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
+        control.setForeground(display.getSystemColor(SWT.COLOR_BLACK));
+        if (control instanceof Composite composite) {
+            composite.setBackgroundMode(SWT.INHERIT_DEFAULT);
+        }
     }
 
 }
