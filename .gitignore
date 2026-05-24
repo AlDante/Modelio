@@ -77,3 +77,4 @@ doc/plugins/*/*/nl/*/html/*
 !doc/plugins/*/documentation.welcome.org/html/*
 !doc/plugins/*/documentation.welcome.org/nl/*/html/*
 doc/features/*/*/target
+/.idea/copilotDiffState.xml
